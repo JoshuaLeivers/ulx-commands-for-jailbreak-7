@@ -24,12 +24,16 @@ The commands added by this plugin are as follows:
 | `ulx makeprisoner <player>`  | `!makeprisoner`                   | Makes target a prisoner.                          |
 | `ulx makespectator <player>` | `!makespectator` <br> `!makespec` | Makes target a spectator.                         |
 | `ulx revive <player(s)>`     | `!revive`                         | Revives target(s).                                |
+| `ulx respawn`                | `!respawn`                        | Respawns target(s).                               |
 | `ulx toggleff`               | `!toggleff`                       | Toggles friendly fire.                            |
 | `ulx togglepickup`           | `!togglepickup`                   | Toggles item pickup.                              |
+| `ulx slaynr`                 | `!slaynr`                         | Slays target(s) for a given number of rounds.     |
+| `ulx rslaynr`                | `!rslaynr`                        | Removes slays from target(s).                     |
+| `ulx cslaynr`                | `!cslaynr`                        | Checks how many slays a target has remaining.     |
 
 ## License
 	ULX Commands for Jailbreak 7
-	Copyright (C) 2016  Ian Murray
+	Copyright (C) 2018  Ian Murray
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
