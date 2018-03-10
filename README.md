@@ -14,22 +14,26 @@ To install this addon, extract the files from the downloaded archive to your `ga
 ## Usage
 The commands added by this plugin are as follows:
 
-| Command                      | Chat Command(s)                   | Description                                       |
-|------------------------------|-----------------------------------|---------------------------------------------------|
-| `ulx demotewarden`           | `!demotewarden`                   | Remove the warden status from the current warden. |
-| `ulx guardban <player>`      | `!guardban`                       | Bans target from guards temporarily.              |
-| `ulx unguardban <player>`    | `!unguardban` <br> `!guardunban`  | Unbans target from guards.                        |
-| `ulx guardbaninfo <player>`  | `!guardbaninfo` <br> `!gbinfo`    | Prints info about a guardban.                     |
-| `ulx makeguard <player>`     | `!makeguard`                      | Makes target a guard.                             |
-| `ulx makeprisoner <player>`  | `!makeprisoner`                   | Makes target a prisoner.                          |
-| `ulx makespectator <player>` | `!makespectator` <br> `!makespec` | Makes target a spectator.                         |
-| `ulx revive <player(s)>`     | `!revive`                         | Revives target(s).                                |
-| `ulx respawn`                | `!respawn`                        | Respawns target(s).                               |
-| `ulx toggleff`               | `!toggleff`                       | Toggles friendly fire.                            |
-| `ulx togglepickup`           | `!togglepickup`                   | Toggles item pickup.                              |
-| `ulx slaynr`                 | `!slaynr`                         | Slays target(s) for a given number of rounds.     |
-| `ulx rslaynr`                | `!rslaynr`                        | Removes slays from target(s).                     |
-| `ulx cslaynr`                | `!cslaynr`                        | Checks how many slays a target has remaining.     |
+| Command                           | Chat Command(s)                   | Description                                       |
+|-----------------------------------|-----------------------------------|---------------------------------------------------|
+| `ulx demotewarden`                | `!demotewarden`                   | Remove the warden status from the current warden. |
+| `ulx guardban <player>`           | `!guardban`                       | Bans target from guards temporarily.              |
+| `ulx unguardban <player>`         | `!unguardban` <br> `!guardunban`  | Unbans target from guards.                        |
+| `ulx guardbaninfo <player>`       | `!guardbaninfo` <br> `!gbinfo`    | Prints info about a guardban.                     |
+| `ulx makeguard <player>`          | `!makeguard`                      | Makes target a guard.                             |
+| `ulx makeprisoner <player>`       | `!makeprisoner`                   | Makes target a prisoner.                          |
+| `ulx makespectator <player>`      | `!makespectator` <br> `!makespec` | Makes target a spectator.                         |
+| `ulx revive <player(s)>`          | `!revive`                         | Revives target(s).                                |
+| `ulx respawn`                     | `!respawn`                        | Respawns target(s).                               |
+| `ulx toggleff`                    | `!toggleff`                       | Toggles friendly fire.                            |
+| `ulx togglepickup`                | `!togglepickup`                   | Toggles item pickup.                              |
+| `ulx slaynr <player(s)> [rounds]` | `!slaynr`                         | Slays target(s) for a given number of rounds.     |
+| `ulx rslaynr <player(s)> [rounds]`| `!rslaynr`                        | Removes slays from target(s).                     |
+| `ulx cslaynr`                     | `!cslaynr`                        | Checks how many slays a target has remaining.     |
+| `ulx showdeath <player>`          | `!showdeath`                      | Teleports to the position where the target died.  |
+| `ulx teleportguards`              | `!teleportguards` <br> `!tpg`     | Teleports all guards to the warden.               |
+| `ulx opencells`                   | `!opencells` <br> `!open`         | Opens cell doors.                                 |
+
 
 ## License
 	ULX Commands for Jailbreak 7
