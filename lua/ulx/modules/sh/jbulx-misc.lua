@@ -106,7 +106,7 @@ function ulx.rslaynr(calling_ply,target_plys,rounds)
 		for k,v in pairs(target_plys) do
 			local current_slays = tonumber(v:GetPData("slaynr_slays")) or 0
 			if rounds > current_slays then
-				ULib.tsayError(calling_ply,v:Nick().." does not have that many slays to remove.")
+				ULib.tsayError(calling_ply,v:Nick().." does not have that many slays to remove.",true)
 			else
 				local new_slays = current_slays - rounds
 				if rounds == 0 or new_slays == 0 then
@@ -136,17 +136,17 @@ function ulx.cslaynr(calling_ply,target_ply)
 	if GAMEMODE_NAME == "jailbreak" then
 		local slays = tonumber(target_ply:GetPData("slaynr_slays")) or 0
 		if slays > 0 then
-			ULib.tsay(calling_ply,target_ply:Nick().." has "..slays.." slays remaining")
+			ULib.tsay(calling_ply,target_ply:Nick().." has "..slays.." slays remaining.",true)
 		else
-			ULib.tsay(calling_ply,target_ply:Nick().." has no slays")
+			ULib.tsay(calling_ply,target_ply:Nick().." has no slays.",true)
 		end
 	else
 		ULib.tsayError(calling_ply, error_not_jailbreak, true)
 	end
 end
 local cslaynr = ulx.command(CATEGORY_NAME,"ulx cslaynr",ulx.cslaynr,"!cslaynr")
-cslaynr:addParam{type=ULib.cmds.PlayerArg}
-cslaynr:defaultAccess(ULib.ACCESS_ADMIN)
+cslaynr:addParam{type=ULib.cmds.PlayerArg,default="^"}
+cslaynr:defaultAccess(ULib.ACCESS_ADMIN) --Allow access to all for self, but only allow staff to check others' slays for desired results
 cslaynr:help("Check target's slays")
 
 if GAMEMODE_NAME == "jailbreak" then
