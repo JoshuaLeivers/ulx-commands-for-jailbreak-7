@@ -29,7 +29,7 @@ The commands added by this plugin are as follows:
 | `ulx togglepickup`                | `!togglepickup`                   | Toggles item pickup.                              |
 | `ulx slaynr <player(s)> [rounds]` | `!slaynr`                         | Slays target(s) for a given number of rounds.     |
 | `ulx rslaynr <player(s)> [rounds]`| `!rslaynr`                        | Removes slays from target(s).                     |
-| `ulx cslaynr`                     | `!cslaynr`                        | Checks how many slays a target has remaining.     |
+| `ulx cslaynr <player>`            | `!cslaynr`                        | Checks how many slays a target has remaining.     |
 | `ulx showdeath <player>`          | `!showdeath`                      | Teleports to the position where the target died.  |
 | `ulx teleportguards`              | `!teleportguards` <br> `!tpg`     | Teleports all guards to the warden.               |
 | `ulx opencells`                   | `!opencells` <br> `!open`         | Opens cell doors.                                 |
@@ -37,7 +37,7 @@ The commands added by this plugin are as follows:
 
 ## License
 	ULX Commands for Jailbreak 7
-	Copyright (C) 2018  Ian Murray
+	Copyright (C) 2016-2018  Ian Murray
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public Licence as published by
