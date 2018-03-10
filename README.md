@@ -46,4 +46,4 @@ The commands added by this plugin are as follows:
 	GNU General Public Licence for more details.
 
 	You should have received a copy of the GNU General Public Licence
-	along with this program.  If not, see [GNU General Public Licence](http://www.gnu.org/licenses/).
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
