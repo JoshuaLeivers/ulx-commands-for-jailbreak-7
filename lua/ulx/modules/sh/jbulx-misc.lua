@@ -1,14 +1,34 @@
 local error_not_jailbreak = "The current gamemode is not jailbreak!"
 
 
-function ulx.revive( calling_ply, target_plys )
+function ulx.respawn( calling_ply, target_plys )
 	for k,v in pairs( target_plys ) do
 		if GAMEMODE_NAME == "jailbreak" then
 			v._jb_forceRespawn=true
 		end
 		v:Spawn()
 	end
-	ulx.fancyLogAdmin( calling_ply, "#A revived #T",  target_plys )
+	ulx.fancyLogAdmin( calling_ply, "#A respawned #T",  target_plys )
+end
+local respawn = ulx.command("Jailbreak", "ulx respawn", ulx.respawn, "!respawn")
+respawn:defaultAccess( ULib.ACCESS_ADMIN )
+respawn:addParam{ type=ULib.cmds.PlayersArg }
+respawn:help( "Respawns target(s)." )
+
+function ulx.revive( calling_ply, target_plys )
+	for k,v in pairs( target_plys ) do
+		if v:Team() == TEAM_SPECTATOR then
+			ULib.tsayError(calling_ply,v:Nick().." is in spectator mode and cannot be targetted.",true)
+		elseif v:Alive() then
+			ULib.tsayError(calling_ply,v:Nick().." is already alive, so cannot be revived.",true)
+		else
+			if GAMEMODE_NAME == "jailbreak" then
+				v._jb_forceRespawn=true
+			end
+			v:Spawn()
+		end
+	end
+	ulx.fancyLogAdmin( calling_ply, "#A respawned #T",  target_plys )
 end
 local revive = ulx.command("Jailbreak", "ulx revive", ulx.revive, "!revive")
 revive:defaultAccess( ULib.ACCESS_ADMIN )
