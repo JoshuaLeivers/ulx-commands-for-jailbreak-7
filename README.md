@@ -41,7 +41,6 @@ The commands added by this plugin are as follows:
 
 Please note that not all chat command aliases are shown above.
 
-
 ## License
 	ULX Commands for Jailbreak 7
 	Copyright (C) 2016-2018  Ian Murray
