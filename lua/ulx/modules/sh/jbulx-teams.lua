@@ -3,7 +3,7 @@ local CATEGORY_NAME = "Jailbreak"
 
 
 function ulx.makeguard(calling_ply,target_plys)
-	if GAMEMODE_NAME == "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
+	if GAMEMODE_NAME != "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
 		local affected_plys = {}
 		for k,v in pairs(target_plys) do
 			if v:Team() == TEAM_GUARD then
@@ -24,7 +24,7 @@ makeguard:addParam{type=ULib.cmds.PlayersArg}
 makeguard:help("Forces target(s) to guard team.")
 
 function ulx.makeprisoner(calling_ply,target_plys)
-	if GAMEMODE_NAME == "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
+	if GAMEMODE_NAME != "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
 		local affected_plys = {}
 		for k,v in pairs(target_plys) do
 			if v:Team() == TEAM_PRISONER then
@@ -45,17 +45,13 @@ makeprisoner:addParam{type=ULib.cmds.PlayersArg}
 makeprisoner:help("Forces target(s) to prisoner team.")
 
 function ulx.makespectator(calling_ply,target_plys)
-	if GAMEMODE_NAME == "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
+	if GAMEMODE_NAME != "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
 		local affected_plys = {}
 		for k,v in pairs(target_plys) do
-			if v:Team() == TEAM_SPECTATOR then
-				ULib.tsayError(calling_ply,v:Nick().." is already a spectator!")
-			else
-				v:SetTeam(TEAM_SPECTATOR)
-				v:KillSilent()
-				v:SendNotification("Forced to spectators")
-				table.insert(affected_plys,v)
-			end
+			v:SetTeam(TEAM_SPECTATOR);
+			v:KillSilent();
+			v:SendNotification("Forced to spectators");
+			table.insert(affected_plys,v)
 		end
 		ulx.fancyLogAdmin(calling_ply,"#A forced #T to spectators",affected_plys)
 	end
@@ -66,7 +62,7 @@ makespectator:addParam{type=ULib.cmds.PlayersArg}
 makespectator:help("Forces target(s) to spectator mode.")
 
 function ulx.makewarden(calling_ply,target_ply,override)
-	if GAMEMODE_NAME == "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
+	if GAMEMODE_NAME != "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
 		if ulx.getExclusive(target_ply,calling_ply) then
 			ULib.tsayError(calling_ply,ulx.getExclusive(target_ply,calling_ply),true)
 		elseif not target_ply:Alive() then
@@ -96,7 +92,7 @@ makewarden:defaultAccess(ULib.ACCESS_ADMIN)
 makewarden:help("Makes the target the warden.")
 
 function ulx.teleportguards(calling_ply)
-	if GAMEMODE_NAME == "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
+	if GAMEMODE_NAME != "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
 		if IsValid(JB:GetWarden()) then
 			local warden = JB.TRANSMITTER:GetJBWarden()
 			for k,v in pairs(team.GetPlayers(TEAM_GUARD)) do

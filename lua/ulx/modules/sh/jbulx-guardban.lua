@@ -2,7 +2,7 @@ local error_not_jailbreak = "The current gamemode is not jailbreak!"
 local CATEGORY_NAME = "Jailbreak"
 
 function ulx.guardban(calling_ply,target_ply,unban)
-	if GAMEMODE_NAME == "jailbreak" then
+	if GAMEMODE_NAME != "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
 		if unban then
 			if tonumber(target_ply:GetPData( "guardbanned", 0 )) > os.time() then
 				target_ply:RemovePData( "guardbanned" )
@@ -23,8 +23,6 @@ function ulx.guardban(calling_ply,target_ply,unban)
 				target_ply:SendNotification("Forced to prisoners");
 			end
 		end
-	else
-		ULib.tsayError(calling_ply, error_not_jailbreak, true);
 	end
 end
 local guardban = ulx.command(CATEGORY_NAME,"ulx guardban",ulx.guardban,{"!guardban","!gb","!banguard"})
@@ -35,7 +33,7 @@ guardban:setOpposite("ulx unguardban",{ _, _, true },{"!unguardban", "!guardunba
 guardban:help("Bans target from guards temporarily.")
 
 function ulx.wardenban(calling_ply,target_ply,unban)
-	if GAMEMODE_NAME == "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
+	if GAMEMODE_NAME != "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
 		if unban then
 			if tonumber(target_ply:GetPData("wardenbanned",0)) > os.time() then
 				target_ply:RemovePData("wardenbanned")
@@ -62,7 +60,7 @@ wardenban:setOpposite("ulx unwardenban",{ _, _, true },{"!unwardenban","!wardenu
 wardenban:help("Bans target from warden.")
 
 function ulx.guardbaninfo( calling_ply, target_ply)
-	if GAMEMODE_NAME == "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
+	if GAMEMODE_NAME != "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
 		if tonumber(target_ply:GetPData( "guardbanned", 0 )) > os.time() then
 			ULib.tsay( calling_ply, target_ply:Name() .. " was guardbanned by " .. target_ply:GetPData( "guardbanned_by", "an unknown person" ) .. ".")
 			ULib.tsay( calling_ply, "The ban was issued about " .. math.Round((os.time()-target_ply:GetPData( "guardbanned_on", 0 ))/60) .. " minutes ago and will expire in about " .. math.Round((target_ply:GetPData( "guardbanned", 0 )-os.time())/60) .. " minutes.")
@@ -77,15 +75,13 @@ guardbaninfo:addParam{type=ULib.cmds.PlayerArg,default="^",ULib.cmds.optional}
 guardbaninfo:help("Prints info about a guardban.")
 
 function ulx.wardenbaninfo(calling_ply,target_ply)
-	if GAMEMODE_NAME == "jailbreak" then
+	if GAMEMODE_NAME != "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
 		if tonumber(target_ply:GetPData("wardenbanned",0)) > os.time() then
 			ULib.tsay(calling_ply,target_ply:Name().." was wardenbanned by "..target_ply:GetPData("wardenbanned_by","an unknown person")..".")
 			ULib.tsay(calling_ply,"The ban was issued about "..math.Round((os.time()-target_ply:GetPData("guardbanned_on",0))/60).." minutes ago and will expire in about "..math.Round((target_ply:GetPData("guardbanned",0)-os.time())/60).." minutes.")
 		else
 			ULib.tsayError(calling_ply, target_ply:Name() .. " is not guardbanned!")
 		end
-	else
-		ULib.tsayError(calling_ply,error_not_jailbreak,true)
 	end
 end
 local wardenbaninfo = ulx.command(CATEGORY_NAME, "ulx wardenbaninfo", ulx.wardenbaninfo, {"!wardenbaninfo", "!wbinfo"}, true )
