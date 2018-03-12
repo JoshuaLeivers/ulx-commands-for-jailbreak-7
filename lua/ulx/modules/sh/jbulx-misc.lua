@@ -35,7 +35,7 @@ revive:addParam{type=ULib.cmds.PlayersArg}
 revive:help("Revives target(s).")
 
 function ulx.toggleff(calling_ply)
-	if GAMEMODE_NAME == "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
+	if GAMEMODE_NAME != "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
 		JB.TRANSMITTER:SetJBWarden_PVPDamage(!JB.TRANSMITTER:GetJBWarden_PVPDamage());
 		JB:BroadcastNotification("Friendly fire is now "..(JB.TRANSMITTER:GetJBWarden_PVPDamage() and "enabled" or "disabled"))
 		ulx.fancyLogAdmin( calling_ply, "#A toggled friendly fire")
@@ -46,7 +46,7 @@ toggleff:defaultAccess(ULib.ACCESS_ADMIN)
 toggleff:help("Toggles friendly fire.")
 
 function ulx.togglepickup( calling_ply )
-	if not GAMEMODE_NAME == "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
+	if GAMEMODE_NAME != "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
 		JB.TRANSMITTER:SetJBWarden_ItemPickup(!JB.TRANSMITTER:GetJBWarden_ItemPickup());
 		JB:BroadcastNotification("Item pickup is now "..(JB.TRANSMITTER:GetJBWarden_ItemPickup() and "enabled" or "disabled"))
 		ulx.fancyLogAdmin(calling_ply,"#A toggled item pickup")
@@ -57,7 +57,7 @@ togglepickup:defaultAccess(ULib.ACCESS_ADMIN)
 togglepickup:help("Toggles item pickup.")
 
 function ulx.demotewarden( calling_ply )
-	if not GAMEMODE_NAME == "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
+	if GAMEMODE_NAME != "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
 		if IsValid(JB.TRANSMITTER:GetJBWarden()) then
 			ulx.fancyLogAdmin(calling_ply,"#A removed the warden status from #T",JB.TRANSMITTER:GetJBWarden())
 			JB.TRANSMITTER:GetJBWarden():RemoveWardenStatus();
@@ -72,7 +72,7 @@ demotewarden:defaultAccess(ULib.ACCESS_ADMIN)
 demotewarden:help("Remove the warden status from the current warden.")
 
 function ulx.slaynr(calling_ply,target_plys,rounds,remove)
-	if not GAMEMODE_NAME == "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
+	if GAMEMODE_NAME != "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
 		local affected_plys = {}
 		if remove then
 			for k,v in pairs(target_plys) do
@@ -118,7 +118,7 @@ slaynr:help("Slay target(s) next round")
 slaynr:setOpposite("ulx rslaynr",{_,_,_,true},"!rslaynr")
 
 function ulx.cslaynr(calling_ply,target_ply)
-	if not GAMEMODE_NAME == "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
+	if GAMEMODE_NAME != "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
 		local slays = tonumber(target_ply:GetPData("slaynr_slays")) or 0
 		if slays > 0 then
 			ULib.tsay(calling_ply,target_ply:Nick().." has "..slays.." slays remaining.",true)

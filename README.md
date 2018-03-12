@@ -35,7 +35,7 @@ The commands added by this plugin are as follows:
 | `ulx cslaynr`                     | `!cslaynr`                             | Checks how many slays a target has remaining.     |
 | `ulx showdeath <player>`          | `!showdeath` <br> `!tpdeath` <br> `tpd`| Teleports to the position where the target died.  |
 | `ulx teleportguards`              | `!teleportguards` <br> `!tpg`          | Teleports all guards to the warden.               |
-| `ulx togglecells`                 | `!togglecells` <br> `!cells`           | Toggles whether the cell doors are open.          |
+| `ulx opencells`                   | `!opencells` <br> `!cells`             | Opens cell doors.                                 |
 | `ulx helicopter`                  | `!helicopter` <br> `!heli`             | Shuts down the helicopter on new_summer.          |
 | `ulx mancannon`                   | `!mancannon` <br> `!openmc` <br> `!omc`| Opens the mancannon door on new_summer.           |
 

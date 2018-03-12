@@ -1,34 +1,26 @@
 local cellDoorMap = {
 
-  ["jb_new_summer_v2"] = {"cells"},
+  ["jb%_new%_summer"] = {"cells"},
 
-  ["ba_jail_sand_v3"] = {"JailDoors"},
+  ["ba%_jail%_sand"] = {"JailDoors"},
 
-  ["ba_jail_blackops"] = {"prisondoor"},
+  ["ba%_jail%_blackops"] = {"prisondoor"},
   
-  ["jb_new_summer_v3"] = {"cells"},
+  ["jb%_lego%_jail%_pre%_v6%-2"] = {"c1"},
 
-  ["jb_lego_jail_v4"] = {"cell1"},
-  
-  ["jb_lego_jail_pre_v6-2"] = {"c1"},
+  ["jb%_lego%_jail"] = {"cell1"},
 
-  ["jb_italia_beta4"] = {"door cells"},
+  ["jb%_italia"] = {"door cells"},
 
-  ["jb_italia_final"] = {"door cells"},
+  ["ba%_jail%_electric%_aero"] = {"Cells_ForceFieldEmitter","Cells_ForceFields"},
 
-  ["ba_jail_electric_aero_v1_1"] = {"Cells_ForceFieldEmitter","Cells_ForceFields"},
+  ["jb%_carceris"] = {"s1","s2","s3","s4","s5","s6","s7","s8","s9","s10","s11","s12","s13","s14","s15","s16"},
 
-  ["jb_carceris"] = {"s1","s2","s3","s4","s5","s6","s7","s8","s9","s10","s11","s12","s13","s14","s15","s16"},
+  ["ba%_jail%_laser"] = {"celdas.1.puerta","celdas.2.puerta"},
 
-  ["jb_carceris_final_fixed"] = {"s1","s2","s3","s4","s5","s6","s7","s8","s9","s10","s11","s12","s13","s14","s15","s16"},
+  ["jb%_parabellum"] = {"cells"},
 
-  ["ba_jail_laser_v4b"] = {"celdas.1.puerta","celdas.2.puerta"},
-
-  ["jb_parabellum_xg_2"] = {"cells"},
-
-  ["jb_parabellum_xg_v1-1"] = {"cells"},
-
-  ["jb_vipinthemix_v1_2"] = {
+  ["jb%_vipinthemix"] = {
 "Jaildoor_clip1",
 "Jaildoor_clip2",
 "Jaildoor_clip3",
@@ -80,23 +72,21 @@ local mancannon = ulx.command(CATEGORY_NAME,"ulx mancannon",ulx.mancannon,{"!omc
 mancannon:defaultAccess(ULib.ACCESS_ADMIN)
 mancannon:help("Open the mancannon on new_summer")
 
-function ulx.togglecells(calling_ply)
-	for map,door in pairs(cellDoorMap[game.GetMap()]) do
-		if game.GetMap():find("jb%_carceris") then
-			for _,v in ipairs(ents.FindByName(door)) do
-				v:Fire("Open",1)
+function ulx.opencells(calling_ply)
+    local doorsopened = false
+	for map,doors in pairs(cellDoorMap) do
+		if game.GetMap():find(map) then
+			for k,door in pairs(cellDoorMap[map]) do
+				for _,v in ipairs(ents.FindByName(door)) do
+                    v:Fire("Open",1)
+                end
 			end
-		else
-			for _,v in ipairs(ents.FindByName(door)) do
-				v:Fire("Toggle",1)
-			end
+            ulx.fancyLogAdmin(calling_ply,"#A opened cell doors")
+            return
 		end
 	end
-	if game.GetMap():find("jb%_carceris") then
-		ULib.tsayError(calling_ply,"[INFO] Cells can only be opened on this map.")
-	end
-	ulx.fancyLogAdmin(calling_ply,"#A toggled cell doors")
+    ULib.tsayError(calling_ply,"This command does not work on this map!",true)
 end
-local togglecells = ulx.command(CATEGORY_NAME,"ulx togglecells",ulx.togglecells,{"!togglecells","!cells"})
-togglecells:defaultAccess(ULib.ACCESS_ADMIN)
-togglecells:help("Toggle whether the cell doors are open")
+local opencells = ulx.command(CATEGORY_NAME,"ulx opencells",ulx.opencells,{"!opencells","!cells"})
+opencells:defaultAccess(ULib.ACCESS_ADMIN)
+opencells:help("Opens the cell doors")
