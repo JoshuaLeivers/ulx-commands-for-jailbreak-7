@@ -20,6 +20,10 @@ local cellDoorMap = {
 
   ["jb%_parabellum"] = {"cells"},
 
+  ["ba%_jail%_ishimura"] = {"PrisonDoor"},
+
+  ["ba%_jail%_alcatraz"] = {"oben","unten"},
+
   ["jb%_vipinthemix"] = {
 "Jaildoor_clip1",
 "Jaildoor_clip2",
@@ -79,6 +83,7 @@ function ulx.opencells(calling_ply)
 			for k,door in pairs(cellDoorMap[map]) do
 				for _,v in ipairs(ents.FindByName(door)) do
                     v:Fire("Open",1)
+                    v:Fire("Disable",1)
                 end
 			end
             ulx.fancyLogAdmin(calling_ply,"#A opened cell doors")
