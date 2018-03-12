@@ -72,7 +72,7 @@ local mancannon = ulx.command(CATEGORY_NAME,"ulx mancannon",ulx.mancannon,{"!omc
 mancannon:defaultAccess(ULib.ACCESS_ADMIN)
 mancannon:help("Open the mancannon on new_summer")
 
-function ulx.togglecells(calling_ply)
+function ulx.opencells(calling_ply)
     local doorsopened = false
 	for map,doors in pairs(cellDoorMap) do
 		if game.GetMap():find(map) then
@@ -87,6 +87,6 @@ function ulx.togglecells(calling_ply)
 	end
     ULib.tsayError(calling_ply,"This command does not work on this map!",true)
 end
-local togglecells = ulx.command(CATEGORY_NAME,"ulx togglecells",ulx.togglecells,{"!togglecells","!cells"})
-togglecells:defaultAccess(ULib.ACCESS_ADMIN)
-togglecells:help("Opens the cell doors")
+local opencells = ulx.command(CATEGORY_NAME,"ulx opencells",ulx.opencells,{"!opencells","!cells"})
+opencells:defaultAccess(ULib.ACCESS_ADMIN)
+opencells:help("Opens the cell doors")
