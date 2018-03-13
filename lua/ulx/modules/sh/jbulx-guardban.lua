@@ -21,7 +21,7 @@ function ulx.guardban(calling_ply,target_ply,banlength,unban)
 				ulx.fancyLogAdmin(calling_ply,"#A banned #T from guards permanently",target_ply)
 			end
 		else
-			target_ply:SetPData("guardbanned",os.time()+banlength)
+			target_ply:SetPData("guardbanned",os.time()+banlength*60)
 			target_ply:SetPData("guardbanned_on",os.time())
 			target_ply:SetPData("guardbanned_by",string.format("%s (%s)",calling_ply:Name(),calling_ply:SteamID()))
 			ulx.fancyLogAdmin(calling_ply,"#A banned #T from guards for "..banlength.." minutes",target_ply)
@@ -36,7 +36,7 @@ end
 local guardban = ulx.command(CATEGORY_NAME,"ulx guardban",ulx.guardban,{"!guardban","!gb","!banguard"})
 guardban:defaultAccess(ULib.ACCESS_ADMIN)
 guardban:addParam{type=ULib.cmds.PlayerArg}
-guardban:addParam{type=ULib.cmds.NumArg,min=0,default=57600,hint="ban length, 0 for permanent"}
+guardban:addParam{type=ULib.cmds.NumArg,min=0,default=960,hint="ban length, 0 for permanent",ULib.cmds.optional}
 guardban:addParam{type=ULib.cmds.BoolArg,invisible=true}
 guardban:setOpposite("ulx unguardban",{_,_,0,true},{"!unguardban","!guardunban","!ungb","!unbanguard"})
 guardban:help("Bans target from guards.")
@@ -61,7 +61,7 @@ function ulx.wardenban(calling_ply,target_ply,banlength,unban)
 				ulx.fancyLogAdmin(calling_ply,"#A banned #T from warden permanently",target_ply)
 			end
 		else
-			target_ply:SetPData("wardenbanned",os.time()+banlength)
+			target_ply:SetPData("wardenbanned",os.time()+banlength*60)
 			target_ply:SetPData("wardenbanned_on",os.time())
 			target_ply:SetPData("wardenbanned_by",string.format("%s (%s)",calling_ply:Name(),calling_ply:SteamID()))
 			ulx.fancyLogAdmin(calling_ply,"#A banned #T from warden for "..banlength.." minutes",target_ply)
@@ -72,14 +72,14 @@ end
 local wardenban = ulx.command(CATEGORY_NAME,"ulx wardenban",ulx.wardenban,{"!wardenban","!wb","!banwarden"})
 wardenban:defaultAccess(ULib.ACCESS_ADMIN)
 wardenban:addParam{type=ULib.cmds.PlayerArg}
-wardenban:addParam{type=ULib.cmds.NumArg,min=0,default=57600,hint="ban length, 0 for permanent"}
+wardenban:addParam{type=ULib.cmds.NumArg,min=0,default=960,hint="ban length, 0 for permanent",ULib.cmds.optional}
 wardenban:addParam{type=ULib.cmds.BoolArg,invisible=true}
-wardenban:setOpposite("ulx unguardban",{_,_,0,true},{"!unwardenban","!wardenunban","!unwb","!unbanwarden"})
+wardenban:setOpposite("ulx unwardenban",{_,_,0,true},{"!unwardenban","!wardenunban","!unwb","!unbanwarden"})
 wardenban:help("Ban target from warden")
 
 function ulx.guardbaninfo( calling_ply, target_ply)
 	if GAMEMODE_NAME != "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
-		if tobool(target_ply:GetPData("guardbanned_perm",false) then
+		if tobool(target_ply:GetPData("guardbanned_perm",false)) then
 			ULib.tsay(calling_ply,target_ply:Name().." was guardbanned permanently by "..target_ply:GetPData("guardbanned_by","an unknown person" )..".")
 			ULib.tsay(calling_ply,"The ban was issued about "..math.Round((os.time()-target_ply:GetPData("guardbanned_on",0))/60).." minutes ago.")
 		elseif tonumber(target_ply:GetPData("guardbanned",0)) > os.time() then
@@ -97,7 +97,7 @@ guardbaninfo:help("Prints info about a guardban.")
 
 function ulx.wardenbaninfo(calling_ply,target_ply)
 	if GAMEMODE_NAME != "jailbreak" then ULib.tsayError(calling_ply,error_not_jailbreak,true) else
-		if tobool(target_ply:GetPData("wardenbanned_perm",false) then
+		if tobool(target_ply:GetPData("wardenbanned_perm",false)) then
 			ULib.tsay(calling_ply,target_ply:Name().." was wardenbanned permanently by "..target_ply:GetPData("wardenbanned_by","an unknown person" )..".")
 			ULib.tsay(calling_ply,"The ban was issued about "..math.Round((os.time()-target_ply:GetPData("wardenbanned_on",0))/60).." minutes ago.")
 		elseif tonumber(target_ply:GetPData("wardenbanned",0)) > os.time() then
@@ -115,7 +115,7 @@ wardenbaninfo:help("Prints info about a wardenban.")
 
 
 hook.Add("JailBreakPlayerSwitchTeam","jbulx_JailBreakPlayerSwitchTeam",function(player,team)
-	if (tonumber(player:GetPData("guardbanned",0)) > os.time() or (tobool(player:GetPData("guardbanned_perm",false))) and team == TEAM_GUARD then
+	if (tonumber(player:GetPData("guardbanned",0)) > os.time() or (tobool(player:GetPData("guardbanned_perm",false)))) and team == TEAM_GUARD then
 		player:SetTeam(TEAM_PRISONER)
 		player:KillSilent()
 		player:SendNotification("Forced to prisoners")
@@ -129,7 +129,7 @@ hook.Add("JailBreakPlayerSwitchTeam","jbulx_JailBreakPlayerSwitchTeam",function(
 end)
 
 hook.Add("JailBreakClaimWarden","jbulx_JailBreakClaimWarden",function(player)
-	if tonumber(player:GetPData("wardenbanned",0)) > os.time() or (tobool(player:GetPData("wardenbanned_perm",false)) then
+	if tonumber(player:GetPData("wardenbanned",0)) > os.time() or (tobool(player:GetPData("wardenbanned_perm",false))) then
 		player:RemoveWardenStatus()
 		player:SendNotification("Demoted from warden")
 		if tobool(player:GetPData("wardenbanned_perm",false)) then

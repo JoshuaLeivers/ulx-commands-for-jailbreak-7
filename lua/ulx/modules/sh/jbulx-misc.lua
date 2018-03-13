@@ -52,7 +52,7 @@ function ulx.togglepickup( calling_ply )
 		ulx.fancyLogAdmin(calling_ply,"#A toggled item pickup")
 	end
 end
-local togglepickup = ulx.command(CATEGORY_NAME,"ulx togglepickup",ulx.togglepickup,{"!togglepickup","!tpu","!togglepu","!tpickup","!pickup","!pu"})
+local togglepickup = ulx.command(CATEGORY_NAME,"ulx togglepickup",ulx.togglepickup,{"!togglepickup","!tpu","!togglepu","!tpickup","!pickup"})
 togglepickup:defaultAccess(ULib.ACCESS_ADMIN)
 togglepickup:help("Toggles item pickup.")
 
@@ -111,7 +111,7 @@ function ulx.slaynr(calling_ply,target_plys,rounds,remove)
 end
 local slaynr = ulx.command(CATEGORY_NAME,"ulx slaynr",ulx.slaynr,"!slaynr")
 slaynr:addParam{type=ULib.cmds.PlayersArg}
-slaynr:addParam{type=ULib.cmds.NumArg,default=1,min=0,hint="rounds to slay"ULib.cmds.optional,ULib.cmds.round}
+slaynr:addParam{type=ULib.cmds.NumArg,default=1,min=0,hint="rounds",ULib.cmds.optional,ULib.cmds.round}
 slaynr:addParam{type=ULib.cmds.BoolArg,invisible=true}
 slaynr:defaultAccess(ULib.ACCESS_ADMIN)
 slaynr:help("Slay target(s) next round")
