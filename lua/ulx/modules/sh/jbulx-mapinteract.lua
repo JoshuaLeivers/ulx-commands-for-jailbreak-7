@@ -18,8 +18,12 @@ local cellDoorMap = {
 
   ["ba%_jail%_laser"] = {"celdas.1.puerta","celdas.2.puerta"},
 
-  ["jb%_parabellum"] = {"cells"},
+  ["ba%_jail%_ishimura"] = {"PrisonDoor"},
 
+  ["ba%_jail%_alcatraz"] = {"oben","unten"},
+
+  ["jb%_parabellum"] = {"cells"},
+  
   ["jb%_vipinthemix"] = {
 "Jaildoor_clip1",
 "Jaildoor_clip2",
@@ -73,16 +77,17 @@ mancannon:defaultAccess(ULib.ACCESS_ADMIN)
 mancannon:help("Open the mancannon on new_summer")
 
 function ulx.opencells(calling_ply)
-    local doorsopened = false
+  local doorsopened = false
 	for map,doors in pairs(cellDoorMap) do
 		if game.GetMap():find(map) then
 			for k,door in pairs(cellDoorMap[map]) do
 				for _,v in ipairs(ents.FindByName(door)) do
                     v:Fire("Open",1)
-                end
-			end
-            ulx.fancyLogAdmin(calling_ply,"#A opened cell doors")
-            return
+                    v:Fire("Disable",1)
+        end
+      end
+      ulx.fancyLogAdmin(calling_ply,"#A opened cell doors")
+      return
 		end
 	end
     ULib.tsayError(calling_ply,"This command does not work on this map!",true)
