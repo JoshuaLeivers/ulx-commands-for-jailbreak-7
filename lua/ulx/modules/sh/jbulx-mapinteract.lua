@@ -77,7 +77,6 @@ mancannon:defaultAccess(ULib.ACCESS_ADMIN)
 mancannon:help("Open the mancannon on new_summer")
 
 function ulx.opencells(calling_ply)
-  local doorsopened = false
 	for map,doors in pairs(cellDoorMap) do
 		if game.GetMap():find(map) then
 			for k,door in pairs(cellDoorMap[map]) do
