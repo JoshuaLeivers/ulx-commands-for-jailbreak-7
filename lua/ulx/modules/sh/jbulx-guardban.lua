@@ -102,9 +102,9 @@ function ulx.wardenbaninfo(calling_ply,target_ply)
 			ULib.tsay(calling_ply,"The ban was issued about "..math.Round((os.time()-target_ply:GetPData("wardenbanned_on",0))/60).." minutes ago.")
 		elseif tonumber(target_ply:GetPData("wardenbanned",0)) > os.time() then
 			ULib.tsay(calling_ply,target_ply:Name().." was wardenbanned by "..target_ply:GetPData("wardenbanned_by","an unknown person")..".")
-			ULib.tsay(calling_ply,"The ban was issued about "..math.Round((os.time()-target_ply:GetPData("guardbanned_on",0))/60).." minutes ago and will expire in about "..math.Round((target_ply:GetPData("guardbanned",0)-os.time())/60).." minutes.")
+			ULib.tsay(calling_ply,"The ban was issued about "..math.Round((os.time()-target_ply:GetPData("wardenbanned_on",0))/60).." minutes ago and will expire in about "..math.Round((target_ply:GetPData("wardenbanned",0)-os.time())/60).." minutes.")
 		else
-			ULib.tsayError(calling_ply,target_ply:Name() .." is not guardbanned!")
+			ULib.tsayError(calling_ply,target_ply:Name() .." is not wardenbanned!")
 		end
 	end
 end
