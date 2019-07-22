@@ -18,7 +18,7 @@ function ulx.forceguard( calling_ply, target_plys )
 		ulx.fancyLogAdmin( calling_ply, "#A forced #T to guards", affected_plys )
 	end
 end
-local forceguard = ulx.command( CATEGORY_NAME, "ulx forceguard", ulx.forceguard, { "!forceguard", "!makeguard", "!guard", "!fguard" } )
+local forceguard = ulx.command( CATEGORY_NAME, "ulx forceguard", ulx.forceguard, { "!forceguard", "!makeguard", "!guard", "!fguard" }, true )
 forceguard:defaultAccess( ULib.ACCESS_ADMIN )
 forceguard:addParam{ type=ULib.cmds.PlayersArg, default="^", ULib.cmds.optional }
 forceguard:help( "Forces target(s) to guard team." )
@@ -39,7 +39,7 @@ function ulx.forceprisoner( calling_ply, target_plys )
 		ulx.fancyLogAdmin( calling_ply, "#A forced #T to prisoners", affected_plys )
 	end
 end
-local forceprisoner = ulx.command( CATEGORY_NAME, "ulx forceprisoner", ulx.forceprisoner, { "!forceprisoner", "!makeprisoner", "!fprisoner", "!prisoner" } )
+local forceprisoner = ulx.command( CATEGORY_NAME, "ulx forceprisoner", ulx.forceprisoner, { "!forceprisoner", "!makeprisoner", "!fprisoner", "!prisoner" }, true )
 forceprisoner:defaultAccess( ULib.ACCESS_ADMIN )
 forceprisoner:addParam{ type=ULib.cmds.PlayersArg, default="^", ULib.cmds.optional }
 forceprisoner:help( "Forces target(s) to prisoner team." )
@@ -56,7 +56,7 @@ function ulx.forcespectator( calling_ply, target_plys )
 		ulx.fancyLogAdmin( calling_ply, "#A forced #T to spectators", affected_plys )
 	end
 end
-local forcespectator = ulx.command( CATEGORY_NAME, "ulx forcespectator", ulx.forcespectator, { "!forcespectator", "!spectator", "!makespectator", "!makespec", "!forcespec", "!fspec" } )
+local forcespectator = ulx.command( CATEGORY_NAME, "ulx forcespectator", ulx.forcespectator, { "!forcespectator", "!spectator", "!makespectator", "!makespec", "!forcespec", "!fspec" }, true )
 forcespectator:defaultAccess( ULib.ACCESS_ADMIN )
 forcespectator:addParam{ type=ULib.cmds.PlayersArg, default="^", ULib.cmds.optional }
 forcespectator:help( "Forces target(s) to spectator mode." )
@@ -86,7 +86,7 @@ function ulx.forcewarden( calling_ply, target_ply, override )
 		ulx.fancyLogAdmin( calling_ply, "#A forced warden #T", target_ply )
 	end
 end
-local forcewarden = ulx.command( CATEGORY_NAME, "ulx forcewarden", ulx.forcewarden, { "!forcewarden", "!makewarden", "!warden" } )
+local forcewarden = ulx.command( CATEGORY_NAME, "ulx forcewarden", ulx.forcewarden, { "!forcewarden", "!makewarden", "!warden" }, true )
 forcewarden:addParam{ type=ULib.cmds.PlayerArg }
 forcewarden:defaultAccess( ULib.ACCESS_ADMIN )
 forcewarden:help( "Makes the target the warden." )
@@ -104,7 +104,7 @@ function ulx.teleportguards( calling_ply )
 		end
 	end
 end
-local teleportguards = ulx.command( CATEGORY_NAME, "ulx teleportguards", ulx.teleportguards, { "!tpg", "!teleportguards", "!tpguards", "!teleguards" } )
+local teleportguards = ulx.command( CATEGORY_NAME, "ulx teleportguards", ulx.teleportguards, { "!tpg", "!teleportguards", "!tpguards", "!teleguards" }, true )
 teleportguards:defaultAccess( ULib.ACCESS_ADMIN )
 teleportguards:help( "Teleport all guards to the warden." )
 
@@ -140,7 +140,7 @@ function ulx.guardban( calling_ply, target_ply, banlength, unban )
 		end
 	end
 end
-local guardban = ulx.command( CATEGORY_NAME, "ulx guardban", ulx.guardban, { "!guardban", "!gb", "!banguard" } )
+local guardban = ulx.command( CATEGORY_NAME, "ulx guardban", ulx.guardban, { "!guardban", "!gb", "!banguard" }, true )
 guardban:defaultAccess( ULib.ACCESS_ADMIN )
 guardban:addParam{ type=ULib.cmds.PlayerArg }
 guardban:addParam{ type=ULib.cmds.NumArg, min=0, default=960, hint="ban length, 0 for permanent", ULib.cmds.optional }
@@ -176,7 +176,7 @@ function ulx.wardenban( calling_ply, target_ply, banlength, unban )
 		target_ply:RemoveWardenStatus()
 	end
 end
-local wardenban = ulx.command( CATEGORY_NAME, "ulx wardenban", ulx.wardenban, { "!wardenban", "!wb", "!banwarden" } )
+local wardenban = ulx.command( CATEGORY_NAME, "ulx wardenban", ulx.wardenban, { "!wardenban", "!wb", "!banwarden" }, true )
 wardenban:defaultAccess( ULib.ACCESS_ADMIN )
 wardenban:addParam{ type=ULib.cmds.PlayerArg }
 wardenban:addParam{ type=ULib.cmds.NumArg, min=0, default=960, hint="ban length, 0 for permanent", ULib.cmds.optional }

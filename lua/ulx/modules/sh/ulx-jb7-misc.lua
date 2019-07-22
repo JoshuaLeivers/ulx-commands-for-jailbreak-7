@@ -9,7 +9,7 @@ function ulx.respawn( calling_ply, target_plys )
 	end
 	ulx.fancyLogAdmin( calling_ply, "#A respawned #T", target_plys )
 end
-local respawn = ulx.command( CATEGORY_NAME, "ulx respawn", ulx.respawn, "!respawn" )
+local respawn = ulx.command( CATEGORY_NAME, "ulx respawn", ulx.respawn, "!respawn", true )
 respawn:defaultAccess( ULib.ACCESS_ADMIN )
 respawn:addParam{ type=ULib.cmds.PlayersArg, default="^", ULib.cmds.optional }
 respawn:help( "Respawns target(s)." )
@@ -29,7 +29,7 @@ function ulx.revive( calling_ply, target_plys )
 	end
 	ulx.fancyLogAdmin( calling_ply, "#A revived #T", affected_plys )
 end
-local revive = ulx.command( CATEGORY_NAME, "ulx revive", ulx.revive, "!revive" )
+local revive = ulx.command( CATEGORY_NAME, "ulx revive", ulx.revive, "!revive", true )
 revive:defaultAccess( ULib.ACCESS_ADMIN )
 revive:addParam{ type=ULib.cmds.PlayersArg, default="^", ULib.cmds.optional }
 revive:help( "Revives target(s)." )
@@ -41,7 +41,7 @@ function ulx.toggleff( calling_ply )
 		ulx.fancyLogAdmin( calling_ply, "#A toggled friendly fire" )
 	end
 end
-local toggleff = ulx.command( CATEGORY_NAME, "ulx toggleff", ulx.toggleff, { "!toggleff", "!tff", "!ff" } )
+local toggleff = ulx.command( CATEGORY_NAME, "ulx toggleff", ulx.toggleff, { "!toggleff", "!tff", "!ff" }, true )
 toggleff:defaultAccess( ULib.ACCESS_ADMIN )
 toggleff:help( "Toggles friendly fire." )
 
@@ -52,7 +52,7 @@ function ulx.togglepickup( calling_ply )
 		ulx.fancyLogAdmin( calling_ply, "#A toggled item pickup" )
 	end
 end
-local togglepickup = ulx.command( CATEGORY_NAME, "ulx togglepickup", ulx.togglepickup, { "!togglepickup", "!tpu", "!togglepu", "!tpickup", "!pickup" } )
+local togglepickup = ulx.command( CATEGORY_NAME, "ulx togglepickup", ulx.togglepickup, { "!togglepickup", "!tpu", "!togglepu", "!tpickup", "!pickup" }, true )
 togglepickup:defaultAccess( ULib.ACCESS_ADMIN )
 togglepickup:help( "Toggles item pickup." )
 
@@ -67,7 +67,7 @@ function ulx.demotewarden( calling_ply )
 		end
 	end
 end
-local demotewarden = ulx.command( CATEGORY_NAME, "ulx demotewarden", ulx.demotewarden, { "!demotewarden", "!dewarden", "!unwarden", "!dw" } )
+local demotewarden = ulx.command( CATEGORY_NAME, "ulx demotewarden", ulx.demotewarden, { "!demotewarden", "!dewarden", "!unwarden", "!dw" }, true )
 demotewarden:defaultAccess( ULib.ACCESS_ADMIN )
 demotewarden:help( "Remove the warden status from the current warden." )
 
@@ -109,7 +109,7 @@ function ulx.slaynr( calling_ply, target_plys, rounds, remove )
 		end
 	end
 end
-local slaynr = ulx.command( CATEGORY_NAME, "ulx slaynr", ulx.slaynr, { "!slaynr", "!snr" } )
+local slaynr = ulx.command( CATEGORY_NAME, "ulx slaynr", ulx.slaynr, { "!slaynr", "!snr" }, true )
 slaynr:addParam{ type=ULib.cmds.PlayersArg }
 slaynr:addParam{ type=ULib.cmds.NumArg, default=1, min=0, hint="rounds", ULib.cmds.optional, ULib.cmds.round }
 slaynr:addParam{ type=ULib.cmds.BoolArg, invisible=true }
@@ -127,7 +127,7 @@ function ulx.cslaynr( calling_ply, target_ply )
 		end
 	end
 end
-local cslaynr = ulx.command( CATEGORY_NAME, "ulx cslaynr", ulx.cslaynr, { "!cslaynr", "!csnr" } )
+local cslaynr = ulx.command( CATEGORY_NAME, "ulx cslaynr", ulx.cslaynr, { "!cslaynr", "!csnr" }, true )
 cslaynr:addParam{ type=ULib.cmds.PlayerArg, default="^", ULib.cmds.optional }
 cslaynr:defaultAccess( ULib.ACCESS_ADMIN ) --Allow access to all for self, but only allow staff to check others' slays for desired results
 cslaynr:help( "Check target's slays." )
@@ -148,7 +148,7 @@ function ulx.showdeath( calling_ply, target_ply )
 	end
 	ulx.fancyLogAdmin( calling_ply, "#A has teleported to #T's death position", target_ply )
 end
-local showdeath = ulx.command( CATEGORY_NAME, "ulx showdeath", ulx.showdeath, { "!showdeath", "!tpd", "!tpdeath" } )
+local showdeath = ulx.command( CATEGORY_NAME, "ulx showdeath", ulx.showdeath, { "!showdeath", "!tpd", "!tpdeath" }, true )
 showdeath:addParam{ type=ULib.cmds.PlayerArg, default="^", ULib.cmds.optional }
 showdeath:defaultAccess( ULib.ACCESS_ADMIN )
 showdeath:help( "Temporarily teleport to target's last death position." )

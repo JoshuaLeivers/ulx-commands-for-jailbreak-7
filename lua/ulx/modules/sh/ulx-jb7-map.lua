@@ -56,7 +56,7 @@ function ulx.helicopter( calling_ply )
         ULib.tsayError( calling_ply, "That command only works on new_summer!" )
     end
 end
-local helicopter = ulx.command( CATEGORY_NAME, "ulx helicopter", ulx.helicopter, { "!helicopter", "!heli" } )
+local helicopter = ulx.command( CATEGORY_NAME, "ulx helicopter", ulx.helicopter, { "!helicopter", "!heli" }, true )
 helicopter:defaultAccess( ULib.ACCESS_ADMIN )
 helicopter:help( "Shuts down the helicopter on new_summer." )
 
@@ -71,7 +71,7 @@ function ulx.mancannon( calling_ply )
     end
     ulx.fancyLogAdmin( calling_ply, "#A opened the mancannon door" )
 end
-local mancannon = ulx.command( CATEGORY_NAME, "ulx mancannon", ulx.mancannon, { "!mancannon", "!omc", "!openmc", "!openmancannon" } )
+local mancannon = ulx.command( CATEGORY_NAME, "ulx mancannon", ulx.mancannon, { "!mancannon", "!omc", "!openmc", "!openmancannon" }, true )
 mancannon:defaultAccess( ULib.ACCESS_ADMIN )
 mancannon:help( "Open the mancannon on new_summer." )
 
@@ -90,6 +90,6 @@ function ulx.opencells( calling_ply )
 	end
     ULib.tsayError( calling_ply, "This command does not work on this map!", true )
 end
-local opencells = ulx.command( CATEGORY_NAME, "ulx opencells", ulx.opencells, { "!opencells", "!cells" } )
+local opencells = ulx.command( CATEGORY_NAME, "ulx opencells", ulx.opencells, { "!opencells", "!cells" }, true )
 opencells:defaultAccess( ULib.ACCESS_ADMIN )
 opencells:help( "Opens the cell doors." )
