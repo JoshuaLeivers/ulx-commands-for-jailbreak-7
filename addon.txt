@@ -1,11 +1,11 @@
 "AddonInfo"
 {
-	"name"				"ULX commands for Jailbreak 7"
-	"version"			"1"
-	"up_date"			"00/00/00"
-	"author_name"		"Ian Murray"
-	"author_email"		"ian@murr.pro"
-	"author_url"		"https://github.com/IanMurray"
-	"info"				"ULX commands for Jailbreak 7"
+	"name"				"ULX Commands for Jailbreak 7"
+	"version"			"2.2"
+	"up_date"			"2019-07-22"
+	"author_name"		"Joshua Leivers"
+	"author_email"		"josh@joshualeivers.com"
+	"author_url"		"https://joshualeivers.com/"
+	"info"				"Garry's Mod addon that adds ULX commands for Excl's Jail Break 7."
 	"override"			"0"
 }
