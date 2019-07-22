@@ -2,7 +2,7 @@
 Garry's Mod Addon that adds [ULX](https://github.com/TeamUlysses/ulx) commands for [Excl's Jail Break 7](https://github.com/kurt-stolle/jailbreak).
 
 ## Requirements
-ULX commands for Jail Break 7 requires the following addons:
+ULX Commands for Jail Break 7 requires the following addons:
 
 * [ULib](https://github.com/TeamUlysses/ulib)
 * [ULX](https://github.com/TeamUlysses/ulx)
