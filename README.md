@@ -14,30 +14,30 @@ To install this addon, extract the files from the downloaded archive to your `ga
 ## Usage
 The commands added by this plugin are as follows:
 
-| Command                            | Chat Command(s)                           | Description                                       |
-|------------------------------------|-------------------------------------------|---------------------------------------------------|
-| `ulx demotewarden`                 | `!demotewarden` <br> `!dw`                | Remove the warden status from the current warden. |
-| `ulx guardban <player> [time]`     | `!guardban` <br> `!gb`                    | Bans target from guards.                          |
-| `ulx unguardban <player>`          | `!unguardban` <br> `!guardunban`          | Unbans target from guards.                        |
-| `ulx guardbaninfo <player>`        | `!guardbaninfo` <br> `!gbinfo`            | Prints info about a guardban.                     |
-| `ulx wardenban <player> [time]`    | `!guardban` <br> `!wbinfo`                | Bans target from guards.                          |
-| `ulx unguardban <player>`          | `!unguardban` <br> `!guardunban`          | Unbans target from guards.                        |
-| `ulx guardbaninfo <player>`        | `!guardbaninfo` <br> `!gbinfo`            | Prints info about a guardban.                     |
-| `ulx makeguard <player>`           | `!makeguard` <br> `!guard`                | Makes target a guard.                             |
-| `ulx makeprisoner <player>`        | `!makeprisoner` <br> `!prisoner`          | Makes target a prisoner.                          |
-| `ulx makespectator <player>`       | `!makespectator` <br> `!fspec`            | Makes target a spectator.                         |
-| `ulx revive <player(s)>`           | `!revive`                                 | Revives target(s).                                |
-| `ulx respawn`                      | `!respawn`                                | Respawns target(s).                               |
-| `ulx toggleff`                     | `!toggleff` <br> `!ff`                    | Toggles friendly fire.                            |
-| `ulx togglepickup`                 | `!togglepickup` <br> `!pickup` <br> `!pu` | Toggles item pickup.                              |
-| `ulx slaynr <player(s)> [rounds]`  | `!slaynr`                                 | Slays target(s) for a given number of rounds.     |
-| `ulx rslaynr <player(s)> [rounds]` | `!rslaynr`                                | Removes slays from target(s).                     |
-| `ulx cslaynr <player>`             | `!cslaynr`                                | Checks how many slays a target has remaining.     |
-| `ulx showdeath <player>`           | `!showdeath` <br> `!tpdeath` <br> `tpd`   | Teleports to the position where the target died.  |
-| `ulx teleportguards`               | `!teleportguards` <br> `!tpg`             | Teleports all guards to the warden.               |
-| `ulx opencells`                    | `!opencells` <br> `!cells`                | Opens cell doors.                                 |
-| `ulx helicopter`                   | `!helicopter` <br> `!heli`                | Shuts down the helicopter on new_summer.          |
-| `ulx mancannon`                    | `!mancannon` <br> `!openmc` <br> `!omc`   | Opens the mancannon door on new_summer.           |
+| Command                            | Module | Chat Command(s)                           | Description                                       |
+| ---------------------------------- | ------ | ----------------------------------------- | ------------------------------------------------- |
+| `ulx demotewarden`                 | Teams  | `!demotewarden` <br> `!dw`                | Remove the warden status from the current warden. |
+| `ulx guardban <player> [time]`     | Teams  | `!guardban` <br> `!gb`                    | Bans target from guards.                          |
+| `ulx unguardban <player>`          | Teams  | `!unguardban` <br> `!guardunban`          | Unbans target from guards.                        |
+| `ulx guardbaninfo <player>`        | Teams  | `!guardbaninfo` <br> `!gbinfo`            | Prints info about a guardban.                     |
+| `ulx wardenban <player> [time]`    | Teams  | `!guardban` <br> `!wbinfo`                | Bans target from guards.                          |
+| `ulx unguardban <player>`          | Teams  | `!unguardban` <br> `!guardunban`          | Unbans target from guards.                        |
+| `ulx guardbaninfo <player>`        | Teams  | `!guardbaninfo` <br> `!gbinfo`            | Prints info about a guardban.                     |
+| `ulx makeguard <player>`           | Teams  | `!makeguard` <br> `!guard`                | Makes target a guard.                             |
+| `ulx makeprisoner <player>`        | Teams  | `!makeprisoner` <br> `!prisoner`          | Makes target a prisoner.                          |
+| `ulx makespectator <player>`       | Teams  | `!makespectator` <br> `!fspec`            | Makes target a spectator.                         |
+| `ulx teleportguards`               | Teams  | `!teleportguards` <br> `!tpg`             | Teleports all guards to the warden.               |
+| `ulx opencells`                    | Map    | `!opencells` <br> `!cells`                | Opens cell doors.                                 |
+| `ulx helicopter`                   | Map    | `!helicopter` <br> `!heli`                | Shuts down the helicopter on new_summer.          |
+| `ulx mancannon`                    | Map    | `!mancannon` <br> `!openmc` <br> `!omc`   | Opens the mancannon door on new_summer.           |
+| `ulx revive <player(s)>`           | Misc   | `!revive`                                 | Revives target(s).                                |
+| `ulx respawn`                      | Misc   | `!respawn`                                | Respawns target(s).                               |
+| `ulx toggleff`                     | Misc   | `!toggleff` <br> `!ff`                    | Toggles friendly fire.                            |
+| `ulx togglepickup`                 | Misc   | `!togglepickup` <br> `!pickup` <br> `!pu` | Toggles item pickup.                              |
+| `ulx slaynr <player(s)> [rounds]`  | Misc   | `!slaynr`                                 | Slays target(s) for a given number of rounds.     |
+| `ulx rslaynr <player(s)> [rounds]` | Misc   | `!rslaynr`                                | Removes slays from target(s).                     |
+| `ulx cslaynr <player>`             | Misc   | `!cslaynr`                                | Checks how many slays a target has remaining.     |
+| `ulx showdeath <player>`           | Misc   | `!showdeath` <br> `!tpdeath` <br> `tpd`   | Teleports to the position where the target died.  |
 
 Please note that not all chat command aliases are shown above.
 
