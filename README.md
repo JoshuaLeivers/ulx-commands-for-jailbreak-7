@@ -23,9 +23,9 @@ The commands added by this plugin are as follows:
 | `ulx wardenban <player> [time]`    | Teams  | `!guardban` <br> `!wbinfo`                | Bans target from guards.                          |
 | `ulx unguardban <player>`          | Teams  | `!unguardban` <br> `!guardunban`          | Unbans target from guards.                        |
 | `ulx guardbaninfo <player>`        | Teams  | `!guardbaninfo` <br> `!gbinfo`            | Prints info about a guardban.                     |
-| `ulx makeguard <player>`           | Teams  | `!makeguard` <br> `!guard`                | Makes target a guard.                             |
-| `ulx makeprisoner <player>`        | Teams  | `!makeprisoner` <br> `!prisoner`          | Makes target a prisoner.                          |
-| `ulx makespectator <player>`       | Teams  | `!makespectator` <br> `!fspec`            | Makes target a spectator.                         |
+| `ulx forceguard <player>`          | Teams  | `!forceguard` <br> `!guard`               | Makes target a guard.                             |
+| `ulx forceprisoner <player>`       | Teams  | `!forceprisoner` <br> `!prisoner`         | Makes target a prisoner.                          |
+| `ulx forcespectator <player>`      | Teams  | `!forcespectator` <br> `!fspec`           | Makes target a spectator.                         |
 | `ulx teleportguards`               | Teams  | `!teleportguards` <br> `!tpg`             | Teleports all guards to the warden.               |
 | `ulx opencells`                    | Map    | `!opencells` <br> `!cells`                | Opens cell doors.                                 |
 | `ulx helicopter`                   | Map    | `!helicopter` <br> `!heli`                | Shuts down the helicopter on new_summer.          |
