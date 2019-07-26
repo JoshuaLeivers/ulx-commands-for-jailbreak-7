@@ -1,8 +1,8 @@
 "AddonInfo"
 {
 	"name"				"ULX Commands for Jailbreak 7"
-	"version"			"2.2"
-	"up_date"			"2019-07-22"
+	"version"			"3.0"
+	"up_date"			"2019-07-26"
 	"author_name"		"Joshua Leivers"
 	"author_email"		"josh@joshualeivers.com"
 	"author_url"		"https://joshualeivers.com/"
