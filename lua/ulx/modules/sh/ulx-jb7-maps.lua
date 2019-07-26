@@ -1,4 +1,5 @@
 local CATEGORY_NAME = "Jailbreak"
+local ERROR_MAP = "That command does not work on this map!"
 
 local maps = {
     { "summer", { { "cellopen", "Press" } }, { { "cellclose", "Press" } } },
@@ -210,7 +211,7 @@ function ulx.opencells( calling_ply, close )
         end
     end
 
-    ULib.tsayError( calling_ply, "That command does not work on this map!", true )
+    ULib.tsayError( calling_ply, ERROR_MAP, true )
 end
 local opencells = ulx.command( CATEGORY_NAME, "ulx opencells", ulx.opencells, { "!opencells", "!open" }, true )
 opencells:addParam{ type=ULib.cmds.BoolArg, invisible=true }
@@ -251,7 +252,7 @@ function ulx.stopheli( calling_ply, start )
         end
     end
 
-    ULib.tsayError( calling_ply, "That command does not work on this map!", true )
+    ULib.tsayError( calling_ply, ERROR_MAP, true )
 end
 local stopheli = ulx.command( CATEGORY_NAME, "ulx stopheli", ulx.stopheli, { "!stopheli", "!stophelicopter" }, true )
 stopheli:addParam{ type=ULib.cmds.BoolArg, invisible=true }
@@ -277,7 +278,7 @@ function ulx.mancannon( calling_ply )
         end
     end
 
-    ULib.tsayError( calling_ply, "That command does not work on this map!", true )
+    ULib.tsayError( calling_ply, ERROR_MAP, true )
 end
 local mancannon = ulx.command( CATEGORY_NAME, "ulx mancannon", ulx.mancannon, { "!mancannon", "!mc" }, true )
 mancannon:defaultAccess( ULib.ACCESS_ADMIN )
