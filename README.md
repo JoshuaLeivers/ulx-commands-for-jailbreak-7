@@ -4,15 +4,15 @@
 # ULX Commands for Jail Break 7
 Garry's Mod Addon that adds [ULX](https://github.com/TeamUlysses/ulx) commands for [Excl's Jail Break 7](https://github.com/kurt-stolle/jailbreak).
 
+## Warning
+This version is untested and incomplete, and is subject to change at any time. Do not use this version on live servers.
+
 ## Requirements
 ULX Commands for Jail Break 7 requires the following addons:
 
 * [ULib](https://github.com/TeamUlysses/ulib)
 * [ULX](https://github.com/TeamUlysses/ulx)
 * [Jail Break 7](https://github.com/kurt-stolle/jailbreak)
-
-## Warning
-This version is untested and incomplete, and is subject to change at any time. Do not use this version on live servers.
 
 ## Installation
 To install this addon, extract the files from the downloaded archive to your server's `garrysmod/addons/` folder.
