@@ -1,4 +1,4 @@
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) ![Version: Beta](https://img.shields.io/badge/version-beta-orange.svg)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) ![Version: v3.0 Beta](https://img.shields.io/badge/version-v3.0%20beta-orange)
 # ULX Commands for Jail Break 7
 Garry's Mod Addon that adds [ULX](https://github.com/TeamUlysses/ulx) commands for [Excl's Jail Break 7](https://github.com/kurt-stolle/jailbreak).
 
