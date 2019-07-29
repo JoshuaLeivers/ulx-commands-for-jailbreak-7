@@ -1,4 +1,4 @@
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) ![Version: Alpha](https://img.shields.io/badge/version-alpha-red.svg)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) ![Version: v3.1 Alpha](https://img.shields.io/badge/version-v3.1%20alpha-red)
 
 
 # ULX Commands for Jail Break 7
