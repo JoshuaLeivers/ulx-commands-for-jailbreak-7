@@ -1,3 +1,10 @@
+--[[
+    LICENSE: Creative Commons BY-NC-SA 3.0
+    CREDIT:
+        Ian Murray - ULX Commands for Jailbreak 7 (original)
+        Team Ulysses - ULX and ULib source code [ban handling]
+]]
+
 local CATEGORY_NAME = "Jailbreak"
 
 -- TODO: Add periodic ban checking
@@ -160,7 +167,7 @@ local function checkBan( warden, steamid )
 
         local bandata = ulx.jb7.wardenbans[ steamid ]
         if bandata.unban > os.time() or bandata.unban == 0 then
-            return true
+            return bandata
         else
             unban( true, steamid )
             return false
@@ -170,7 +177,7 @@ local function checkBan( warden, steamid )
 
         local bandata = ulx.jb7.guardbans[ steamid ]
         if bandata.unban > os.time() or bandata.unban == 0 then
-            return true
+            return bandata
         else
             unban( false, steamid )
             return false
@@ -282,6 +289,83 @@ unguardbanid:addParam{ ULib.cmds.StringArg, hint="steamid" }
 unguardbanid:defaultAccess( ULib.ACCESS_SUPERADMIN )
 unguardbanid:help( "Unbans steamid from guard team." )
 
+function ulx.guardbaninfo( calling_ply, target_ply )
+    local bandata = checkBan( false, target_ply:SteamID() )
+    if calling_ply:IsValid() then
+        if bandata then
+            ulx.fancyLog( calling_ply, "#T is guardbanned. Information printed to console.", target_ply )
+
+            if SERVER then
+                util.AddNetworkString( "ULXJB7BansTable" )
+                net.Start( "ULXJB7BansTable" )
+                net.WriteTable( bandata )
+                net.Send( calling_ply )
+            end
+
+            if CLIENT then
+                net.Receive( "ULXJB7BansTable", function()
+                    PrintTable( net.ReadTable() )
+                )
+            end
+        else
+            ulx.fancyLog( calling_ply, "#T is not guardbanned.", target_ply )
+        end
+    else
+        if bandata then
+            PrintTable( bandata )
+        else
+            Msg( target_ply:Nick() .. " is not guardbanned." )
+        end
+    end
+end
+local guardbaninfo = ulx.command( CATEGORY_NAME, "ulx guardbaninfo", ulx.guardbaninfo, "!guardbaninfo", true )
+guardbaninfo:addParam{ type=ULib.cmds.PlayerArg, default="^", ULib.cmds.optional }
+guardbaninfo:defaultAccess( ULib.ACCESS_ALL ) -- For ideal use, allow all to use on themselves
+guardbaninfo:help( "Returns info on a guardban." )
+
+function ulx.guardbaninfoid( calling_ply, steamid )
+    local bandata = checkBan( false, steamid )
+    local name = bandata.name
+    local msg = "(" .. steamid .. ")"
+
+    if name then
+        msg = name .. " " .. msg
+    end
+
+    if calling_ply:IsValid() then
+        if bandata then
+            msg = msg .. " is guardbanned. Information printed to console."
+
+            if SERVER then
+                util.AddNetworkString( "ULXJB7BansTable" )
+                net.Start( "ULXJB7BansTable" )
+                net.WriteTable( bandata )
+                net.Send( calling_ply )
+            end
+
+            if CLIENT then
+                net.Receive( "ULXJB7BansTable", function()
+                    PrintTable( net.ReadTable() )
+                )
+            end
+        else
+            msg = msg .. " is not guardbanned."
+        end
+
+        ulx.fancyLog( calling_ply, msg )
+    else
+        if bandata then
+            PrintTable( bandata )
+        else
+            Msg( msg .. " is not guardbanned." )
+        end
+    end
+end
+local guardbaninfoid = ulx.command( CATEGORY_NAME, "ulx guardbaninfoid", ulx.guardbaninfoid, "!guardbaninfoid", true )
+guardbaninfoid:addParam{ type=ULib.cmds.StringArg }
+guardbaninfoid:defaultAccess( ULib.ACCESS_OPERATOR )
+guardbaninfoid:help( "Returns info on a guardban from a SteamID." )
+
 function ulx.wardenban( calling_ply, target_ply, minutes, reason )
     if target_ply:IsListenServerHost() or target_ply:IsBot() then
         ULib.tsayError( calling_ply, "This player is immune to wardenbanning", true )
@@ -360,7 +444,7 @@ end
 local unwardenban = ulx.command( CATEGORY_NAME, "ulx unwardenban", ulx.unwardenban, "!unwardenban", true )
 unwardenban:addParam{ type=ULib.cmds.PlayerArg }
 unwardenban:defaultAccess( ULib.ACCESS_ADMIN )
-unwardenban:help( "Unbans target from guard team." )
+unwardenban:help( "Unbans target from warden status." )
 
 function ulx.unwardenbanid( calling_ply, steamid )
     steamid = steamid:upper()
@@ -383,10 +467,87 @@ end
 local unwardenbanid = ulx.command( CATEGORY_NAME, "ulx unwardenbanid", ulx.unwardenbanid, nil, false, false, true )
 unwardenbanid:addParam{ ULib.cmds.StringArg, hint="steamid" }
 unwardenbanid:defaultAccess( ULib.ACCESS_SUPERADMIN )
-unwardenbanid:help( "Unbans steamid from guard team." )
+unwardenbanid:help( "Unbans steamid from warden status." )
+
+function ulx.wardenbaninfo( calling_ply, target_ply )
+    local bandata = checkBan( true, target_ply:SteamID() )
+    if calling_ply:IsValid() then
+        if bandata then
+            ulx.fancyLog( calling_ply, "#T is wardenbanned. Information printed to console.", target_ply )
+
+            if SERVER then
+                util.AddNetworkString( "ULXJB7BansTable" )
+                net.Start( "ULXJB7BansTable" )
+                net.WriteTable( bandata )
+                net.Send( calling_ply )
+            end
+
+            if CLIENT then
+                net.Receive( "ULXJB7BansTable", function()
+                    PrintTable( net.ReadTable() )
+                )
+            end
+        else
+            ulx.fancyLog( calling_ply, "#T is not wardenbanned.", target_ply )
+        end
+    else
+        if bandata then
+            PrintTable( bandata )
+        else
+            Msg( target_ply:Nick() .. " is not wardenbanned." )
+        end
+    end
+end
+local wardenbaninfo = ulx.command( CATEGORY_NAME, "ulx wardenbaninfo", ulx.wardenbaninfo, "!wardenbaninfo", true )
+wardenbaninfo:addParam{ type=ULib.cmds.PlayerArg, default="^", ULib.cmds.optional }
+wardenbaninfo:defaultAccess( ULib.ACCESS_ALL ) -- For ideal use, allow all to use on themselves
+wardenbaninfo:help( "Returns info on a wardenban." )
+
+function ulx.wardenbaninfoid( calling_ply, steamid )
+    local bandata = checkBan( true, steamid )
+    local name = bandata.name
+    local msg = "(" .. steamid .. ")"
+
+    if name then
+        msg = name .. " " .. msg
+    end
+
+    if calling_ply:IsValid() then
+        if bandata then
+            msg = msg .. " is wardenbanned. Information printed to console."
+
+            if SERVER then
+                util.AddNetworkString( "ULXJB7BansTable" )
+                net.Start( "ULXJB7BansTable" )
+                net.WriteTable( bandata )
+                net.Send( calling_ply )
+            end
+
+            if CLIENT then
+                net.Receive( "ULXJB7BansTable", function()
+                    PrintTable( net.ReadTable() )
+                )
+            end
+        else
+            msg = msg .. " is not wardenbanned."
+        end
+
+        ulx.fancyLog( calling_ply, msg )
+    else
+        if bandata then
+            PrintTable( bandata )
+        else
+            Msg( msg .. " is not wardenbanned." )
+        end
+    end
+end
+local wardenbaninfoid = ulx.command( CATEGORY_NAME, "ulx wardenbaninfoid", ulx.wardenbaninfoid, "!wardenbaninfoid", true )
+wardenbaninfoid:addParam{ type=ULib.cmds.StringArg }
+wardenbaninfoid:defaultAccess( ULib.ACCESS_OPERATOR )
+wardenbaninfoid:help( "Returns info on a wardenban from a SteamID." )
 
 -- Hooks
-hook.Add( "Initialize", "ULX-JB7LoadBans", function()
+hook.Add( "Initialize", "ULXJB7LoadBans", function()
     local results_guard = sql.Query( "SELECT * FROM ulx_jb7_guardbans" )
     local results_warden = sql.Query( "SELECT * FROM ulx_jb7_wardenbans" )
 
@@ -430,7 +591,7 @@ hook.Add( "Initialize", "ULX-JB7LoadBans", function()
     end
 end, HOOK_MONITOR_HIGH )
 
-hook.Add( "JailBreakPlayerSwitchTeam", "ulx.jb7GuardBanCheck", function( ply, team )
+hook.Add( "JailBreakPlayerSwitchTeam", "ULXJB7GuardBanCheck", function( ply, team )
     if checkBan( false, ply:SteamID() ) then
         ply:KillSilent()
         ply:SetTeam( TEAM_PRISONER )
@@ -442,7 +603,7 @@ hook.Add( "JailBreakPlayerSwitchTeam", "ulx.jb7GuardBanCheck", function( ply, te
     end
 )
 
-hook.Add( "JailBreakClaimWarden", "ulx.jb7WardenBanCheck", function( ply )
+hook.Add( "JailBreakClaimWarden", "ULXJB7WardenBanCheck", function( ply )
     if checkBan( true, ply:SteamID() ) then
         ply:RemoveWardenStatus()
         ply:SendNotification( "Banned from warden status" )
@@ -450,4 +611,5 @@ hook.Add( "JailBreakClaimWarden", "ulx.jb7WardenBanCheck", function( ply )
         ULib.tsayError( ply, "You are banned from becoming warden.", true )
 
         ulx.fancyLog( true, "#T attempted to claim warden while wardenbanned", ply )
+    end
 )

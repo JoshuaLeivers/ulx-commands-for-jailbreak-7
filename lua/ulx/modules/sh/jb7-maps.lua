@@ -1,3 +1,12 @@
+--[[
+    LICENSE: GNU General Public License v3.0
+    CREDIT:
+        Ian Murray - ULX Commands for Jailbreak 7 (original)
+        pepeisdatboi - opencells (original version); map information
+        PN-Owen - stopheli and mancannon (original versions); map information
+        Coockie1173 - map information
+]]
+
 local CATEGORY_NAME = "Jailbreak"
 local ERROR_MAP = "That command does not work on this map!"
 

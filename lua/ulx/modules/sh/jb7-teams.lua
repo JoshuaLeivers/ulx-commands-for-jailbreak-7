@@ -1,3 +1,10 @@
+--[[
+    LICENSE: GNU General Public License v3.0
+    CREDIT:
+        Ian Murray - ULX Commands for Jailbreak 7 (original)
+        pepeisdatboi - forcewarden (original version)
+]]
+
 local CATEGORY_NAME = "Jailbreak"
 local ERROR_GAMEMODE = "That command only works on Jailbreak!"
 
@@ -21,7 +28,7 @@ function ulx.forceguard( calling_ply, target_plys )
         if #affected_plys > 0 then ulx.fancyLogAdmin( calling_ply, "#A forced #T to guards", affected_plys ) end
     end
 end
-local forceguard = ulx.command( CATEGORY_NAME, "ulx forceguard", ulx.forceguard, { "!forceguard", "!fguard", "!fg" }, true )
+local forceguard = ulx.command( CATEGORY_NAME, "ulx forceguard", ulx.forceguard, { "!forceguard", "!fguard" }, true )
 forceguard:addParam{ type=ULib.cmds.PlayersArg, default="^", ULib.cmds.optional }
 forceguard:defaultAccess( ULib.ACCESS_ADMIN )
 forceguard:help( "Forces target(s) to guard team." )
@@ -45,7 +52,7 @@ function ulx.forceprisoner( calling_ply, target_plys )
         if #affected_plys > 0 then ulx.fancyLogAdmin( calling_ply, "#A forced #T to prisoners", affected_plys ) end
     end
 end
-local forceprisoner = ulx.command( CATEGORY_NAME, "ulx forceprisoner", ulx.forceprisoner, { "!forceprisoner", "!fprisoner", "!fp" }, true )
+local forceprisoner = ulx.command( CATEGORY_NAME, "ulx forceprisoner", ulx.forceprisoner, { "!forceprisoner", "!fprisoner" }, true )
 forceprisoner:addParam{ type=ULib.cmds.PlayersArg, default="^", ULib.cmds.optional }
 forceprisoner:defaultAccess( ULib.ACCESS_ADMIN )
 forceprisoner:help( "Forces target(s) to prisoner team." )
@@ -69,7 +76,7 @@ function ulx.forcespectator( calling_ply, target_plys )
         if #affected_plys > 0 then ulx.fancyLogAdmin( calling_ply, "#A forced #T to prisoners", affected_plys ) end
     end
 end
-local forcespectator = ulx.command( CATEGORY_NAME, "ulx forcespectator", ulx.forcespectator, { "!forcespectator", "!forcespec", "!fspectator", "!fspec", "!fs" }, true )
+local forcespectator = ulx.command( CATEGORY_NAME, "ulx forcespectator", ulx.forcespectator, { "!forcespectator", "!forcespec", "!fspectator", "!fspec", }, true )
 forcespectator:addParam{ type=ULib.cmds.PlayersArg, default="^", ULib.cmds.optional }
 forcespectator:defaultAccess( ULib.ACCESS_ADMIN )
 forcespectator:help( "Forces target(s) to spectator team." )
@@ -99,11 +106,11 @@ function ulx.forcewarden( calling_ply, target_ply, override )
         ulx.fancyLogAdmin( calling_ply, "#A forced #T to warden", target_ply )
     end
 end
-local forcewarden = ulx.command( CATEGORY_NAME, "ulx forcewarden", ulx.forcewarden, { "!forcewarden", "!fwarden", "!fw" }, true )
+local forcewarden = ulx.command( CATEGORY_NAME, "ulx forcewarden", ulx.forcewarden, { "!forcewarden", "!fwarden" }, true )
 forcewarden:addParam{ type=ULib.cmds.PlayerArg, default="^", ULib.cmds.optional }
 forcewarden:addParam{ type=ULib.cmds.BoolArg, hint="override", ULib.cmds.optional }
 forcewarden:defaultAccess( ULib.ACCESS_ADMIN )
-forcewarden:help( "Forces the target to warden role." )
+forcewarden:help( "Forces target to warden role." )
 
 function ulx.demotewarden( calling_ply )
     if GAMEMODE_NAME ~= "jailbreak" then ULib.tsayError( calling_ply, ERROR_GAMEMODE, true ) else
