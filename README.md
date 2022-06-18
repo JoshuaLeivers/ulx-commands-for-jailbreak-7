@@ -1,4 +1,4 @@
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) ![Version: v3.1 Alpha](https://img.shields.io/badge/version-v3.1%20alpha-red)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) ![Version: v4.0.0 Alpha](https://img.shields.io/badge/version-v4.0.0%20alpha-red)
 
 
 # ULX Commands for Jail Break 7
@@ -16,17 +16,21 @@ ULX Commands for Jail Break 7 requires the following addons:
 
 ## Installation
 To install this addon, extract the files from the downloaded archive to your server's `garrysmod/addons/` folder.
+This should result in a file structure structure like `garrysmod/addons/ulx-jb7/lua/`.
 
 ## Usage
 The commands added by this plugin are as follows:
 
 | Command                                     | Module | Chat Command(s)                                    | Description                                         |
 | ------------------------------------------- | ------ | -------------------------------------------------- | --------------------------------------------------- |
-| `ulx opencells`                             | Maps   | `!opencells`                                       | Opens all cell doors.                               |
-| `ulx closecells`                            | Maps   | `!closecells`                                      | Closes all cell doors.                              |
-| `ulx startheli`                             | Maps   | `!startheli` <br> `!starthelicopter`               | Starts the helicopter on new_summer based maps.     |
-| `ulx stopheli`                              | Maps   | `!stopheli` <br> `!stophelicopter`                 | Stops the helicopter on new_summer based maps.      |
-| `ulx mancannon`                             | Maps   | `!mancannon` <br> `!mc`                            | Opens the mancannon door on jail_summer jail maps.  |
+| `ulx opencells`                             | Maps   | `!opencells` <br>                                  | Opens all cell doors.                               |
+| `ulx closecells`                            | Maps   | `!closecells` <br>                                 | Closes all cell doors.                              |
+| `ulx togglecells`                           | Maps   | `!togglecells`                                     | Toggles whether cell doors are open.                |
+| `ulx cellsstatus`                           | Maps   | `!cellsstatus` <br> `!cells`                       | Returns whether the cell doors are currently open.  |
+| `ulx startheli`                             | Maps   | `!startheli`                                       | Starts the helicopter on new_summer based maps.     |
+| `ulx stopheli`                              | Maps   | `!stopheli`                                        | Stops the helicopter on new_summer based maps.      |
+| `ulx mancannon`                             | Maps   | `!mancannon`                                       | Opens the mancannon door on jail_summer jail maps.  |
+|---------------------------------------------|--------|----------------------------------------------------|-----------------------------------------------------|
 | `ulx forceguard <player(s)>`                | Teams  | `!forceguard` <br> `!fguard`                       | Forces target(s) to guard team.                     |
 | `ulx forceprisoner <player(s)>`             | Teams  | `!forceprisoner` <br> `!fprisoner`                 | Forces target(s) to prisoner team.                  |
 | `ulx forcespectator <player(s)>`            | Teams  | `!forcespectator` <br> `!fspectator` <br> `!fspec` | Forces target(s) to spectator team.                 |
@@ -34,11 +38,13 @@ The commands added by this plugin are as follows:
 | `ulx demotewarden`                          | Teams  | `!demotewarden` <br> `!dwarden` <br> `!dw`         | Removes the warden status from the current warden.  |
 | `ulx rebel <player(s)>`                     | Teams  | `!rebel`                                           | Declare prisoner(s) as rebels.                      |
 | `ulx pardon <player(s)>`                    | Teams  | `!pardon`                                          | Pardon rebel prisoner(s).                           |
-| `ulx guardban <player> [minutes] [reason]`  | Bans   | `!guardban`                                        | Bans target from guard team.                        |
-| `ulx wardenban <player> [minutes] [reason]` | Bans   | `!wardenban`                                       | Bans target from warden status.                     |
+|---------------------------------------------|--------|----------------------------------------------------|-----------------------------------------------------|
+| `ulx guardban <player> [time] [reason]`     | Bans   | `!guardban`                                        | Bans target from guard team.                        |
+| `ulx wardenban <player> [time] [reason]`    | Bans   | `!wardenban`                                       | Bans target from warden status.                     |
 | `ulx unguardban <player>`                   | Bans   | `!unguardban`                                      | Unbans target from guard team.                      |
 | `ulx unwardenban <player>`                  | Bans   | `!unwardenban`                                     | Unbans target from warden status.                   |
-| ``
+| `ulx guardbaninfo [player]`                 | Bans   | `!guardbaninfo`                                    | Views guard ban info for self/target.               |
+| `ulx wardenbaninfo [player]`                | Bans   | `!wardenbaninfo`                                   | Views warden ban info for self/target               |
 
 ## Suggestions & Issues
 If you have any new ideas, suggestions or issues, please feel free to create a new issue.
@@ -47,7 +53,7 @@ This includes requests for new commands, new maps to be added to opencells, and 
 ## License
 	ULX Commands for Jailbreak 7
 	Copyright (C) 2016-2017  Ian Murray
-	Copyright (C) 2018-2019 Joshua Leivers
+	Copyright (C) 2018-2022  VulpusMaximus
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -62,19 +68,6 @@ This includes requests for new commands, new maps to be added to opencells, and 
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-	---
-
-	ULX Commands for Jailbreak 7 - Bans Module
-	Copyright (C) Team Ulysses
-	Copyright (C) Joshua Leivers
-
-	This work is licensed under the Creative Commons
-	Attribution-NonCommercial-ShareAlike 3.0 Unported License.
-	To view a copy of this license, visit
-	<http://creativecommons.org/licenses/by-nc-sa/3.0/> or send a letter
-	to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
-
-	This module is an adapted version of ULib and ULX's handling of server
-	bans to fit guardbans and wardenbans. All credit is to Team Ulysses,
-	who created the majority of this code and provided the source code
-	under this license on GitHub.
+### Declaration of Changes
+The GNU GPL v3 licence requires that any significant changes to the source be disclosed.
+This version of this software includes several new commands/functionality, and most existing code has had significant changes (i.e. the code has changed, but the functionality hasn't by much - it should just be clearer and ideally "better" as much as possible).
