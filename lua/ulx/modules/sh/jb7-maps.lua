@@ -1,7 +1,7 @@
 --[[
-    LICENSE: GNU General Public License v3.0
     CREDIT:
-        Ian Murray - ULX Commands for Jailbreak 7 (original)
+        Ian Murray - ULX Commands for Jailbreak 7 (original version)
+        VulpusMaximus - ULX Commands for Jailbreak 7 (new version); map information
         pepeisdatboi - opencells (original version); map information
         PN-Owen - stopheli and mancannon (original versions); map information
         Coockie1173 - map information
@@ -10,6 +10,50 @@
 local CATEGORY_NAME = "Jailbreak"
 local ERROR_MAP = "That command does not work on this map!"
 
+
+-- ULX Commands
+
+--[[
+function ulx.opencells( calling_ply, close )
+    
+end
+local opencells = ulx.command( CATEGORY_NAME, "ulx opencells", ulx.opencells, { "!opencells", "!open" }, true )
+opencells:addParam{ type=ULib.cmds.BoolArg, invisible=true }
+opencells:defaultAccess( ULib.ACCESS_ADMIN )
+opencells:help( "Opens all cell doors." )
+opencells:setOpposite( "ulx closecells", { _, true }, { "!closecells", "!close" }, true )
+--]]
+
+--[[
+function ulx.stopheli( calling_ply, start )
+    
+end
+local stopheli = ulx.command( CATEGORY_NAME, "ulx stopheli", ulx.stopheli, { "!stopheli", "!stophelicopter" }, true )
+stopheli:addParam{ type=ULib.cmds.BoolArg, invisible=true }
+stopheli:defaultAccess( ULib.ACCESS_ADMIN )
+stopheli:help( "Shuts down the helicopter on new_summer-based maps.")
+stopheli:setOpposite( "ulx startheli", { _, true }, { "!startheli" }, true )
+]]
+
+--[[
+function ulx.mancannon( calling_ply )
+    
+end
+local mancannon = ulx.command( CATEGORY_NAME, "ulx mancannon", ulx.mancannon, { "!mancannon" }, true )
+mancannon:defaultAccess( ULib.ACCESS_ADMIN )
+mancannon:help( "Opens the mancannon door on jail_summer-based maps.")
+]]
+
+
+-- Helper Functions
+--[[
+function canControlDoors( map )
+
+end
+]]
+
+-- Cell door control maps and entities
+--[[
 local maps = {
     { "summer", { { "cellopen", "Press" } }, { { "cellclose", "Press" } } },
     { "summer", { { "b1", "Press" } }, { { "celldoor", "Close" } } },
@@ -179,116 +223,4 @@ local maps = {
         { "trackjail", "StartBackward" }
     } }
 }
-
-
-function ulx.opencells( calling_ply, close )
-    local current = game.GetMap()
-
-    local complete = false
-
-    for _, map in ipairs( maps ) do
-        if current:find( map[ 1 ] ) then
-            if not close then
-                for i, pair in ipairs( map[ 2 ] ) do
-                    for k, v in ipairs( ents.FindByName( pair[ 1 ] ) ) do
-                        v:Fire( pair[ 2 ] )
-
-                        complete = true
-                    end
-                end
-
-                if complete then
-                    ulx.fancyLogAdmin( calling_ply, "#A opened the cell doors" )
-
-                    return
-                end
-            else
-                for i, pair in ipairs( map[ 3 ]) do
-                    for k, v in ipairs( ents.FindByName( pair[ 1 ] ) ) do
-                        v:Fire( pair[ 2 ] )
-
-                        complete = true
-                    end
-                end
-
-                if complete then
-                    ulx.fancyLogAdmin( calling_ply, "#A closed the cell doors" )
-
-                    return
-                end
-            end
-        end
-    end
-
-    ULib.tsayError( calling_ply, ERROR_MAP, true )
-end
-local opencells = ulx.command( CATEGORY_NAME, "ulx opencells", ulx.opencells, { "!opencells", "!open" }, true )
-opencells:addParam{ type=ULib.cmds.BoolArg, invisible=true }
-opencells:defaultAccess( ULib.ACCESS_ADMIN )
-opencells:help( "Opens all cell doors." )
-opencells:setOpposite( "ulx closecells", { _, true }, { "!closecells", "!close" }, true )
-
-function ulx.stopheli( calling_ply, start )
-    local complete = false
-
-    if game.GetMap():find( "summer" ) then
-        if not start then
-            for k, v in ipairs( ents.FindByName( "helibut2" ) ) do
-                v:Fire( "Unlock" )
-                v:Fire( "Press" )
-
-                complete = true
-            end
-
-            if complete then
-                ulx.fancyLogAdmin( calling_ply, "#A stopped the helicopter" )
-
-                return
-            end
-        else
-            for k, v in ipairs( ents.FindByName( "helibut1" ) ) do
-                v:Fire( "Unlock" )
-                v:Fire( "Press" )
-
-                complete = true
-            end
-
-            if complete then
-                ulx.fancyLogAdmin( calling_ply, "#A started the helicopter" )
-
-                return
-            end
-        end
-    end
-
-    ULib.tsayError( calling_ply, ERROR_MAP, true )
-end
-local stopheli = ulx.command( CATEGORY_NAME, "ulx stopheli", ulx.stopheli, { "!stopheli", "!stophelicopter" }, true )
-stopheli:addParam{ type=ULib.cmds.BoolArg, invisible=true }
-stopheli:defaultAccess( ULib.ACCESS_ADMIN )
-stopheli:help( "Shuts down the helicopter on new_summer based maps.")
-stopheli:setOpposite( "ulx startheli", { _, true }, { "!startheli", "!starthelicopter" }, true )
-
-function ulx.mancannon( calling_ply )
-    local complete = false
-
-    if game.GetMap():find( "summer" ) then
-        for k, v in ipairs( ents.FindByName( "suicideD1" ) ) do
-            v:Fire( "Unlock" )
-            v:Fire( "Open" )
-
-            complete = true
-        end
-
-        if complete then
-            ulx.fancyLogAdmin( calling_ply, "#A opened the mancannon door" )
-
-            return
-        end
-    end
-
-    ULib.tsayError( calling_ply, ERROR_MAP, true )
-end
-local mancannon = ulx.command( CATEGORY_NAME, "ulx mancannon", ulx.mancannon, { "!mancannon", "!mc" }, true )
-mancannon:defaultAccess( ULib.ACCESS_ADMIN )
-mancannon:help( "Opens the mancannon door on jail_summer based maps.")
+]]
