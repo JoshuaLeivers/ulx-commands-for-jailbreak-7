@@ -25,7 +25,6 @@ The commands added by this plugin are as follows:
 | ------------------------------------------- | ------ | -------------------------------------------------- | --------------------------------------------------- |
 | `ulx opencells`                             | Maps   | `!opencells` <br>                                  | Opens all cell doors.                               |
 | `ulx closecells`                            | Maps   | `!closecells` <br>                                 | Closes all cell doors.                              |
-| `ulx togglecells`                           | Maps   | `!togglecells`                                     | Toggles whether cell doors are open.                |
 | `ulx cellsstatus`                           | Maps   | `!cellsstatus` <br> `!cells`                       | Returns whether the cell doors are currently open.  |
 | `ulx startheli`                             | Maps   | `!startheli`                                       | Starts the helicopter on new_summer based maps.     |
 | `ulx stopheli`                              | Maps   | `!stopheli`                                        | Stops the helicopter on new_summer based maps.      |
