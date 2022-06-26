@@ -636,7 +636,6 @@ function attemptOpenDoors( config, close, incl_solitary )
         local entities = ents.FindByName( ent_cf["name"] )
         if entities ~= nil then
             for _, e in ipairs( entities ) do
-                print(ent_cf["name"] .. ": " .. (ent_cf["solitary"] and "solitary" or "normal"))
                 if not ent_cf["solitary"] or incl_solitary then -- Don't open solitary cells if not marked to do so
                     e:Fire( ent_cf["input"], ent_cf["param"], ent_cf["delay"] )
                 end
