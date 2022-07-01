@@ -16,6 +16,7 @@ local CONCOMMAND_SPECTATOR = "jb_team_select_spectator"
 
 -- ULX Commands
 
+-- TODO: Add IsValid and Entity:IsPlayer tests to forceX functions
 function ulx.forceguard( calling_ply, target_plys )
     -- If not currently loaded into Jail Break, fail and tell the player
     if GAMEMODE_NAME ~= "jailbreak" then
@@ -76,7 +77,7 @@ function ulx.forceguard( calling_ply, target_plys )
 
     -- Switch the affected targets' teams
     for _, ply in ipairs( affected_plys ) do
-        ply:SendNotification( "Admin switched you to guards" )
+        ply:SendNotification( "Forced to guards" )
         ply:ConCommand( CONCOMMAND_GUARD )
     end
 
@@ -134,7 +135,7 @@ function ulx.forceprisoner( calling_ply, target_plys )
 
     -- Switch the affected targets' teams
     for _, ply in ipairs( affected_plys ) do
-        ply:SendNotification( "Admin switched you to prisoners" )
+        ply:SendNotification( "Forced to prisoners" )
         ply:ConCommand( CONCOMMAND_PRISONER )
     end
 
@@ -192,7 +193,7 @@ function ulx.forcespectator( calling_ply, target_plys )
 
     -- Switch the affected targets' teams
     for _, ply in ipairs( affected_plys ) do
-        ply:SendNotification( "Admin switched you to spectators" )
+        ply:SendNotification( "Forced to spectators" )
         ply:ConCommand( CONCOMMAND_SPECTATOR )
     end
 
@@ -202,16 +203,48 @@ end
 local forcespectator
 
 
---[[
-function ulx.forcewarden( calling_ply, target_ply, override )
+function ulx.forcewarden( calling_ply, target_ply, replace )
+    -- Check if the target can be warden and fail if not
+    local err = ""
+    if target_ply:Team() ~= TEAM_GUARD then
+        err = target_ply:Nick() .. " isn't a guard, so they can't be the warden!"
+    end
+    local current_warden = JB:GetWarden()
+    if IsValid( current_warden ) and not replace then
+        if err == "" then
+            err = err .. "There is already a warden!"
+        else
+            err = err .. " There is also already a warden."
+        end
+    end
+    if err ~= "" then -- If an error message has been added, send it and stop
+        ULib.tsayError( calling_ply, err, true )
+        return
+    end
 
+    -- If there is already a warden, remove them
+    if IsValid( current_warden ) then
+        current_warden:RemoveWardenStatus()
+        if current_warden.wardenRounds then p.wardenRounds = p.wardenRounds - 1 end
+        current_warden:SendNotification( "Admin replaced you with a different warden" )
+    end
+
+    -- Add the target as the new warden and tell them
+    target_ply:AddWardenStatus()
+    target_ply:SendNotification( "Forced to warden" )
+
+    -- Update the number of rounds the target has been warden
+    if not target_ply.wardenRounds then
+        target_ply.wardenRounds = 1
+    else
+        target_ply.wardenRounds = target_ply.wardenRounds + 1
+    end
+
+    -- Fire the hook as if this was triggered normally
+    hook.Call( "JailBreakClaimWarden", JB.Gamemode, target_ply, target_ply.wardenRounds )
 end
-local forcewarden = ulx.command( CATEGORY_NAME, "ulx forcewarden", ulx.forcewarden, { "!forcewarden", "!fwarden" }, true )
-forcewarden:addParam{ type=ULib.cmds.PlayerArg, default="^", ULib.cmds.optional }
-forcewarden:addParam{ type=ULib.cmds.BoolArg, hint="override", ULib.cmds.optional }
-forcewarden:defaultAccess( ULib.ACCESS_ADMIN )
-forcewarden:help( "Forces target to warden role." )
-]]
+local forcewarden
+
 
 --[[
 function ulx.demotewarden( calling_ply )
@@ -255,5 +288,12 @@ hook.Add( "Initialize", "jb7-ulx_teams_initialize", function()
         forcespectator:addParam{ type=ULib.cmds.PlayersArg, default="^", ULib.cmds.optional }
         forcespectator:defaultAccess( ULib.ACCESS_ADMIN )
         forcespectator:help( "Forces target(s) to spectator team." )
+
+        -- Load forcewarden command
+        forcewarden = ulx.command( CATEGORY_NAME, "ulx forcewarden", ulx.forcewarden, { "!forcewarden", "!fwarden" }, true )
+        forcewarden:addParam{ type=ULib.cmds.PlayerArg, default="^", ULib.cmds.optional }
+        forcewarden:addParam{ type=ULib.cmds.BoolArg, hint="Replace current warden?", default=false, ULib.cmds.optional }
+        forcewarden:defaultAccess( ULib.ACCESS_ADMIN )
+        forcewarden:help( "Forces target to warden role." )
     end
 end )
