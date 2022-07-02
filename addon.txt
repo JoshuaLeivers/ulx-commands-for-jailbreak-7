@@ -2,7 +2,7 @@
 {
 	"name"				"ULX Commands for Jail Break 7"
 	"version"			"4.0.0 Alpha"
-	"up_date"			"2022-07-01"
+	"up_date"			"2022-07-02"
 	"author_name"		"Vulpus"
 	"author_email"		"vulpus@vulpus.dev"
 	"author_url"		"https://vulpus.dev/"
