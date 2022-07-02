@@ -1,4 +1,6 @@
 --[[
+    INFO:
+        This module is for allowing admins to control the map, such as cell doors.
     CREDIT:
         Ian Murray - ULX Commands for Jailbreak 7 (original version)
         VulpusMaximus - ULX Commands for Jail Break 7 (new version); map information
@@ -14,14 +16,31 @@ local ERROR_MAP = "That command does not appear to work on this map!"
 -- Cell door control maps and entities
 
 --[[
-    Format:
-        {maps=ARRAY_OF_MAP_NAME_MATCHES, open=ARRAY_OF_CELL_OPEN_TARGETS, close=ARRAY_OF_CELL_CLOSE_TARGETS}
+    Each cell door config takes the following format:
+        {["maps"]=LIST_OF_MAP_NAME_REGEX, ["open"]=ARRAY_OF_CELL_OPEN_TARGETS, ["close"]=ARRAY_OF_CELL_CLOSE_TARGETS, ["status"]=ARRAY_OF_CELL_STATUS_TARGETS}
+    See below for what each of these things should look like.
+
     Example ARRAY_OF_MAP_NAME_MATCHES:
         {"jb_lego_RAGE", "jb_lego_jail", "jb_lego_.+_a20"}
-    Format ARRAY_OF_CELL_OPEN_TARGETS/ARRAY_OF_CELL_CLOSE_TARGETS entry:
-        {["name"]="cell_open_butt", ["input"]="Trigger", ["param"]="nil", ["delay"]=0}
+    This should just be a list of any regex patterns for matching map names that a config should be valid for.
+    For example, the above would match maps like jb_lego_jail_v4. jb_lego_rage_a20, etc.
+    This is useful for capturing different versions of the same map, or maybe different maps by the same creator if they stuck with the same format for different maps of theirs.
+
     Example ARRAY_OF_CELL_OPEN_TARGETS/ARRAY_OF_CELL_CLOSE_TARGETS entry:
         {["name"] = "cell1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0}
+    The name is the name of an entity, with the input being what is fired at it - see the Valve developer wiki to see what inputs are possible to different types of entities.
+    param gives any optional parameters, and in most cases is probably "nil". This might be used if for example you were providing color parameters or something to an entity.
+    delay just specifies the delay as taken by Entity:Fire( ... )
+
+    Example ARRAY_OF_CELL_STATUS_TARGETS:
+        {
+            ["cell1"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false },
+            ["iso"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
+        }
+    The key for each item in this array is the entity name of the thing to be checked, e.g. a func_door or whatever.
+    Each door_group should be a set of checks that combined say that one set of doors is open/closed. If not all of the checks in one door_group match, that indicates something is wrong.
+    If not all the different door_groups match, then only *some* of the cell doors are open, e.g. when two rows of cells have separate door open buttons.
+    The different check_types specify what type of entity is being checked, e.g. a func_door. The different currently possible checks are shown in the code for ulx.cellsstatus.
 ]]
 local cell_door_configs = {
     {["maps"] = {"jb_lego_rage_.+"},
@@ -37,7 +56,7 @@ local cell_door_configs = {
             { ["name"] = "auto_open", ["input"] = "Enable", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }, -- Enable cell auto_open logic (as is done in other versions of this map)
             { ["name"] = "iso", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true } -- Close solitary cell door
         },
-        ["status"] = { -- UNTESTED
+        ["status"] = {
             ["cell1"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false },
             ["iso"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
         }
@@ -77,7 +96,7 @@ local cell_door_configs = {
             { ["name"] = "iso", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }, -- Open solitary cell door
             { ["name"] = "c_r", ["input"] = "ShowSprite", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false } -- Hide red light on close button
         },
-        ["status"] = { -- UNTESTED
+        ["status"] = {
             ["c1"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false },
             ["iso"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
         }
@@ -86,14 +105,14 @@ local cell_door_configs = {
         ["open"] = {
             { ["name"] = "slider1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "slider2", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
-            { ["name"] = "iso", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
+            { ["name"] = "iso", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true } -- This bugs the solitary door button a bit, but the button is unnamed so it can't be targetted directly
         },
         ["close"] = {
             { ["name"] = "slider1", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "slider2", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "iso", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
         },
-        ["status"] = { -- UNTESTED
+        ["status"] = {
             ["slider1"] = { ["door_group"] = "cells", ["check_type"] = "func_movelinear", ["solitary"] = false },
             ["iso"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
         }
@@ -142,7 +161,7 @@ local cell_door_configs = {
             ["iso"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
         }
     },
-    {["maps"] = {"ba_ace_jail_v3"}, -- UNTESTED, also TODO: find actual door names and types, somehow have lost them
+    {["maps"] = {"ba_ace_jail_v3"},
         ["open"] = {
             { ["name"] = "door1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
         },
@@ -153,7 +172,7 @@ local cell_door_configs = {
             ["door1"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
         }
     },
-    {["maps"] = {"ba_ace_jail"}, -- UNTESTED, also TODO: Do these maps have a solitary cell?
+    {["maps"] = {"ba_ace_jail"},
         ["open"] = {
             { ["name"] = "door1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
         },
@@ -162,41 +181,26 @@ local cell_door_configs = {
         },
         ["status"] = {
             ["door1"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
-        } -- Don't actually know what these are, so not sure if this works
-    },
-    {["maps"] = {"ba_jail_alcatraz_redux_go"}, -- UNTESTED, also TODO: Do these maps have a solitary cell?
-        ["open"] = {
-            { ["name"] = "cells_top", ["input"] = "MoveToPathNode", ["param"] = "top_track_01", ["delay"] = 0, ["solitary"] = false }, -- These may be the wrong way round (01/2) or not work at all (is MoveToPathNode even in Gmod?) - TODO: Investigate
-            { ["name"] = "cells_bottom", ["input"] = "MoveToPathNode", ["param"] = "bottom_track_01", ["delay"] = 0, ["solitary"] = false },
-            { ["name"] = "cells_bottom1", ["input"] = "MoveToPathNode", ["param"] = "back_cells_path_01", ["delay"] = 0, ["solitary"] = false }
-        },
-        ["close"] = {
-            { ["name"] = "cells_top", ["input"] = "MoveToPathNode", ["param"] = "top_track_2", ["delay"] = 0, ["solitary"] = false },
-            { ["name"] = "cells_bottom", ["input"] = "MoveToPathNode", ["param"] = "bottom_track_2", ["delay"] = 0, ["solitary"] = false },
-            { ["name"] = "cells_bottom1", ["input"] = "MoveToPathNode", ["param"] = "back_cells_path_2", ["delay"] = 0, ["solitary"] = false }
-        },
-        ["status"] = {
-            ["cells_top"] = { ["door_group"] = "cells", ["check_type"] = "func_tracktrain", ["solitary"] = false } -- No idea of what to use for this, these are func_tracktrain
         }
     },
-    {["maps"] = {"ba_jail_alcatraz"}, -- UNTESTED
+    {["maps"] = {"ba_jail_alcatraz"},
         ["open"] = {
             { ["name"] = "oben", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "unten", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
-            { ["name"] = "jaildoor", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+            { ["name"] = "jail_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
         },
         ["close"] = {
             { ["name"] = "oben", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "unten", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
-            { ["name"] = "jaildoor", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+            { ["name"] = "jail_door", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
         },
         ["status"] = {
             ["oben"] = { ["door_group"] = "upper", ["check_type"] = "func_door", ["solitary"] = false },
             ["unten"] = { ["door_group"] = "lower", ["check_type"] = "func_door", ["solitary"] = false },
-            ["jaildoor"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
+            ["jail_door"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
         }
     },
-    {["maps"] = {"ba_jail_blackops"}, -- UNTESTED, also TODO: I think this map has a solitary cell, so add this
+    {["maps"] = {"ba_jail_blackops"},
         ["open"] = {
             { ["name"] = "prisondoor", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
         },
@@ -207,7 +211,7 @@ local cell_door_configs = {
             ["prisondoor"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
         }
     },
-    {["maps"] = {"ba_jail_canyondam_v6"}, -- UNTESTED
+    {["maps"] = {"ba_jail_canyondam_v6"},
         ["open"] = {
             { ["name"] = "CLDRS_R_1", ["input"] = "Trigger", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
         },
@@ -218,7 +222,7 @@ local cell_door_configs = {
             ["CellDoors"] = { ["door_group"] = "cells", ["check_type"] = "func_movelinear", ["solitary"] = false }
         }
     },
-    {["maps"] = {"ba_jail_canyondam"}, -- UNTESTED
+    {["maps"] = {"ba_jail_canyondam"},
         ["open"] = {
             { ["name"] = "CellDoors_Movelinear", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
         },
@@ -226,28 +230,31 @@ local cell_door_configs = {
             { ["name"] = "CellDoors_Movelinear", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
         },
         ["status"] = {
-            ["CellDoors_Movelinear"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
+            ["CellDoors_Movelinear"] = { ["door_group"] = "cells", ["check_type"] = "func_movelinear", ["solitary"] = false }
         }
     },
-    {["maps"] = {"ba_jail_electric_aero"}, -- UNTESTED
+    {["maps"] = {"ba_jail_electric_aero"},
         ["open"] = {
-            { ["name"] = "Cells_OpenButton", ["input"] = "PressIn", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+            { ["name"] = "Cells_OpenButton", ["input"] = "PressIn", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Cells_IsoDoor", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
         },
         ["close"] = {
-            { ["name"] = "Cells_OpenButton", ["input"] = "PressOut", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+            { ["name"] = "Cells_OpenButton", ["input"] = "PressOut", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Cells_IsoDoor", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
         },
         ["status"] = {
-            ["Cells_OpenButton"] = { ["door_group"] = "cells", ["check_type"] = "func_button In/Out", ["solitary"] = false }
-        } -- Would probably be easier if I could find a specific door name, rather than having to program a whole extra thing for this type - TODO
+            ["Cells_ForceFields"] = { ["door_group"] = "cells", ["check_type"] = "func_brush", ["solitary"] = false },
+            ["Cells_IsoDoor"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
+        }
     },
-    {["maps"] = {"ba_jail_electric_vip"}, -- UNTESTED
+    {["maps"] = {"ba_jail_electric_vip"},
         ["open"] = {
             { ["name"] = "cell_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
-            { ["name"] = "solitary_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+            { ["name"] = "solitary_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
         },
         ["close"] = {
             { ["name"] = "cell_door", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
-            { ["name"] = "solitary_door", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+            { ["name"] = "solitary_door", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
         },
         ["status"] = {
             ["cell_door"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false },
@@ -265,19 +272,19 @@ local armory_door_configs = {
         ["open"] = {{ ["name"]="ar", ["input"]="Open", ["param"]="nil", ["delay"]=0 }},
         ["close"] = {{ ["name"]="ar", ["input"]="Close", ["param"]="nil", ["delay"]=0 }}
     },
-    {["maps"] = {"jb_ace_jail"}, -- UNTESTED
+    {["maps"] = {"ba_ace_jail"},
         ["open"] = {{ ["name"]="amordoor", ["input"]="Open", ["param"]="nil", ["delay"]=0 }},
         ["close"] = {{ ["name"]="amordoor", ["input"]="Close", ["param"]="nil", ["delay"]=0 }}
     },
-    {["maps"] = {"ba_jail_alcatraz_redux_go"}, -- UNTESTED
-        ["open"] = {{ ["name"]="amordoor", ["input"]="Open", ["param"]="nil", ["delay"]=0 }}, -- I don't actually have the name of the doors noted down, so this is wrong - TODO: Find this door name
-        ["close"] = {{ ["name"]="amordoor", ["input"]="Close", ["param"]="nil", ["delay"]=0 }}
+    {["maps"] = {"ba_jail_alcatraz_redux_go"},
+        ["open"] = {{ ["name"]="slave1", ["input"]="Open", ["param"]="nil", ["delay"]=0 }},
+        ["close"] = {{ ["name"]="slave1", ["input"]="Close", ["param"]="nil", ["delay"]=0 }}
     },
-    {["maps"] = {"ba_jail_alcatraz"}, -- UNTESTED
+    {["maps"] = {"ba_jail_alcatraz"},
         ["open"] = {
             { ["name"] = "door_01", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 },
-            { ["name"] = "door_02", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 },
-            { ["name"] = "door_03", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
+            { ["name"] = "door_02", ["input"] = "Open", ["param"] = "nil", ["delay"] = 2.0 },
+            { ["name"] = "door_03", ["input"] = "Open", ["param"] = "nil", ["delay"] = 2.0 }
         },
         ["close"] = {
             { ["name"] = "door_01", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 },
@@ -285,15 +292,15 @@ local armory_door_configs = {
             { ["name"] = "door_03", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
         }
     },
-    {["maps"] = {"ba_jail_blackops"}, -- UNTESTED
+    {["maps"] = {"ba_jail_blackops"},
         ["open"] = {{ ["name"]="ctdoorcontroler", ["input"]="Open", ["param"]="nil", ["delay"]=0 }},
         ["close"] = {{ ["name"]="ctdoorcontroler", ["input"]="Close", ["param"]="nil", ["delay"]=0 }}
     },
-    {["maps"] = {"ba_jail_canyondam"}, -- UNTESTED
+    {["maps"] = {"ba_jail_canyondam"},
         ["open"] = {{ ["name"]="ArmoryDoor", ["input"]="Open", ["param"]="nil", ["delay"]=0 }},
         ["close"] = {{ ["name"]="ArmoryDoor", ["input"]="Close", ["param"]="nil", ["delay"]=0 }}
     },
-    {["maps"] = {"ba_jail_electric_aero"}, -- UNTESTED
+    {["maps"] = {"ba_jail_electric_aero"},
         ["open"] = {
             { ["name"] = "WK_Door_Left_1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 },
             { ["name"] = "WK_Door_Left_2", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 },
@@ -307,11 +314,11 @@ local armory_door_configs = {
             { ["name"] = "WK_Door_Right_2", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
         }
     },
-    {["maps"] = {"ba_jail_electric_vip$", "ba_jail_electric_vip_v2"}, -- UNTESTED
-        ["open"] = {{ ["name"]="ArmoryDoor", ["input"]="Open", ["param"]="nil", ["delay"]=0 }},
-        ["close"] = {{ ["name"]="ArmoryDoor", ["input"]="Close", ["param"]="nil", ["delay"]=0 }}
+    {["maps"] = {"ba_jail_electric_vip$", "ba_jail_electric_vip_v2"},
+        ["open"] = {{ ["name"]="armory_door", ["input"]="Open", ["param"]="nil", ["delay"]=0 }},
+        ["close"] = {{ ["name"]="armory_door", ["input"]="Close", ["param"]="nil", ["delay"]=0 }}
     },
-    {["maps"] = {"ba_jail_electric_vip"}, -- UNTESTED
+    {["maps"] = {"ba_jail_electric_vip"},
         ["open"] = {
             { ["name"] = "armory_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 },
             { ["name"] = "door_01", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
@@ -322,7 +329,7 @@ local armory_door_configs = {
         }
     }
 }
-
+-- TODO: Add various other maps, including all from the old maps table (and remove the old table from here)
 --[[ Old maps table:
 local maps = {
     { "summer", { { "cellopen", "Press" } }, { { "cellclose", "Press" } } },
@@ -422,6 +429,60 @@ local maps = {
 ]]
 
 
+-- Helper Functions
+
+local function getPossibleConfigMatches( map, configs )
+    local matches = {}
+
+    -- Iterate through configs, adding any that have a match to the list
+    for _, config in ipairs( configs ) do
+
+        -- Iterate through map name patterns to find if any match
+        for _, pattern in ipairs( config["maps"] ) do
+            
+            -- If match found, add the config to the list and stop looking for patterns to match
+            if map:match( pattern ) then
+                table.insert(matches, config)
+                break
+            end
+
+        end
+
+    end
+
+    return matches
+end
+
+local function attemptOpenDoors( config, close, incl_solitary )
+    -- Get the right key for the config section based on whether opening or closing
+    local opcl = close and "close" or "open"
+    
+    -- Attempt to fire entities from config
+    local success = false
+    for _, ent_cf in ipairs ( config[opcl] ) do
+        local entities = ents.FindByName( ent_cf["name"] )
+        if next( entities ) ~= nil then
+            success = true -- Mark that at least one entity was found successfully
+            for _, e in ipairs( entities ) do
+                if not ent_cf["solitary"] or incl_solitary then -- Don't open solitary cells if not marked to do so
+                    e:Fire( ent_cf["input"], ent_cf["param"], ent_cf["delay"] )
+                end
+            end
+        else
+            -- The intended entity doesn't exist, so return that this config hasn't worked properly
+            return false
+        end
+    end
+
+    -- If at least one entity was triggered and no target was completely missing, then assume this config has succeeded
+    if success then
+        return true
+    else
+        return false
+    end
+end
+
+
 -- ULX Commands
 
 function ulx.opencells( calling_ply, incl_solitary, close, armory )
@@ -458,11 +519,11 @@ opencells:setOpposite( "ulx closecells", { _, _, true, _ }, "!closecells", true 
 function ulx.openarmory( calling_ply, close )
     ulx.opencells( calling_ply, false, close, true ) -- Open armory code is just open cells but with a different config and log
 end
-local openarmory = ulx.command( CATEGORY_NAME, "ulx openarmory", ulx.openarmory, "!openarmory", true )
+local openarmory = ulx.command( CATEGORY_NAME, "ulx openarmory", ulx.openarmory, { "!openarmory", "!openarmoury" }, true )
 openarmory:addParam{ type=ULib.cmds.BoolArg, invisible=true, default=false, ULib.cmds.optional }
 openarmory:defaultAccess( ULib.ACCESS_ADMIN )
 openarmory:help( "Opens all armory doors." )
-openarmory:setOpposite( "ulx closearmory", { _, true }, "!closearmory", true )
+openarmory:setOpposite( "ulx closearmory", { _, true }, { "!closearmory", "!closearmoury" }, true )
 
 
 function ulx.cellsstatus( calling_ply )
@@ -500,6 +561,8 @@ function ulx.cellsstatus( calling_ply )
                 is_open = e:GetInternalVariable( "m_eDoorState" ) ~= 0
             elseif ent_cfg["check_type"] == "func_movelinear" then
                 is_open = e:GetInternalVariable( "m_vecPosition1" ) ~= e:GetPos()
+            elseif ent_cfg["check_type"] == "func_brush" then
+                is_open = e:IsEffectActive( EF_NODRAW )
             end
 
             -- Update the count depending on whether the entity is "open" or not
@@ -564,7 +627,7 @@ function ulx.cellsstatus( calling_ply )
                 msg = "The main cells are currently "
                     .. ((state_cells == 0 and "closed") or (state_cells == 1 and "partially open") or "open")
                     .. ", while the solitary cells are currently "
-                    .. ((state_solitary == 0 and "closed") or (state_solitary == 1 and "partially open") or "open")
+                    .. ((state_solitary == 0 and "closed.") or (state_solitary == 1 and "partially open.") or "open.")
             end
 
             -- Send the status message to the player
@@ -601,51 +664,3 @@ local mancannon = ulx.command( CATEGORY_NAME, "ulx mancannon", ulx.mancannon, { 
 mancannon:defaultAccess( ULib.ACCESS_ADMIN )
 mancannon:help( "Opens the mancannon door on jail_summer-based maps.")
 ]]
-
-
--- Helper Functions
-
-function getPossibleConfigMatches( map, configs )
-    local matches = {}
-
-    -- Iterate through configs, adding any that have a match to the list
-    for _, config in ipairs( configs ) do
-
-        -- Iterate through map name patterns to find if any match
-        for _, pattern in ipairs( config["maps"] ) do
-            
-            -- If match found, add the config to the list and stop looking for patterns to match
-            if map:match( pattern ) then
-                table.insert(matches, config)
-                break
-            end
-
-        end
-
-    end
-
-    return matches
-end
-
-function attemptOpenDoors( config, close, incl_solitary )
-    -- Get the right key for the config section based on whether opening or closing
-    local opcl = close and "close" or "open"
-    
-    -- Attempt to fire entities from config
-    for _, ent_cf in ipairs ( config[opcl] ) do
-        local entities = ents.FindByName( ent_cf["name"] )
-        if entities ~= nil then
-            for _, e in ipairs( entities ) do
-                if not ent_cf["solitary"] or incl_solitary then -- Don't open solitary cells if not marked to do so
-                    e:Fire( ent_cf["input"], ent_cf["param"], ent_cf["delay"] )
-                end
-            end
-        else
-            -- The intended entity doesn't exist, so return that this config hasn't worked
-            return false
-        end
-    end
-
-    -- All entities came back valid, so this should have succeeded
-    return true
-end
