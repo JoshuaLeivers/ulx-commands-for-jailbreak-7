@@ -16,34 +16,39 @@ ULX Commands for Jail Break 7 requires the following addons:
 
 ## Installation
 To install this addon, extract the files from the downloaded archive to your server's `garrysmod/addons/` folder.
-This should result in a file structure structure like `garrysmod/addons/ulx-jb7/lua/`.
+This should result in a file structure structure like `garrysmod/addons/ulx-jb7/lua/...`.
 
 ## Usage
 The commands added by this plugin are as follows:
 
-| Command                                     | Module | Chat Command(s)                                    | Description                                         |
-| ------------------------------------------- | ------ | -------------------------------------------------- | --------------------------------------------------- |
-| `ulx opencells`                             | Maps   | `!opencells` <br>                                  | Opens all cell doors.                               |
-| `ulx closecells`                            | Maps   | `!closecells` <br>                                 | Closes all cell doors.                              |
-| `ulx cellsstatus`                           | Maps   | `!cellsstatus` <br> `!cells`                       | Returns whether the cell doors are currently open.  |
-| `ulx startheli`                             | Maps   | `!startheli`                                       | Starts the helicopter on new_summer based maps.     |
-| `ulx stopheli`                              | Maps   | `!stopheli`                                        | Stops the helicopter on new_summer based maps.      |
-| `ulx mancannon`                             | Maps   | `!mancannon`                                       | Opens the mancannon door on jail_summer jail maps.  |
-|---------------------------------------------|--------|----------------------------------------------------|-----------------------------------------------------|
-| `ulx forceguard <player(s)>`                | Teams  | `!forceguard` <br> `!fguard`                       | Forces target(s) to guard team.                     |
-| `ulx forceprisoner <player(s)>`             | Teams  | `!forceprisoner` <br> `!fprisoner`                 | Forces target(s) to prisoner team.                  |
-| `ulx forcespectator <player(s)>`            | Teams  | `!forcespectator` <br> `!fspectator` <br> `!fspec` | Forces target(s) to spectator team.                 |
-| `ulx forcewarden <player>`                  | Teams  | `!forcewarden` <br> `!fwarden`                     | Forces target to warden role.                       |
-| `ulx demotewarden`                          | Teams  | `!demotewarden` <br> `!dwarden` <br> `!dw`         | Removes the warden status from the current warden.  |
-| `ulx rebel <player(s)>`                     | Teams  | `!rebel`                                           | Declare prisoner(s) as rebels.                      |
-| `ulx pardon <player(s)>`                    | Teams  | `!pardon`                                          | Pardon rebel prisoner(s).                           |
-|---------------------------------------------|--------|----------------------------------------------------|-----------------------------------------------------|
-| `ulx guardban <player> [time] [reason]`     | Bans   | `!guardban`                                        | Bans target from guard team.                        |
-| `ulx wardenban <player> [time] [reason]`    | Bans   | `!wardenban`                                       | Bans target from warden status.                     |
-| `ulx unguardban <player>`                   | Bans   | `!unguardban`                                      | Unbans target from guard team.                      |
-| `ulx unwardenban <player>`                  | Bans   | `!unwardenban`                                     | Unbans target from warden status.                   |
-| `ulx guardbaninfo [player]`                 | Bans   | `!guardbaninfo`                                    | Views guard ban info for self/target.               |
-| `ulx wardenbaninfo [player]`                | Bans   | `!wardenbaninfo`                                   | Views warden ban info for self/target               |
+| Command                                                | Module | Chat Command(s)                                    | Description                                         |
+| ------------------------------------------------------ | ------ | -------------------------------------------------- | --------------------------------------------------- |
+| `ulx opencells [include solitary cells?]`              | Maps   | `!opencells`                                       | Opens all cell doors.                               |
+| `ulx closecells [include solitary cells?]`             | Maps   | `!closecells`                                      | Closes all cell doors.                              |
+| `ulx openarmory`                                       | Maps   | `!openarmory` <br> `!openarmoury`                  | Opens the armory/guard-only doors.                  |
+| `ulx openarmory`                                       | Maps   | `!closearmory` <br> `!closearmoury`                | Opens the armory/guard-only doors.                  |
+| `ulx cellsstatus`                                      | Maps   | `!cellsstatus` <br> `!cellstatus`                  | Returns whether the cell doors are currently open.  |
+| `ulx startheli`                                        | Maps   | `!startheli`                                       | Starts the helicopter on new_summer based maps.     |
+| `ulx stopheli`                                         | Maps   | `!stopheli`                                        | Stops the helicopter on new_summer based maps.      |
+| `ulx mancannon`                                        | Maps   | `!mancannon`                                       | Opens the mancannon door on jail_summer jail maps.  |
+|--------------------------------------------------------|--------|----------------------------------------------------|-----------------------------------------------------|
+| `ulx forceguard <player(s)> [ignore team size limit?]` | Teams  | `!forceguard` <br> `!fguard`                       | Forces target(s) to guard team.                     |
+| `ulx forceprisoner <player(s)>`                        | Teams  | `!forceprisoner` <br> `!fprisoner`                 | Forces target(s) to prisoner team.                  |
+| `ulx forcespectator <player(s)>`                       | Teams  | `!forcespectator` <br> `!fspectator` <br> `!fspec` | Forces target(s) to spectator team.                 |
+| `ulx forcewarden <player> [replace?] [ignore limits?]` | Teams  | `!forcewarden` <br> `!fwarden`                     | Forces target to warden role.                       |
+| `ulx demotewarden`                                     | Teams  | `!demotewarden` <br> `!dwarden` <br> `!dw`         | Removes the warden status from the current warden.  |
+|--------------------------------------------------------|--------|----------------------------------------------------|-----------------------------------------------------|
+| `ulx rebel <player(s)>`                                | Warden | `!rebel`                                           | Declare prisoner(s) as rebels.                      |
+| `ulx pardon <player(s)>`                               | Warden | `!pardon`                                          | Pardon rebel prisoner(s).                           |
+|--------------------------------------------------------|--------|----------------------------------------------------|-----------------------------------------------------|
+| `ulx guardban <player> [time] [reason]`                | Bans   | `!guardban`                                        | Bans target from guard team.                        |
+| `ulx wardenban <player> [time] [reason]`               | Bans   | `!wardenban`                                       | Bans target from warden status.                     |
+| `ulx unguardban <player>`                              | Bans   | `!unguardban`                                      | Unbans target from guard team.                      |
+| `ulx unwardenban <player>`                             | Bans   | `!unwardenban`                                     | Unbans target from warden status.                   |
+| `ulx guardbaninfo [player]`                            | Bans   | `!guardbaninfo`                                    | Views guard ban info for self/target.               |
+| `ulx wardenbaninfo [player]`                           | Bans   | `!wardenbaninfo`                                   | Views warden ban info for self/target               |
+|--------------------------------------------------------|--------|----------------------------------------------------|-----------------------------------------------------|
+| `ulx revive <player(s)>` 								 | Misc.  | `!revive`                                          | Revives the target(s).                              |
 
 ## Suggestions & Issues
 If you have any new ideas, suggestions or issues, please feel free to create a new issue.
@@ -52,7 +57,7 @@ This includes requests for new commands, new maps to be added to opencells, and 
 ## License
 	ULX Commands for Jailbreak 7
 	Copyright (C) 2016-2017  Ian Murray
-	Copyright (C) 2018-2022  VulpusMaximus
+	Copyright (C) 2018-2022  Vulpus
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
