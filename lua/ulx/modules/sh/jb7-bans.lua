@@ -1,7 +1,9 @@
 --[[
+    INFO:
+        This module is for allowing admins to ban/unban players from different roles in JB7.
     CREDIT:
         Ian Murray - ULX Commands for Jailbreak 7 (original version)
-        VulpusMaximus - ULX Commands for Jailbreak 7 (new version)
+        VulpusMaximus - ULX Commands for Jail Break 7 (new version)
 ]]
 
 local CATEGORY_NAME = "Jailbreak"
