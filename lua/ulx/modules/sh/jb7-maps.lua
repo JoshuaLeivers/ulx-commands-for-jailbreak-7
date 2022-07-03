@@ -260,6 +260,177 @@ local cell_door_configs = {
             ["cell_door"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false },
             ["solitary_door"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
         }
+    },
+    {["maps"] = { "ba_jail_hellsgamers" },
+        ["open"] = {
+            { ["name"] = "celldoor_vip_left", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "celldoor_vip_right", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "celldoors_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "isolatedoor", ["input"] = "Unlock", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "isolatedoor", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "celldoor_vip", ["input"] = "SetAnimation", ["param"] = "open", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["close"] = {
+            { ["name"] = "celldoor_vip_left", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "celldoor_vip_right", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "celldoors_door", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "isolatedoor", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "isolatedoor", ["input"] = "Lock", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "celldoor_vip", ["input"] = "SetAnimation", ["param"] = "close", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["status"] = {
+            ["celldoors_door"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false },
+            ["isolatedoor"] = { ["door_group"] = "solitary", ["check_type"] = "prop_door_rotating", ["solitary"] = true }
+        }
+    },
+    {["maps"] = { "ba_jail_ishimura" },
+        ["open"] = {
+            { ["name"] = "switchprison", ["input"] = "PressIn", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "switchprison2", ["input"] = "PressIn", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["close"] = {
+            { ["name"] = "switchprison", ["input"] = "PressOut", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "switchprison2", ["input"] = "PressOut", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["status"] = {
+            ["PrisonDoor"] = { ["door_group"] = "cells", ["check_type"] = "func_brush", ["solitary"] = false }
+        }
+    },
+    {["maps"] = { "ba_jail_new_campus" },
+        ["open"] = {
+            { ["name"] = "cells", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Cagedoor", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true } -- This isn't really a solitary cell, but can act like one so it's here anyway
+        },
+        ["close"] = {
+            { ["name"] = "cells", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Cagedoor", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
+        },
+        ["status"] = {
+            ["cells"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false },
+            ["Cagedoor"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
+        }
+    },
+    {["maps"] = { "ba_jail_nightprison" },
+        ["open"] = {
+            { ["name"] = "zd1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "zd2", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "zd3", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "zd4", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["close"] = {
+            { ["name"] = "zd1", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "zd2", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "zd3", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "zd4", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["status"] = {
+            ["zd1"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
+        }
+    },
+    {["maps"] = { "ba_jail_sand" },
+        ["open"] = {
+            { ["name"] = "JailDoors", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["close"] = {
+            { ["name"] = "JailDoors", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["status"] = {
+            ["JailDoors"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
+        }
+    },
+    {["maps"] = { "ba_mario_party" },
+        ["open"] = {
+            { ["name"] = "tube_cells", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "cell_breakable", ["input"] = "Break", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }, -- These cells aren't really closable, so there's no close config for them
+            { ["name"] = "isolation_doors", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
+        },
+        ["close"] = {
+            { ["name"] = "tube_cells", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "isolation_doors", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
+        },
+        ["status"] = {
+            ["tube_cells"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false },
+            ["isolation_doors"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
+        }
+    },
+    {["maps"] = { "ba_nova_prospect" },
+        ["open"] = {
+            { ["name"] = "cells", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "cellsmain", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["close"] = {
+            { ["name"] = "cells", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "cellsmain", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["status"] = {
+            ["cells"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false },
+            ["cellsmain"] = { ["door_group"] = "cells_outer", ["check_type"] = "func_door", ["solitary"] = false }
+        }
+    },
+    {["maps"] = { "jb_8bit_" },
+        ["open"] = {
+            { ["name"] = "cell_doors", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["close"] = {
+            { ["name"] = "cell_doors", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["status"] = {
+            ["cell_doors"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
+        }
+    },
+    {["maps"] = { "jb_clouds" },
+        ["open"] = {
+            { ["name"] = "zelle_iso_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "zelle_door2_garderobe", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "door2_1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "zelle_door2", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "zelle_door1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "door2_2", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0.5, ["solitary"] = false },
+            { ["name"] = "door2_3", ["input"] = "Open", ["param"] = "nil", ["delay"] = 1.0, ["solitary"] = false },
+            { ["name"] = "door2_4", ["input"] = "Open", ["param"] = "nil", ["delay"] = 1.5, ["solitary"] = false },
+            { ["name"] = "door2_5", ["input"] = "Open", ["param"] = "nil", ["delay"] = 2.0, ["solitary"] = false },
+            { ["name"] = "door2_6", ["input"] = "Open", ["param"] = "nil", ["delay"] = 2.5, ["solitary"] = false }
+        },
+        ["close"] = {
+            { ["name"] = "zelle_iso_door", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "zelle_door2_garderobe", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "door2_1", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "zelle_door2", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "zelle_door1", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "door2_2", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0.5, ["solitary"] = false },
+            { ["name"] = "door2_3", ["input"] = "Close", ["param"] = "nil", ["delay"] = 1.0, ["solitary"] = false },
+            { ["name"] = "door2_4", ["input"] = "Close", ["param"] = "nil", ["delay"] = 1.5, ["solitary"] = false },
+            { ["name"] = "door2_5", ["input"] = "Close", ["param"] = "nil", ["delay"] = 2.0, ["solitary"] = false },
+            { ["name"] = "door2_6", ["input"] = "Close", ["param"] = "nil", ["delay"] = 2.5, ["solitary"] = false }
+        },
+        ["status"] = {
+            ["zelle_iso_door"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true },
+            ["zelle_door2_garderobe"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
+        }
+    },
+    {["maps"] = { "jb_iceworld" },
+        ["open"] = {
+            { ["name"] = "door", ["input"] = "Kill", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["close"] = {
+            -- The doors on this map are just Killed and so can't be closed again or anything
+        },
+        ["status"] = {
+            ["door"] = { ["door_group"] = "cells", ["check_type"] = "exists", ["solitary"] = false }
+        }
+    },
+    {["maps"] = { "jb_italia" },
+        ["open"] = {
+            { ["name"] = "door cells", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "door t room sliding 1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "door t room sliding 2", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["close"] = {
+            { ["name"] = "door cells", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["status"] = {
+            ["door cells"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
+        }
     }
 }
 
@@ -326,6 +497,66 @@ local armory_door_configs = {
         ["close"] = {
             { ["name"] = "armory_door", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 },
             { ["name"] = "door_01", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
+        }
+    },
+    {["maps"] = { "ba_jail_hellsgamers" },
+        ["open"] = {
+            { ["name"] = "doorport002", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["close"] = {
+            { ["name"] = "doorport002", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
+        }
+    },
+    {["maps"] = { "ba_jail_nightprison" },
+        ["open"] = {
+            { ["name"] = "ctdoor1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "ctdoor1.1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "ctdoor2", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["close"] = {
+            { ["name"] = "ctdoor1", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "ctdoor1.1", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "ctdoor2", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
+        }
+    },
+    {["maps"] = { "ba_jail_sand" },
+        ["open"] = {
+            { ["name"] = "armorydoor1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "armorydoor2", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["close"] = {
+            { ["name"] = "armorydoor1", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "armorydoor2", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
+        }
+    },
+    {["maps"] = { "ba_nova_prospect" },
+        ["open"] = {
+            { ["name"] = "door1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["close"] = {
+            { ["name"] = "door1", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
+        }
+    },
+    {["maps"] = { "jb_8bit_" },
+        ["open"] = {
+            { ["name"] = "armorydoor", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["close"] = {
+            { ["name"] = "armorydoor", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
+        }
+    },
+    {["maps"] = { "jb_clouds" },
+        ["open"] = {
+            { ["name"] = "armory_button", ["input"] = "Press", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["close"] = {
+            { ["name"] = "door_wk_brush", ["input"] = "Enable", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "door_wk1", ["input"] = "Close", ["param"] = "nil", ["delay"] = 3.0 },
+            { ["name"] = "door_wk2", ["input"] = "Close", ["param"] = "nil", ["delay"] = 3.5 },
+            { ["name"] = "door_wk_brush", ["input"] = "Disable", ["param"] = "nil", ["delay"] = 3.75 },
+            { ["name"] = "door_wk3", ["input"] = "Close", ["param"] = "nil", ["delay"] = 4.0 },
+            { ["name"] = "door_wk4", ["input"] = "Close", ["param"] = "nil", ["delay"] = 4.5 },
+            { ["name"] = "door_wk5", ["input"] = "Close", ["param"] = "nil", ["delay"] = 5.0 }
         }
     }
 }
@@ -468,7 +699,7 @@ local function attemptOpenDoors( config, close, incl_solitary )
                     e:Fire( ent_cf["input"], ent_cf["param"], ent_cf["delay"] )
                 end
             end
-        else
+        elseif ent_cf["input"] ~= "Break" and ent_cf["input"] ~= "Kill" then -- If using Break/Kill, the entity won't exist after the first open
             -- The intended entity doesn't exist, so return that this config hasn't worked properly
             return false
         end
@@ -544,18 +775,28 @@ function ulx.cellsstatus( calling_ply )
         local count = {}
         local valid = true
         for ent_name, ent_cfg in pairs( cfg_status ) do
+            -- Get all the entities with the given name
             local entities = ents.FindByName( ent_name )
-
-            -- If no entities of this name exist, this config is invalid, so stop
-            if next( entities ) == nil then
-                valid = false
-                break
-            end
 
             -- Find out if one of this set of entities is in its open state
             local is_open = false
+
+            -- If no entities of this name exists and that's not itself the indicator, then this config is invalid
+            if next( entities ) == nil then
+                if ent_cfg["check_type"] == "exists" then
+                    is_open = true
+                else -- This config is invalid for this map
+                    valid = false
+                    break
+                end
+            end
+
+            
             local e = entities[1]
-            if ent_cfg["check_type"] == "func_door" or ent_cfg["check_type"] == "func_door_rotating" then
+            if ent_cfg["check_type"] == "exists" and next( entities ) ~= nil then
+                -- If here is reached then the entity *does* exist
+                is_open = false
+            elseif ent_cfg["check_type"] == "func_door" or ent_cfg["check_type"] == "func_door_rotating" then
                 is_open = e:GetInternalVariable( "m_toggle_state" ) == 0
             elseif ent_cfg["check_type"] == "prop_door_rotating" then
                 is_open = e:GetInternalVariable( "m_eDoorState" ) ~= 0
