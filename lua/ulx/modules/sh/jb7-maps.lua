@@ -413,10 +413,21 @@ local cell_door_configs = {
             { ["name"] = "door", ["input"] = "Kill", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
         },
         ["close"] = {
-            -- The doors on this map are just Killed and so can't be closed again or anything
+            -- The doors on this map are just Killed and so can't be closed again or otherwise interacted with
         },
         ["status"] = {
             ["door"] = { ["door_group"] = "cells", ["check_type"] = "exists", ["solitary"] = false }
+        }
+    },
+    {["maps"] = { "jb_italia_revamp", "jb_italia_beta[1234]" },
+        ["open"] = {
+            { ["name"] = "door cells", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["close"] = {
+            { ["name"] = "door cells", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["status"] = {
+            ["door cells"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
         }
     },
     {["maps"] = { "jb_italia" },
@@ -430,6 +441,93 @@ local cell_door_configs = {
         },
         ["status"] = {
             ["door cells"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
+        }
+    },
+    {["maps"] = { "jb_kliffside" },
+        ["open"] = {
+            { ["name"] = "cellblock_celldoors_1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["close"] = {
+            { ["name"] = "cellblock_celldoors_1", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+            -- There is also a button that ideally this would PressOut, but it is unnamed so can't be interacted with without significantly changing this module, and shouldn't be too big of a deal
+        },
+        ["status"] = {
+            ["cellblock_celldoors_1"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
+        }
+    },
+    {["maps"] = { "jb_lego_mini" },
+        ["open"] = {
+            { ["name"] = "cells_up", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "cells_down", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "door_kammer", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
+        },
+        ["close"] = {
+            { ["name"] = "cells_up", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "cells_down", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "door_kammer", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
+        },
+        ["status"] = {
+            ["cells_up"] = { ["door_group"] = "upper_cells", ["check_type"] = "func_door", ["solitary"] = false },
+            ["cells_down"] = { ["door_group"] = "lower_cells", ["check_type"] = "func_door", ["solitary"] = false },
+            ["door_kammer"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
+        }
+    },
+    {["maps"] = { "ba_jail_mars", "jb_mars" },
+        ["open"] = {
+            { ["name"] = "door_jail", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "door_solitary", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "sound_alert", ["input"] = "PlaySound", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["close"] = {
+            { ["name"] = "door_jail", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "door_solitary", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "sound_alert", ["input"] = "PlaySound", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["status"] = {
+            ["door_jail"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false },
+            ["door_solitary"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
+        }
+    },
+    {["maps"] = { "jb_minecraft_daylight_", "jb_minecraft_nightfall_" },
+        ["open"] = {
+            { ["name"] = "cell_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["close"] = {
+            { ["name"] = "cell_door", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["status"] = {
+            ["cell_door"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
+        }
+    },
+    {["maps"] = { "ba_mlcastle", "jb_mlcastle" },
+        ["open"] = {
+            { ["name"] = "cell_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["close"] = {
+            { ["name"] = "cell_door", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["status"] = {
+            ["cell_door"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
+        }
+    },
+    {["maps"] = { "jb_minecraft_kis_" },
+        ["open"] = {
+            { ["name"] = "cellblock_door", ["input"] = "Break", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "cellblock_door_secret", ["input"] = "Break", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }, -- This isn't a secret door, it's just a regular cell door that has a way to break out early
+            { ["name"] = "cellblock_music", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "isolation_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "isolation_door2", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
+        },
+        ["close"] = {
+            -- The main cell doors can't be closed, as the map "opens" then by doing Break, so the entities no longer exist after that - the doors are just func_breakables
+            { ["name"] = "isolation_door", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "isolation_door2", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
+        },
+        ["status"] = {
+            ["cellblock_door"] = { ["door_group"] = "cells", ["check_type"] = "exists", ["solitary"] = false },
+            ["cellblock_door_secret"] = { ["door_group"] = "early_breakout_cell", ["check_type"] = "exists", ["solitary"] = false },
+            ["isolation_door"] = { ["door_group"] = "solitary_corridor_left", ["check_type"] = "func_door_rotating", ["solitary"] = true },
+            ["isolation_door2"] = { ["door_group"] = "solitary_corridor_right", ["check_type"] = "func_door_rotating", ["solitary"] = true }
         }
     }
 }
@@ -557,6 +655,32 @@ local armory_door_configs = {
             { ["name"] = "door_wk3", ["input"] = "Close", ["param"] = "nil", ["delay"] = 4.0 },
             { ["name"] = "door_wk4", ["input"] = "Close", ["param"] = "nil", ["delay"] = 4.5 },
             { ["name"] = "door_wk5", ["input"] = "Close", ["param"] = "nil", ["delay"] = 5.0 }
+        }
+    },
+    {["maps"] = { "jb_minecraft_daylight_", "jb_minecraft_nightfall_" },
+        ["open"] = {
+            { ["name"] = "armory_doors", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["close"] = {
+            { ["name"] = "armory_doors", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
+        }
+    },
+    {["maps"] = { "ba_mlcastle", "jb_mlcastle" },
+        ["open"] = {
+            { ["name"] = "arm_dr", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["close"] = {
+            { ["name"] = "arm_dr", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
+        }
+    },
+    {["maps"] = { "jb_minecraft_kis_" },
+        ["open"] = {
+            { ["name"] = "armoury_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["close"] = {
+            { ["name"] = "armoury_door", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "isolation_door", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "isolation_door2", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
         }
     }
 }
