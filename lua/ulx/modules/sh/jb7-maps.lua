@@ -529,6 +529,328 @@ local cell_door_configs = {
             ["isolation_door"] = { ["door_group"] = "solitary_corridor_left", ["check_type"] = "func_door_rotating", ["solitary"] = true },
             ["isolation_door2"] = { ["door_group"] = "solitary_corridor_right", ["check_type"] = "func_door_rotating", ["solitary"] = true }
         }
+    },
+    {["maps"] = { "ba_jail_summer09" },
+        ["open"] = {
+            { ["name"] = "jail", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["close"] = {
+            { ["name"] = "jail", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["status"] = {
+            ["jail"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
+        }
+    },
+    {["maps"] = { "ba_jail_summer" },
+        ["open"] = {
+            { ["name"] = "celldoor", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["close"] = {
+            { ["name"] = "celldoor", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["status"] = {
+            ["celldoor"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
+        }
+    },
+    {["maps"] = { "jb_summer_xmas", "jb_new_summer", "jb_summer_jail" },
+        ["open"] = {
+            { ["name"] = "cellopen", ["input"] = "Press", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["close"] = {
+            { ["name"] = "cellclose", ["input"] = "Press", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["status"] = {
+            ["cells"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
+        }
+    }, -- jb_summer_redux maps use func_wall_toggle and no named buttons, so they could only be toggled
+    {["maps"] = { "jb_overcooked" },
+        ["open"] = {
+            { ["name"] = "cell_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "isolator_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
+        },
+        ["close"] = {
+            { ["name"] = "cell_door", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "isolator_door", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
+        },
+        ["status"] = {
+            ["cell_door"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false },
+            ["isolator_door"] = { ["door_group"] = "game_box", ["check_type"] = "func_door", ["solitary"] = true }
+        }
+    },
+    {["maps"] = { "_parabellum_xg" },
+        ["open"] = {
+            { ["name"] = "cells", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["close"] = {
+            { ["name"] = "cells", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["status"] = {
+            ["cells"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
+        }
+    },
+    {["maps"] = { "jb_prison_architect" },
+        ["open"] = {
+            { ["name"] = "cell_open_but", ["input"] = "Press", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "isol", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
+        },
+        ["close"] = {
+            { ["name"] = "cells", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }, -- Cell close button is unlabelled, so this just copies its functions
+            { ["name"] = "cell_sp1", ["input"] = "HideSprite", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "cell_sp2", ["input"] = "ShowSprite", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "isol", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
+        },
+        ["status"] = {
+            ["cells"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false },
+            ["isol"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
+        }
+    },
+    {["maps"] = { "jb_spy_vs_spy" },
+        ["open"] = {
+            { ["name"] = "cell_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["close"] = {
+            { ["name"] = "cell_door", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["status"] = {
+            ["cell_door"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
+        }
+    },
+    {["maps"] = { "jb_underrock_" },
+        ["open"] = {
+            { ["name"] = "cellblock_celldoors_1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "solitary_door_1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "solitary_sound", ["input"] = "PlaySound", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
+        },
+        ["close"] = {
+            { ["name"] = "cellblock_celldoors_1", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "solitary_door_1", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
+        },
+        ["status"] = {
+            ["cellblock_celldoors_1"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false },
+            ["solitary_door_1"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
+        }
+    },
+    {["maps"] = { "jb_vipinthemix" },
+        ["open"] = {
+            { ["name"] = "Vipcel_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Jaildoor_clip1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Jaildoor_clip2", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Jaildoor_clip3", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Jaildoor_clip4", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Jaildoor_clip5", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Jaildoor_clip6", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Jaildoor_clip7", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Jaildoor_clip8", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Jaildoor_clip9", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Jaildoor_clip10", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "bjail_off", ["input"] = "HideSprite", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "bjail_on", ["input"] = "ShowSprite", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "bigjail_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "Iso_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
+        },
+        ["close"] = {
+            { ["name"] = "Vipcel_door", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Jaildoor_clip1", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Jaildoor_clip2", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Jaildoor_clip3", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Jaildoor_clip4", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Jaildoor_clip5", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Jaildoor_clip6", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Jaildoor_clip7", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Jaildoor_clip8", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Jaildoor_clip9", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Jaildoor_clip10", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "bjail_off", ["input"] = "ShowSprite", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "bjail_on", ["input"] = "HideSprite", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "bigjail_door", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "Iso_door", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
+        },
+        ["status"] = {
+            ["Jaildoor_clip1"] = { ["door_group"] = "cells", ["check_type"] = "func_movelinear", ["solitary"] = false },
+            ["Iso_door"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true },
+            ["bigjail_door"] = { ["door_group"] = "big_jail", ["check_type"] = "func_door", ["solitary"] = true }
+        }
+    },
+    {["maps"] = { "ba_jail_minecraft_beach" },
+        ["open"] = {
+            { ["name"] = "celldoors_closed", ["input"] = "Disable", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "celldoors_open", ["input"] = "Enable", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "celldoors_button", ["input"] = "Lock", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["close"] = {
+            { ["name"] = "celldoors_closed", ["input"] = "Enable", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "celldoors_open", ["input"] = "Disable", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "celldoors_button", ["input"] = "Unlock", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["status"] = {
+            ["celldoors_open"] = { ["door_group"] = "cells", ["check_type"] = "func_brush enabled", ["solitary"] = false }
+        }
+    },
+    {["maps"] = { "ba_jail_laser" }, -- v1 uses this, not sure about v2
+        ["open"] = {
+            { ["name"] = "jail_1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "jail_2", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "hoyo", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "hoguera", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "pecera", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
+        },
+        ["close"] = {
+            { ["name"] = "jail_1", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "jail_2", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "hoyo", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "hoguera", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "pecera", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
+        },
+        ["status"] = {
+            ["jail_1"] = { ["door_group"] = "cells_left", ["check_type"] = "func_door", ["solitary"] = false },
+            ["jail_2"] = { ["door_group"] = "cells_right", ["check_type"] = "func_door", ["solitary"] = false },
+            ["hoyo"] = { ["door_group"] = "deathcell_fall", ["check_type"] = "func_door", ["solitary"] = true },
+            ["hoguera"] = { ["door_group"] = "deathcell_explosion", ["check_type"] = "func_door", ["solitary"] = true },
+            ["pecera"] = { ["door_group"] = "deathcell_water", ["check_type"] = "func_door", ["solitary"] = true }
+        }
+    }, -- Both versions of the map have a solitary cell that uses a func_wall_toggle, which can only be toggled
+    {["maps"] = { "ba_jail_laser" }, -- v3/4 use this, not sure about v2
+        ["open"] = {
+            { ["name"] = "celdas.1.puerta", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "celdas.2.puerta", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "hoyo.puerta", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "horno.puerta", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "pecera.puerta", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "camaleon.puerta", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
+        },
+        ["close"] = {
+            { ["name"] = "celdas.1.puerta", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "celdas.2.puerta", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "hoyo.puerta", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "horno.puerta", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "pecera.puerta", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "camaleon.puerta", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
+        },
+        ["status"] = {
+            ["celdas.1.puerta"] = { ["door_group"] = "cells_left", ["check_type"] = "func_door", ["solitary"] = false },
+            ["celdas.2.puerta"] = { ["door_group"] = "cells_right", ["check_type"] = "func_door", ["solitary"] = false },
+            ["hoyo.puerta"] = { ["door_group"] = "deathcell_fall", ["check_type"] = "func_door", ["solitary"] = true },
+            ["horno.puerta"] = { ["door_group"] = "deathcell_explosion", ["check_type"] = "func_door", ["solitary"] = true },
+            ["pecera.puerta"] = { ["door_group"] = "deathcell_water", ["check_type"] = "func_door", ["solitary"] = true },
+            ["camaleon.puerta"] = { ["door_group"] = "cell_aquarium", ["check_type"] = "func_door", ["solitary"] = true }
+        }
+    },
+    {["maps"] = { "ba_jail_sylvan" },
+        ["open"] = {
+            { ["name"] = "Cell_Doors_1_Full", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Cell_Door_Button", ["input"] = "Lock", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Cell_Doors_1_Broken", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "solitary_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }, -- This is a solitary cell, but is operated by the same button as the rest, so isn't marked as one for these purposes
+            { ["name"] = "Cell_Sparks", ["input"] = "StartSpark", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "CellSOUNDS", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Cell_Doors_2_Full", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Cell_Doors_2_Broken", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["close"] = {
+            { ["name"] = "Cell_Doors_1_Full", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Cell_Door_Button", ["input"] = "Unlock", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Cell_Doors_1_Broken", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "solitary_door", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "CellSOUNDS", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Cell_Doors_2_Full", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Cell_Doors_2_Broken", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
+        },
+        ["status"] = {
+            ["Cell_Doors_1_Full"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
+        }
+    },
+    {["maps"] = { "jb_castleguarddev" },
+        ["open"] = {
+            { ["name"] = "Cell_Door_Main", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Solitary_Confine_CellDoor", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "OutsideSolitary_Confine_CellDoor", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
+        },
+        ["close"] = {
+            { ["name"] = "Cell_Door_Main", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "Solitary_Confine_CellDoor", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "OutsideSolitary_Confine_CellDoor", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
+        },
+        ["status"] = {
+            ["Cell_Door_Main"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false },
+            ["Solitary_Confine_CellDoor"] = { ["door_group"] = "solitary_indoors", ["check_type"] = "func_door", ["solitary"] = true },
+            ["OutsideSolitary_Confine_CellDoor"] = { ["door_group"] = "solitary_outdoors", ["check_type"] = "func_door", ["solitary"] = true }
+        }
+    },
+    {["maps"] = { "jb_heat_" },
+        ["open"] = {
+            { ["name"] = "jd", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "iso", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
+        },
+        ["close"] = {
+            { ["name"] = "jd", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "iso", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
+        },
+        ["status"] = {
+            ["jd"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false },
+            ["iso"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
+        }
+    },
+    {["maps"] = { "jb_kittens_" },
+        ["open"] = {
+            { ["name"] = "cell_door_t", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "cell_light_sprite", ["input"] = "ShowSprite", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "cell_prop_light", ["input"] = "Disable", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "cell_prop_light_on", ["input"] = "Enable", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "solitary_blastdoor_black_bottom", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }, -- From here, the buried super-secure cell's various locks and stuff
+            { ["name"] = "solitary_blastdoor_black_top", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "solitary_blastdoor_orange_bottom", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "solitary_blastdoor_orange_top", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "solitary_blastdoor_button", ["input"] = "Lock", ["param"] = "nil", ["delay"] = 0.01, ["solitary"] = true },
+            { ["name"] = "solitary_blastdoor_black", ["input"] = "Open", ["param"] = "nil", ["delay"] = 3.0, ["solitary"] = true },
+            { ["name"] = "solitary_blastdoor_orange", ["input"] = "Open", ["param"] = "nil", ["delay"] = 3.0, ["solitary"] = true },
+            { ["name"] = "solitary_motor", ["input"] = "Open", ["param"] = "nil", ["delay"] = 8.0, ["solitary"] = true },
+            { ["name"] = "solitary_sound", ["input"] = "PlaySound", ["param"] = "nil", ["delay"] = 8.0, ["solitary"] = true },
+            { ["name"] = "solitary_spotlight", ["input"] = "LightOn", ["param"] = "nil", ["delay"] = 13.5, ["solitary"] = true },
+            { ["name"] = "solitary_door_cageside_button", ["input"] = "Unlock", ["param"] = "nil", ["delay"] = 13.5, ["solitary"] = true },
+            { ["name"] = "solitary_secret_button", ["input"] = "Unlock", ["param"] = "nil", ["delay"] = 13.5, ["solitary"] = true },
+            { ["name"] = "solitary_door_armoryside_button", ["input"] = "Unlock", ["param"] = "nil", ["delay"] = 13.5, ["solitary"] = true },
+            { ["name"] = "solitary_door_cellside_button", ["input"] = "Unlock", ["param"] = "nil", ["delay"] = 13.5, ["solitary"] = true },
+            { ["name"] = "solitary_door_dumpsterside_button", ["input"] = "Unlock", ["param"] = "nil", ["delay"] = 13.5, ["solitary"] = true },
+            { ["name"] = "solitary_trigger", ["input"] = "Enable", ["param"] = "nil", ["delay"] = 13.5, ["solitary"] = true },
+            { ["name"] = "solitary_sound", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 14.0, ["solitary"] = true },
+            { ["name"] = "solitary_door_dumpsterside", ["input"] = "Open", ["param"] = "nil", ["delay"] = 14.5, ["solitary"] = true },
+            { ["name"] = "solitary_door_armoryside", ["input"] = "Open", ["param"] = "nil", ["delay"] = 14.5, ["solitary"] = true },
+            { ["name"] = "solitary_door_cageside", ["input"] = "Open", ["param"] = "nil", ["delay"] = 14.5, ["solitary"] = true },
+            { ["name"] = "solitary_door_cellside", ["input"] = "Open", ["param"] = "nil", ["delay"] = 14.5, ["solitary"] = true },
+            { ["name"] = "solitary_blastdoor_button", ["input"] = "Unlock", ["param"] = "nil", ["delay"] = 15.0, ["solitary"] = true }
+        },
+        ["close"] = {
+            { ["name"] = "cell_door_t", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "cell_light_sprite", ["input"] = "HideSprite", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "cell_prop_light", ["input"] = "Enable", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "cell_prop_light_on", ["input"] = "Disable", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
+            { ["name"] = "solitary_spotlight", ["input"] = "LightOff", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "solitary_sound", ["input"] = "PlaySound", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "solitary_door_dumpsterside", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "solitary_door_dumpsterside_button", ["input"] = "Lock", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "solitary_door_armoryside", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "solitary_door_cageside", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "solitary_motor", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "solitary_secret_button", ["input"] = "Lock", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "solitary_door_armoryside_button", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "solitary_door_cageside_button", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
+            { ["name"] = "solitary_door_cellside_button", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }, -- The cellside door isn't actually closed here, but the map itself doesn't do that, either
+            { ["name"] = "solitary_blastdoor_button", ["input"] = "Lock", ["param"] = "nil", ["delay"] = 0.01, ["solitary"] = true },
+            { ["name"] = "solitary_trigger", ["input"] = "Disable", ["param"] = "nil", ["delay"] = 2.0, ["solitary"] = true },
+            { ["name"] = "solitary_blastdoor_black", ["input"] = "Close", ["param"] = "nil", ["delay"] = 6.0, ["solitary"] = true },
+            { ["name"] = "solitary_blastdoor_orange", ["input"] = "Close", ["param"] = "nil", ["delay"] = 6.0, ["solitary"] = true },
+            { ["name"] = "solitary_sound", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 6.0, ["solitary"] = true },
+            { ["name"] = "solitary_blastdoor_orange_bottom", ["input"] = "Close", ["param"] = "nil", ["delay"] = 9.0, ["solitary"] = true },
+            { ["name"] = "solitary_blastdoor_orange_top", ["input"] = "Close", ["param"] = "nil", ["delay"] = 9.0, ["solitary"] = true },
+            { ["name"] = "solitary_blastdoor_black_bottom", ["input"] = "Close", ["param"] = "nil", ["delay"] = 9.0, ["solitary"] = true },
+            { ["name"] = "solitary_blastdoor_black_top", ["input"] = "Close", ["param"] = "nil", ["delay"] = 9.0, ["solitary"] = true },
+            { ["name"] = "solitary_blastdoor_button", ["input"] = "Unlock", ["param"] = "nil", ["delay"] = 15.0, ["solitary"] = true }
+        },
+        ["status"] = {
+            ["cell_door_t"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false },
+            ["solitary_blastdoor_black_bottom"] = { ["door_group"] = "solitary_outer", ["check_type"] = "func_door", ["solitary"] = true }, -- These two are for the same cell, but it has multiple parts and "partially open" could be true for it alone.
+            ["solitary_door_cageside"] = { ["door_group"] = "solitary_inner", ["check_type"] = "func_door", ["solitary"] = true } -- This means that it will always detect partially open unless this specific side door is open. Technically true, but ideally door_group needs a rework to work the opposite to what it currently does.
+        }
     }
 }
 
@@ -682,106 +1004,109 @@ local armory_door_configs = {
             { ["name"] = "isolation_door", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 },
             { ["name"] = "isolation_door2", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
         }
+    },
+    {["maps"] = { "ba_jail_summer09" },
+        ["open"] = {
+            { ["name"] = "door_weapons", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["close"] = {
+            { ["name"] = "door_weapons", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
+        }
+    },
+    {["maps"] = { "jb_prison_architect" },
+        ["open"] = {
+            { ["name"] = "daa1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "daa2", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "da5", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["close"] = {
+            { ["name"] = "daa1", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "daa2", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "da5", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
+        }
+    },
+    {["maps"] = { "jb_spy_vs_spy" },
+        ["open"] = {
+            { ["name"] = "armoury_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["close"] = {
+            { ["name"] = "armoury_door", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
+        }
+    },
+    {["maps"] = { "jb_vipinthemix" },
+        ["open"] = {
+            { ["name"] = "Armory_door1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "Armory_door2", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["close"] = {
+            { ["name"] = "Armory_door1", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "Armory_door2", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
+        }
+    },
+    {["maps"] = { "ba_jail_minecraft_beach" },
+        ["open"] = {
+            { ["name"] = "armorydoor_closed", ["input"] = "Disable", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "armorydoor_open", ["input"] = "Enable", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "armorydoor_teleport", ["input"] = "Disable", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "armorydoor_closed", ["input"] = "Enable", ["param"] = "nil", ["delay"] = 4.0 }, -- Close door after 4 seconds
+            { ["name"] = "armorydoor_open", ["input"] = "Disable", ["param"] = "nil", ["delay"] = 4.0 },
+            { ["name"] = "armorydoor_teleport", ["input"] = "Enable", ["param"] = "nil", ["delay"] = 4.0 }
+        },
+        ["close"] = {
+            { ["name"] = "armorydoor_closed", ["input"] = "Enable", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "armorydoor_open", ["input"] = "Disable", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "armorydoor_teleport", ["input"] = "Enable", ["param"] = "nil", ["delay"] = 0 }
+        }
+    },
+    {["maps"] = { "ba_jail_laser" },
+        ["open"] = {
+            { ["name"] = "armeria", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["close"] = {
+            { ["name"] = "armeria", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
+        }
+    },
+    {["maps"] = { "ba_jail_laser" },
+        ["open"] = {
+            { ["name"] = "armeria.puerta", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["close"] = {
+            { ["name"] = "armeria.puerta", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
+        }
+    },
+    {["maps"] = { "ba_jail_sylvan" },
+        ["open"] = {
+            { ["name"] = "ArmoryDoor", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["close"] = {
+            { ["name"] = "ArmoryDoor", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
+        }
+    },
+    {["maps"] = { "jb_castleguarddev" },
+        ["open"] = {
+            { ["name"] = "Armory_Door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["close"] = {
+            { ["name"] = "Armory_Door", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
+        }
+    },
+    {["maps"] = { "jb_heat_" },
+        ["open"] = {
+            { ["name"] = "arm", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["close"] = {
+            { ["name"] = "arm", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
+        }
+    },
+    {["maps"] = { "jb_kittens_" },
+        ["open"] = {
+            { ["name"] = "armory_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["close"] = {
+            { ["name"] = "armory_door", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
+        }
     }
 }
--- TODO: Add various other maps, including all from the old maps table (and remove the old table from here)
---[[ Old maps table:
-local maps = {
-    { "summer", { { "cellopen", "Press" } }, { { "cellclose", "Press" } } },
-    { "summer", { { "b1", "Press" } }, { { "celldoor", "Close" } } },
-    { "castleguarddev", { { "Cell_Door_Main", "Open" } }, { { "Cell_Door_Main", "Close" } } },
-    { "heat", { { "jd", "Open" } }, { { "jd", "Close" } } },
-    { "kittens", {
-        { "cell_door_t", "Unlock" },
-        { "cell_door_t", "Open" },
-        { "cell_light_sprite", "ShowSprite" },
-        { "cell_prop_light", "Disable" },
-        { "cell_prop_light_on", "Enable" }
-    },
-    {
-        { "cell_door_t", "Unlock" },
-        { "cell_door_t", "Close" },
-        { "cell_light_sprite", "HideSprite" },
-        { "cell_prop_light", "Enable"},
-        { "cell_prop_light_on", "Disable" }
-    } },
-    { "laser", "celdas.1.puerta", "celdas.2.puerta" },
-    { "parabellum", {
-        { "cells", "Open" },
-        { "cells_relay", "CancelPending" }
-    },
-    {
-        { "cells", "Close" }
-    } },
-    { "minecraft_beach", {
-        { "celldoors_closed", "Disable" },
-        { "celldoors_open", "Enable" },
-        { "celldoors_button", "Lock" }
-    },
-    {
-        { "celldoors_button", "Unlock" },
-        { "celldoors_open", "Disable" },
-        { "celldoors_closed", "Enable" }
-    } },
-    { "sylvan", {
-        { "Cell_Doors_1_Full", "Open" },
-        { "Cell_Door_Button", "Lock" },
-        { "Cell_Doors_1_Broken", "Open" },
-        { "solitary_door", "Open" },
-        { "CellSOUNDS", "Open" },
-        { "Cell_Doors_2_Full", "Open" },
-        { "Cell_Doors_2_Broken", "Open" }
-    },
-    {
-        { "Cell_Door_Button", "Unlock" },
-        { "Cell_Doors_1_Broken", "Close" },
-        { "Cell_Doors_1_Full", "Close" },
-        { "solitary_door", "Close" },
-        { "CellSOUNDS", "Close" },
-        { "Cell_Doors_2_Broken", "Close" },
-        { "Cell_Doors_2_Full", "Close" }
-    } },
-    { "vipinthemix", {
-        { "Jaildoor_clip1", "Open" },
-        { "Jaildoor_clip2", "Open" },
-        { "Jaildoor_clip3", "Open" },
-        { "Jaildoor_clip4", "Open" },
-        { "Jaildoor_clip5", "Open" },
-        { "Jaildoor_clip6", "Open" },
-        { "Jaildoor_clip7", "Open" },
-        { "Jaildoor_clip8", "Open" },
-        { "Jaildoor_clip9", "Open" },
-        { "Jaildoor_clip10", "Open" },
-        { "Vipcel_door", "Open" }
-    },
-    {
-        { "Jaildoor_clip1", "Close" },
-        { "Jaildoor_clip2", "Close" },
-        { "Jaildoor_clip3", "Close" },
-        { "Jaildoor_clip4", "Close" },
-        { "Jaildoor_clip5", "Close" },
-        { "Jaildoor_clip6", "Close" },
-        { "Jaildoor_clip7", "Close" },
-        { "Jaildoor_clip8", "Close" },
-        { "Jaildoor_clip9", "Close" },
-        { "Jaildoor_clip10", "Close" },
-        { "Vipcel_door", "Close" }
-    } },
-    { "paradise", {
-        { "rorating", "Start" },
-        { "rorating2", "Start" },
-        { "doorjail", "Open"},
-        { "trackjail", "StartForward" },
-        { "gtgrg", "Toggle" } --This map uses func_wall_toggle, which can only be toggled, not disabled
-    },
-    {
-        { "rorating", "Stop" },
-        { "rorating2", "Stop" },
-        { "doorjail", "Close" },
-        { "trackjail", "StartBackward" }
-    } }
-}
-]]
 
 
 -- Helper Functions
@@ -928,6 +1253,8 @@ function ulx.cellsstatus( calling_ply )
                 is_open = e:GetInternalVariable( "m_vecPosition1" ) ~= e:GetPos()
             elseif ent_cfg["check_type"] == "func_brush" then
                 is_open = e:IsEffectActive( EF_NODRAW )
+            elseif ent_cfg["check_type"] == "func_brush enabled" then
+                is_open = e:IsSolid()
             end
 
             -- Update the count depending on whether the entity is "open" or not
