@@ -11,6 +11,9 @@
 
 local CATEGORY_NAME = "Jail Break"
 local ERROR_MAP = "That command does not appear to work on this map!"
+local HOOK_ADDCMD = "ULX-JB7_AddCmd"
+local GBOOL_INCL_STOPHELI = "ulx-jb7_incl_stopheli"
+local GBOOL_INCL_MANCANNON = "ulx-jb7_incl_mancannon"
 
 
 -- Cell door control maps and entities
@@ -1162,6 +1165,20 @@ local function attemptOpenDoors( config, close, incl_solitary )
     end
 end
 
+local function addCmdMancannon()
+    mancannon = ulx.command( CATEGORY_NAME, "ulx mancannon", ulx.mancannon, { "!mancannon" }, true )
+    mancannon:defaultAccess( ULib.ACCESS_ADMIN )
+    mancannon:help( "Opens the mancannon door on ba_jail_summer-based maps." )
+end
+
+local function addCmdStopHeli()
+    stopheli = ulx.command( CATEGORY_NAME, "ulx stopheli", ulx.stopheli, { "!stopheli", "!stophelicopter" }, true )
+    stopheli:addParam{ type=ULib.cmds.BoolArg, invisible=true }
+    stopheli:defaultAccess( ULib.ACCESS_ADMIN )
+    stopheli:help( "Shuts down the helicopter on new_summer-based maps." )
+    stopheli:setOpposite( "ulx startheli", { _, true }, { "!startheli" }, true )
+end
+
 
 -- ULX Commands
 
@@ -1337,22 +1354,75 @@ cellsstatus:defaultAccess( ULib.ACCESS_ADMIN ) -- There's no real reason for thi
 cellsstatus:help( "Tells the player whether the cell doors are currently open or closed." )
 
 
---[[
 function ulx.stopheli( calling_ply, start )
+    -- No need to check if the entity exists, as otherwise this command wouldn't have been added
     
+    -- Turn on/off the helicopter depending on if using opposite command
+    if start then
+        local onbutt = ents.FindByName( "helibut1" )[1]
+        onbutt:Fire( "Unlock" )
+        onbutt:Fire( "Press" )
+
+        ulx.fancyLogAdmin( calling_ply, "#A started the helicopter" )
+    else
+        local offbutt = ents.FindByName( "helibut2" )[1]
+        offbutt:Fire( "Unlock" )
+        offbutt:Fire( "Press" )
+
+        ulx.fancyLogAdmin( calling_ply, "#A turned off the helicopter" )
+    end
 end
-local stopheli = ulx.command( CATEGORY_NAME, "ulx stopheli", ulx.stopheli, { "!stopheli", "!stophelicopter" }, true )
-stopheli:addParam{ type=ULib.cmds.BoolArg, invisible=true }
-stopheli:defaultAccess( ULib.ACCESS_ADMIN )
-stopheli:help( "Shuts down the helicopter on new_summer-based maps.")
-stopheli:setOpposite( "ulx startheli", { _, true }, { "!startheli" }, true )
-]]
+local stopheli
+SetGlobalBool( GBOOL_INCL_STOPHELI, false ) -- Marks whether clients should add this command
 
 --[[
-function ulx.mancannon( calling_ply )
-    
-end
-local mancannon = ulx.command( CATEGORY_NAME, "ulx mancannon", ulx.mancannon, { "!mancannon" }, true )
-mancannon:defaultAccess( ULib.ACCESS_ADMIN )
-mancannon:help( "Opens the mancannon door on jail_summer-based maps.")
+    This exists as otherwise players can hide or get stuck in the mancannon, prolonging rounds.
+    Once this is used, the door can be opened freely, but the trap only locks the door the first time, anyway, so this is consistent.
 ]]
+function ulx.mancannon( calling_ply )
+    -- No need to check if the entity exists, as otherwise this command wouldn't be added by the hook
+
+    -- Unlock and open the mancannon's door
+    local door = ents.FindByName( "suicideD1" )[1]
+    door:Fire( "Unlock" )
+    door:Fire( "Open" )
+
+    ulx.fancyLogAdmin( calling_ply, "#A opened the mancannon door" )
+end
+local mancannon
+SetGlobalBool( GBOOL_INCL_MANCANNON, false ) -- Marks whether clients should add this command
+
+
+
+-- Hooks
+
+--[[
+    Add map-specific commands only if that map is loaded.
+    Client can only see entities within its view, so server must check and notify clients.
+]]
+hook.Add( "InitPostEntity", "jb7-ulx_maps_initpostentity", function()
+    -- If on jb_new_summer_v2-based maps, add stopheli command
+    local map = game.GetMap()
+    if ( SERVER and next( ents.FindByName( "helibut1" ) ) ~= nil and next( ents.FindByName( "helibut2" ) ) ~= nil and map:find( "_summer" ) ) then
+        -- This is a valid map for stopheli, so add it to the server
+        addCmdStopHeli()
+
+        -- Mark that this command should be added by clients
+        SetGlobalBool( GBOOL_INCL_STOPHELI, true )
+    elseif ( CLIENT and GetGlobalBool( GBOOL_INCL_STOPHELI ) ) then
+        -- Add command to client if the server declared it valid
+        addCmdStopHeli()
+    end
+
+    -- If the mancannon door exists on a map with "summer" in the name, add mancannon command
+    if ( SERVER and next( ents.FindByName( "suicideD1" ) ) ~= nil and map:find( "_summer" ) ) then
+        -- Add command to server
+        addCmdMancannon()
+
+        -- Mark that this command should be added by clients
+        SetGlobalBool( GBOOL_INCL_MANCANNON, true )
+    elseif ( CLIENT and GetGlobalBool( GBOOL_INCL_MANCANNON ) ) then
+        -- Add command to client if the server declared it valid
+        addCmdMancannon()
+    end
+end )
