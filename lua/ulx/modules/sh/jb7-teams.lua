@@ -6,7 +6,7 @@
         VulpusMaximus - ULX Commands for Jail Break 7 (new version)
         pepeisdatboi - forcewarden (original version)
         Team Ulysses @ ULX - affected_plys code
-        Casual Bananas @ Jail Break 7 - team switching code, and various validity checks to copy standard JB7 behaviour
+        Casual Bananas @ Jail Break 7 - team switching code, and various validity checks to mimic standard JB7 behaviour
 ]]
 
 
@@ -34,7 +34,7 @@ local function swapTeam( ply, team_val )
     end
 
     -- Call the team switch hook as if done normally by the gamemode
-    hook.Call( "JailBreakPlayerSwitchTeam", JB.Gamemode, ply, ply:Team() )
+    hook.Run( "JailBreakPlayerSwitchTeam", ply, ply:Team() )
 
     -- Reset the player's K/D to zeroes
     ply:SetFrags( 0 )
@@ -328,31 +328,57 @@ function ulx.forcewarden( calling_ply, target_ply, replace, ignore_state )
     target_ply:AddWardenStatus()
     target_ply:SendNotification( "Forced to warden" )
 
-    -- Update the number of rounds the target has been warden
+    -- Update the number of consecutive rounds the target has been warden
     if not target_ply.wardenRounds then
         target_ply.wardenRounds = 1
     else
         target_ply.wardenRounds = target_ply.wardenRounds + 1
     end
 
+    -- Reset the number of consecutive rounds the rest of the guard team have been warden to 0
+    for _, guard in pairs( team.GetPlayers( TEAM_GUARD ) ) do
+        if IsValid( guard ) and guard ~= target_ply and guard.wardenRounds then
+            guard.wardenRounds = 0
+        end
+    end
+
     -- Fire the hook as if the warden role was claimed normally
-    hook.Call( "JailBreakClaimWarden", JB.Gamemode, target_ply, target_ply.wardenRounds )
+    hook.Run( "JailBreakClaimWarden", target_ply, target_ply.wardenRounds )
 end
 local forcewarden
 
 
---[[
-function ulx.demotewarden( calling_ply )
-    
+function ulx.demotewarden( calling_ply, restore_limit )
+    -- Fail and tell player if there isn't a warden to demote
+    local warden = JB:GetWarden()
+    if not IsValid( warden ) then
+        ULib.tsayError( calling_ply, "There isn't a warden to demote!", true )
+        return
+    end
+
+    -- Remove the player from the warden position
+    warden:RemoveWardenStatus()
+    warden:SendNotification( "Demoted by admin" )
+
+    -- If command was called with arg to restore the warden's consecutive limit to before they were warden, do so
+    if warden.wardenRounds and warden.wardenRounds > 0 and restore_limit then
+        warden.wardenRounds = warden.wardenRounds - 1
+    end
+
+    -- Announce/log command
+    ulx.fancyLogAdmin( calling_ply, "#A demoted the warden (#P)", warden )
 end
 local demotewarden
-]]
+
 
 
 -- Hooks
 
--- Register commands on GM:Initialize
--- GAMEMODE_NAME isn't initialized at the time ULX modules are loaded, so this is needed
+
+--[[
+    These commands are only registered if the gamemode is actually Jail Break, otherwise they wouldn't work anyway.
+    This has to be done at least at GM:Initialize, as GAMEMODE_NAME isn't initialised until then.
+]]
 hook.Add( "Initialize", "jb7-ulx_teams_initialize", function()
     if GAMEMODE_NAME == "jailbreak" then
         -- Load forceguard
@@ -382,11 +408,10 @@ hook.Add( "Initialize", "jb7-ulx_teams_initialize", function()
         forcewarden:defaultAccess( ULib.ACCESS_ADMIN )
         forcewarden:help( "Forces target to warden role." )
 
-        --[[
         -- Load demotewarden command
         demotewarden = ulx.command( CATEGORY_NAME, "ulx demotewarden", ulx.demotewarden, { "!demotewarden", "!dwarden", "!dw" }, true )
+        demotewarden:addParam{ type=ULib.cmds.BoolArg, default=true, hint="Restore the warden's streak?", ULib.cmds.optional }
         demotewarden:defaultAccess( ULib.ACCESS_ADMIN )
-        demotewarden:help( "Removes the warden status from the current warden." )
-        ]]
+        demotewarden:help( "Removes the warden position from the current warden." )
     end
 end )
