@@ -31,6 +31,7 @@ The commands added by this plugin are as follows:
 | `ulx startheli`                                        | Maps   | `!startheli`                                       | Starts the helicopter on jb_new_summer_v2-based maps.  |
 | `ulx stopheli`                                         | Maps   | `!stopheli`                                        | Stops the helicopter on jb_new_summer_v2-based maps.   |
 | `ulx mancannon`                                        | Maps   | `!mancannon`                                       | Opens the mancannon door on ba_jail_summer-based maps. |
+| `ulx controldisco <option>`                            | Maps   | `!controldisco` <br> `!disco`                      | Controls music and lights in disco rooms.              |
 |--------------------------------------------------------|--------|----------------------------------------------------|--------------------------------------------------------|
 | `ulx forceguard <player(s)> [ignore team size limit?]` | Teams  | `!forceguard` <br> `!fguard`                       | Forces target(s) to guard team.                        |
 | `ulx forceprisoner <player(s)>`                        | Teams  | `!forceprisoner` <br> `!fprisoner`                 | Forces target(s) to prisoner team.                     |

@@ -11,9 +11,17 @@
 
 local CATEGORY_NAME = "Jail Break"
 local ERROR_MAP = "That command does not appear to work on this map!"
+
 local HOOK_ADDCMD = "ULX-JB7_AddCmd"
+
+local GBOOL_INCL_OPENCELLS = "ulx-jb7_incl_opencells"
+local GBOOL_INCL_OPENARMORY = "ulx-jb7_incl_openarmory"
+local GBOOL_INCL_CELLSSTATUS = "ulx-jb7_incl_cellsstatus"
 local GBOOL_INCL_STOPHELI = "ulx-jb7_incl_stopheli"
 local GBOOL_INCL_MANCANNON = "ulx-jb7_incl_mancannon"
+local GBOOL_INCL_CONTROLDISCO = "ulx-jb7_incl_controldisco"
+
+local GSTR_CONFIG_CONTROLDISCO = "ulx-jb7_config_controldisco"
 
 
 -- Cell door control maps and entities
@@ -46,7 +54,7 @@ local GBOOL_INCL_MANCANNON = "ulx-jb7_incl_mancannon"
     The different check_types specify what type of entity is being checked, e.g. a func_door. The different currently possible checks are shown in the code for ulx.cellsstatus.
 ]]
 local cell_door_configs = {
-    {["maps"] = {"jb_lego_rage_.+"},
+    ["jb_lego_rage"] = {["maps"] = {"jb_lego_rage_.+"},
         ["open"] = {
             { ["name"] = "cell1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }, -- Open main cells' doors
             { ["name"] = "c_g", ["input"] = "ShowSprite", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }, -- Show green light on button
@@ -64,7 +72,7 @@ local cell_door_configs = {
             ["iso"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
         }
     },
-    {["maps"] = {"jb_lego_jail_v[1234]"},
+    ["jb_lego_jail_v1 to v4"] = {["maps"] = {"jb_lego_jail_v[1234]"},
         ["open"] = {
             { ["name"] = "cell1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }, -- Open main cells' doors
             { ["name"] = "c_g", ["input"] = "ShowSprite", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }, -- Show green light on open button
@@ -84,7 +92,7 @@ local cell_door_configs = {
             ["iso"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
         }
     },
-    {["maps"] = {"jb_lego_jail_.+"},
+    ["jb_lego_jail_v5+"] = {["maps"] = {"jb_lego_jail_.+"},
         ["open"] = {
             { ["name"] = "c1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }, -- Open main cells' doors
             { ["name"] = "c_g", ["input"] = "ShowSprite", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }, -- Show green light on open button
@@ -104,7 +112,7 @@ local cell_door_configs = {
             ["iso"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
         }
     },
-    {["maps"] = {"jb_carceris_021"},
+    ["jb_carceris_021"] = {["maps"] = {"jb_carceris_021"},
         ["open"] = {
             { ["name"] = "slider1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "slider2", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
@@ -120,7 +128,7 @@ local cell_door_configs = {
             ["iso"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
         }
     },
-    {["maps"] = {"jb_carceris"},
+    ["jb_carceris"] = {["maps"] = {"jb_carceris"},
         ["open"] = {
             { ["name"] = "s1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "s2", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
@@ -164,7 +172,7 @@ local cell_door_configs = {
             ["iso"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
         }
     },
-    {["maps"] = {"ba_ace_jail_v3"},
+    ["ba_ace_jail_v3"] = {["maps"] = {"ba_ace_jail_v3"},
         ["open"] = {
             { ["name"] = "door1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
         },
@@ -175,7 +183,7 @@ local cell_door_configs = {
             ["door1"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
         }
     },
-    {["maps"] = {"ba_ace_jail"},
+    ["ba_ace_jail"] = {["maps"] = {"ba_ace_jail"},
         ["open"] = {
             { ["name"] = "door1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
         },
@@ -186,7 +194,7 @@ local cell_door_configs = {
             ["door1"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
         }
     },
-    {["maps"] = {"ba_jail_alcatraz"},
+    ["ba_jail_alcatraz"] = {["maps"] = {"ba_jail_alcatraz"},
         ["open"] = {
             { ["name"] = "oben", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "unten", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
@@ -203,7 +211,7 @@ local cell_door_configs = {
             ["jail_door"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
         }
     },
-    {["maps"] = {"ba_jail_blackops"},
+    ["ba_jail_blackops"] = {["maps"] = {"ba_jail_blackops"},
         ["open"] = {
             { ["name"] = "prisondoor", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
         },
@@ -214,7 +222,7 @@ local cell_door_configs = {
             ["prisondoor"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
         }
     },
-    {["maps"] = {"ba_jail_canyondam_v6"},
+    ["ba_jail_canyondam_v6"] = {["maps"] = {"ba_jail_canyondam_v6"},
         ["open"] = {
             { ["name"] = "CLDRS_R_1", ["input"] = "Trigger", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
         },
@@ -225,7 +233,7 @@ local cell_door_configs = {
             ["CellDoors"] = { ["door_group"] = "cells", ["check_type"] = "func_movelinear", ["solitary"] = false }
         }
     },
-    {["maps"] = {"ba_jail_canyondam"},
+    ["ba_jail_canyondam"] = {["maps"] = {"ba_jail_canyondam"},
         ["open"] = {
             { ["name"] = "CellDoors_Movelinear", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
         },
@@ -236,7 +244,7 @@ local cell_door_configs = {
             ["CellDoors_Movelinear"] = { ["door_group"] = "cells", ["check_type"] = "func_movelinear", ["solitary"] = false }
         }
     },
-    {["maps"] = {"ba_jail_electric_aero"},
+    ["ba_jail_electric_aero"] = {["maps"] = {"ba_jail_electric_aero"},
         ["open"] = {
             { ["name"] = "Cells_OpenButton", ["input"] = "PressIn", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "Cells_IsoDoor", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
@@ -250,7 +258,7 @@ local cell_door_configs = {
             ["Cells_IsoDoor"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
         }
     },
-    {["maps"] = {"ba_jail_electric_vip"},
+    ["ba_jail_electric_vip"] = {["maps"] = {"ba_jail_electric_vip"},
         ["open"] = {
             { ["name"] = "cell_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "solitary_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
@@ -264,7 +272,7 @@ local cell_door_configs = {
             ["solitary_door"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
         }
     },
-    {["maps"] = { "ba_jail_hellsgamers" },
+    ["ba_jail_hellsgamers"] = {["maps"] = { "ba_jail_hellsgamers" },
         ["open"] = {
             { ["name"] = "celldoor_vip_left", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "celldoor_vip_right", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
@@ -286,7 +294,7 @@ local cell_door_configs = {
             ["isolatedoor"] = { ["door_group"] = "solitary", ["check_type"] = "prop_door_rotating", ["solitary"] = true }
         }
     },
-    {["maps"] = { "ba_jail_ishimura" },
+    ["ba_jail_ishimura"] = {["maps"] = { "ba_jail_ishimura" },
         ["open"] = {
             { ["name"] = "switchprison", ["input"] = "PressIn", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "switchprison2", ["input"] = "PressIn", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
@@ -299,7 +307,7 @@ local cell_door_configs = {
             ["PrisonDoor"] = { ["door_group"] = "cells", ["check_type"] = "func_brush", ["solitary"] = false }
         }
     },
-    {["maps"] = { "ba_jail_new_campus" },
+    ["ba_jail_new_campus"] = {["maps"] = { "ba_jail_new_campus" },
         ["open"] = {
             { ["name"] = "cells", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "Cagedoor", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true } -- This isn't really a solitary cell, but can act like one so it's here anyway
@@ -313,7 +321,7 @@ local cell_door_configs = {
             ["Cagedoor"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
         }
     },
-    {["maps"] = { "ba_jail_nightprison" },
+    ["ba_jail_nightprison"] = {["maps"] = { "ba_jail_nightprison" },
         ["open"] = {
             { ["name"] = "zd1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "zd2", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
@@ -330,7 +338,7 @@ local cell_door_configs = {
             ["zd1"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
         }
     },
-    {["maps"] = { "ba_jail_sand" },
+    ["ba_jail_sand"] = {["maps"] = { "ba_jail_sand" },
         ["open"] = {
             { ["name"] = "JailDoors", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
         },
@@ -341,7 +349,7 @@ local cell_door_configs = {
             ["JailDoors"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
         }
     },
-    {["maps"] = { "ba_mario_party" },
+    ["ba_mario_party"] = {["maps"] = { "ba_mario_party" },
         ["open"] = {
             { ["name"] = "tube_cells", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "cell_breakable", ["input"] = "Break", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }, -- These cells aren't really closable, so there's no close config for them
@@ -356,7 +364,7 @@ local cell_door_configs = {
             ["isolation_doors"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
         }
     },
-    {["maps"] = { "ba_nova_prospect" },
+    ["ba_nova_prospect"] = {["maps"] = { "ba_nova_prospect" },
         ["open"] = {
             { ["name"] = "cells", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "cellsmain", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
@@ -370,7 +378,7 @@ local cell_door_configs = {
             ["cellsmain"] = { ["door_group"] = "cells_outer", ["check_type"] = "func_door", ["solitary"] = false }
         }
     },
-    {["maps"] = { "jb_8bit_" },
+    ["jb_8bit"] = {["maps"] = { "jb_8bit_" },
         ["open"] = {
             { ["name"] = "cell_doors", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
         },
@@ -381,7 +389,7 @@ local cell_door_configs = {
             ["cell_doors"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
         }
     },
-    {["maps"] = { "jb_clouds" },
+    ["jb_clouds"] = {["maps"] = { "jb_clouds" },
         ["open"] = {
             { ["name"] = "zelle_iso_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
             { ["name"] = "zelle_door2_garderobe", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
@@ -411,7 +419,7 @@ local cell_door_configs = {
             ["zelle_door2_garderobe"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
         }
     },
-    {["maps"] = { "jb_iceworld" },
+    ["jb_iceworld"] = {["maps"] = { "jb_iceworld" },
         ["open"] = {
             { ["name"] = "door", ["input"] = "Kill", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
         },
@@ -422,7 +430,7 @@ local cell_door_configs = {
             ["door"] = { ["door_group"] = "cells", ["check_type"] = "exists", ["solitary"] = false }
         }
     },
-    {["maps"] = { "jb_italia_revamp", "jb_italia_beta[1234]" },
+    ["jb_italia_beta/revamp"] = {["maps"] = { "jb_italia_revamp", "jb_italia_beta[1234]" },
         ["open"] = {
             { ["name"] = "door cells", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
         },
@@ -433,7 +441,7 @@ local cell_door_configs = {
             ["door cells"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
         }
     },
-    {["maps"] = { "jb_italia" },
+    ["jb_italia"] = {["maps"] = { "jb_italia" },
         ["open"] = {
             { ["name"] = "door cells", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "door t room sliding 1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
@@ -446,7 +454,7 @@ local cell_door_configs = {
             ["door cells"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
         }
     },
-    {["maps"] = { "jb_kliffside" },
+    ["jb_kliffside"] = {["maps"] = { "jb_kliffside" },
         ["open"] = {
             { ["name"] = "cellblock_celldoors_1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
         },
@@ -458,7 +466,7 @@ local cell_door_configs = {
             ["cellblock_celldoors_1"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
         }
     },
-    {["maps"] = { "jb_lego_mini" },
+    ["jb_lego_mini"] = {["maps"] = { "jb_lego_mini" },
         ["open"] = {
             { ["name"] = "cells_up", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "cells_down", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
@@ -475,7 +483,7 @@ local cell_door_configs = {
             ["door_kammer"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
         }
     },
-    {["maps"] = { "ba_jail_mars", "jb_mars" },
+    ["jb_mars"] = {["maps"] = { "ba_jail_mars", "jb_mars" },
         ["open"] = {
             { ["name"] = "door_jail", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "door_solitary", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
@@ -491,7 +499,7 @@ local cell_door_configs = {
             ["door_solitary"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
         }
     },
-    {["maps"] = { "jb_minecraft_daylight_", "jb_minecraft_nightfall_" },
+    ["jb_minecraft_nightfall"] = {["maps"] = { "jb_minecraft_daylight_", "jb_minecraft_nightfall_" },
         ["open"] = {
             { ["name"] = "cell_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
         },
@@ -502,7 +510,7 @@ local cell_door_configs = {
             ["cell_door"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
         }
     },
-    {["maps"] = { "ba_mlcastle", "jb_mlcastle" },
+    ["jb_mlcastle"] = {["maps"] = { "ba_mlcastle", "jb_mlcastle" },
         ["open"] = {
             { ["name"] = "cell_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
         },
@@ -513,7 +521,7 @@ local cell_door_configs = {
             ["cell_door"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
         }
     },
-    {["maps"] = { "jb_minecraft_kis_" },
+    ["jb_minecraft_kis"] = {["maps"] = { "jb_minecraft_kis_" },
         ["open"] = {
             { ["name"] = "cellblock_door", ["input"] = "Break", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "cellblock_door_secret", ["input"] = "Break", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }, -- This isn't a secret door, it's just a regular cell door that has a way to break out early
@@ -533,7 +541,7 @@ local cell_door_configs = {
             ["isolation_door2"] = { ["door_group"] = "solitary_corridor_right", ["check_type"] = "func_door_rotating", ["solitary"] = true }
         }
     },
-    {["maps"] = { "ba_jail_summer09" },
+    ["ba_jail_summer09"] = {["maps"] = { "ba_jail_summer09" },
         ["open"] = {
             { ["name"] = "jail", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
         },
@@ -544,7 +552,7 @@ local cell_door_configs = {
             ["jail"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
         }
     },
-    {["maps"] = { "ba_jail_summer" },
+    ["ba_jail_summer"] = {["maps"] = { "ba_jail_summer" },
         ["open"] = {
             { ["name"] = "celldoor", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
         },
@@ -555,7 +563,7 @@ local cell_door_configs = {
             ["celldoor"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
         }
     },
-    {["maps"] = { "jb_summer_xmas", "jb_new_summer", "jb_summer_jail" },
+    ["jb_new_summer"] = {["maps"] = { "jb_summer_xmas", "jb_new_summer", "jb_summer_jail" },
         ["open"] = {
             { ["name"] = "cellopen", ["input"] = "Press", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
         },
@@ -566,7 +574,7 @@ local cell_door_configs = {
             ["cells"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
         }
     }, -- jb_summer_redux maps use func_wall_toggle and no named buttons, so they could only be toggled
-    {["maps"] = { "jb_overcooked" },
+    ["jb_overcooked"] = {["maps"] = { "jb_overcooked" },
         ["open"] = {
             { ["name"] = "cell_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "isolator_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
@@ -580,7 +588,7 @@ local cell_door_configs = {
             ["isolator_door"] = { ["door_group"] = "game_box", ["check_type"] = "func_door", ["solitary"] = true }
         }
     },
-    {["maps"] = { "_parabellum_xg" },
+    ["jb_parabellum_xg"] = {["maps"] = { "_parabellum_xg" },
         ["open"] = {
             { ["name"] = "cells", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
         },
@@ -591,7 +599,7 @@ local cell_door_configs = {
             ["cells"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
         }
     },
-    {["maps"] = { "jb_prison_architect" },
+    ["jb_prison_architect"] = {["maps"] = { "jb_prison_architect" },
         ["open"] = {
             { ["name"] = "cell_open_but", ["input"] = "Press", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "isol", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
@@ -607,7 +615,7 @@ local cell_door_configs = {
             ["isol"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
         }
     },
-    {["maps"] = { "jb_spy_vs_spy" },
+    ["jb_spy_vs_spy"] = {["maps"] = { "jb_spy_vs_spy" },
         ["open"] = {
             { ["name"] = "cell_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false }
         },
@@ -618,7 +626,7 @@ local cell_door_configs = {
             ["cell_door"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
         }
     },
-    {["maps"] = { "jb_underrock_" },
+    ["jb_underrock"] = {["maps"] = { "jb_underrock_" },
         ["open"] = {
             { ["name"] = "cellblock_celldoors_1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "solitary_door_1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
@@ -633,7 +641,7 @@ local cell_door_configs = {
             ["solitary_door_1"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
         }
     },
-    {["maps"] = { "jb_vipinthemix" },
+    ["jb_vipinthemix"] = {["maps"] = { "jb_vipinthemix" },
         ["open"] = {
             { ["name"] = "Vipcel_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "Jaildoor_clip1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
@@ -674,7 +682,7 @@ local cell_door_configs = {
             ["bigjail_door"] = { ["door_group"] = "big_jail", ["check_type"] = "func_door", ["solitary"] = true }
         }
     },
-    {["maps"] = { "ba_jail_minecraft_beach" },
+    ["ba_jail_minecraft_beach"] = {["maps"] = { "ba_jail_minecraft_beach" },
         ["open"] = {
             { ["name"] = "celldoors_closed", ["input"] = "Disable", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "celldoors_open", ["input"] = "Enable", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
@@ -689,7 +697,7 @@ local cell_door_configs = {
             ["celldoors_open"] = { ["door_group"] = "cells", ["check_type"] = "func_brush enabled", ["solitary"] = false }
         }
     },
-    {["maps"] = { "ba_jail_laser" }, -- v1 uses this, not sure about v2
+    ["ba_jail_laser early"] = {["maps"] = { "ba_jail_laser" }, -- v1 uses this, not sure about v2
         ["open"] = {
             { ["name"] = "jail_1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "jail_2", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
@@ -712,7 +720,7 @@ local cell_door_configs = {
             ["pecera"] = { ["door_group"] = "deathcell_water", ["check_type"] = "func_door", ["solitary"] = true }
         }
     }, -- Both versions of the map have a solitary cell that uses a func_wall_toggle, which can only be toggled
-    {["maps"] = { "ba_jail_laser" }, -- v3/4 use this, not sure about v2
+    ["ba_jail_laser later"] = {["maps"] = { "ba_jail_laser" }, -- v3/4 use this, not sure about v2
         ["open"] = {
             { ["name"] = "celdas.1.puerta", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "celdas.2.puerta", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
@@ -738,7 +746,7 @@ local cell_door_configs = {
             ["camaleon.puerta"] = { ["door_group"] = "cell_aquarium", ["check_type"] = "func_door", ["solitary"] = true }
         }
     },
-    {["maps"] = { "ba_jail_sylvan" },
+    ["ba_jail_sylvan"] = {["maps"] = { "ba_jail_sylvan" },
         ["open"] = {
             { ["name"] = "Cell_Doors_1_Full", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "Cell_Door_Button", ["input"] = "Lock", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
@@ -762,7 +770,7 @@ local cell_door_configs = {
             ["Cell_Doors_1_Full"] = { ["door_group"] = "cells", ["check_type"] = "func_door", ["solitary"] = false }
         }
     },
-    {["maps"] = { "jb_castleguarddev" },
+    ["jb_castleguarddev"] = {["maps"] = { "jb_castleguarddev" },
         ["open"] = {
             { ["name"] = "Cell_Door_Main", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "Solitary_Confine_CellDoor", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true },
@@ -779,7 +787,7 @@ local cell_door_configs = {
             ["OutsideSolitary_Confine_CellDoor"] = { ["door_group"] = "solitary_outdoors", ["check_type"] = "func_door", ["solitary"] = true }
         }
     },
-    {["maps"] = { "jb_heat_" },
+    ["jb_heat"] = {["maps"] = { "jb_heat_" },
         ["open"] = {
             { ["name"] = "jd", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "iso", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = true }
@@ -793,7 +801,7 @@ local cell_door_configs = {
             ["iso"] = { ["door_group"] = "solitary", ["check_type"] = "func_door", ["solitary"] = true }
         }
     },
-    {["maps"] = { "jb_kittens_" },
+    ["jb_kittens"] = {["maps"] = { "jb_kittens_" },
         ["open"] = {
             { ["name"] = "cell_door_t", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
             { ["name"] = "cell_light_sprite", ["input"] = "ShowSprite", ["param"] = "nil", ["delay"] = 0, ["solitary"] = false },
@@ -858,23 +866,23 @@ local cell_door_configs = {
 }
 
 local armory_door_configs = {
-    {["maps"] = {"jb_lego_jail", "jb_lego_rage_.+"},
+    ["jb_lego_jail"] = {["maps"] = {"jb_lego_jail", "jb_lego_rage_.+"},
         ["open"] = {{ ["name"]="arm1", ["input"]="Open", ["param"]="nil", ["delay"]=0 }},
         ["close"] = {{ ["name"]="arm1", ["input"]="Close", ["param"]="nil", ["delay"]=0 }}
     },
-    {["maps"] = {"jb_carceris"},
+    ["jb_carceris"] = {["maps"] = {"jb_carceris"},
         ["open"] = {{ ["name"]="ar", ["input"]="Open", ["param"]="nil", ["delay"]=0 }},
         ["close"] = {{ ["name"]="ar", ["input"]="Close", ["param"]="nil", ["delay"]=0 }}
     },
-    {["maps"] = {"ba_ace_jail"},
+    ["ba_ace_jail"] = {["maps"] = {"ba_ace_jail"},
         ["open"] = {{ ["name"]="amordoor", ["input"]="Open", ["param"]="nil", ["delay"]=0 }},
         ["close"] = {{ ["name"]="amordoor", ["input"]="Close", ["param"]="nil", ["delay"]=0 }}
     },
-    {["maps"] = {"ba_jail_alcatraz_redux_go"},
+    ["ba_jail_alcatraz_redux"] = {["maps"] = {"ba_jail_alcatraz_redux_go"},
         ["open"] = {{ ["name"]="slave1", ["input"]="Open", ["param"]="nil", ["delay"]=0 }},
         ["close"] = {{ ["name"]="slave1", ["input"]="Close", ["param"]="nil", ["delay"]=0 }}
     },
-    {["maps"] = {"ba_jail_alcatraz"},
+    ["ba_jail_alcatraz"] = {["maps"] = {"ba_jail_alcatraz"},
         ["open"] = {
             { ["name"] = "door_01", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 },
             { ["name"] = "door_02", ["input"] = "Open", ["param"] = "nil", ["delay"] = 2.0 },
@@ -886,15 +894,15 @@ local armory_door_configs = {
             { ["name"] = "door_03", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
         }
     },
-    {["maps"] = {"ba_jail_blackops"},
+    ["ba_jail_blackops"] = {["maps"] = {"ba_jail_blackops"},
         ["open"] = {{ ["name"]="ctdoorcontroler", ["input"]="Open", ["param"]="nil", ["delay"]=0 }},
         ["close"] = {{ ["name"]="ctdoorcontroler", ["input"]="Close", ["param"]="nil", ["delay"]=0 }}
     },
-    {["maps"] = {"ba_jail_canyondam"},
+    ["ba_jail_canyondam"] = {["maps"] = {"ba_jail_canyondam"},
         ["open"] = {{ ["name"]="ArmoryDoor", ["input"]="Open", ["param"]="nil", ["delay"]=0 }},
         ["close"] = {{ ["name"]="ArmoryDoor", ["input"]="Close", ["param"]="nil", ["delay"]=0 }}
     },
-    {["maps"] = {"ba_jail_electric_aero"},
+    ["ba_jail_electric_aero"] = {["maps"] = {"ba_jail_electric_aero"},
         ["open"] = {
             { ["name"] = "WK_Door_Left_1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 },
             { ["name"] = "WK_Door_Left_2", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 },
@@ -908,11 +916,11 @@ local armory_door_configs = {
             { ["name"] = "WK_Door_Right_2", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
         }
     },
-    {["maps"] = {"ba_jail_electric_vip$", "ba_jail_electric_vip_v2"},
+    ["ba_jail_electric_vip"] = {["maps"] = {"ba_jail_electric_vip$", "ba_jail_electric_vip_v2"},
         ["open"] = {{ ["name"]="armory_door", ["input"]="Open", ["param"]="nil", ["delay"]=0 }},
         ["close"] = {{ ["name"]="armory_door", ["input"]="Close", ["param"]="nil", ["delay"]=0 }}
     },
-    {["maps"] = {"ba_jail_electric_vip"},
+    ["ba_jail_electric_vip_v3+"] = {["maps"] = {"ba_jail_electric_vip"},
         ["open"] = {
             { ["name"] = "armory_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 },
             { ["name"] = "door_01", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
@@ -922,7 +930,7 @@ local armory_door_configs = {
             { ["name"] = "door_01", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
         }
     },
-    {["maps"] = { "ba_jail_hellsgamers" },
+    ["ba_jail_hellsgamers"] = {["maps"] = { "ba_jail_hellsgamers" },
         ["open"] = {
             { ["name"] = "doorport002", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
         },
@@ -930,7 +938,7 @@ local armory_door_configs = {
             { ["name"] = "doorport002", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
         }
     },
-    {["maps"] = { "ba_jail_nightprison" },
+    ["ba_jail_nightprison"] = {["maps"] = { "ba_jail_nightprison" },
         ["open"] = {
             { ["name"] = "ctdoor1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 },
             { ["name"] = "ctdoor1.1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 },
@@ -942,7 +950,7 @@ local armory_door_configs = {
             { ["name"] = "ctdoor2", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
         }
     },
-    {["maps"] = { "ba_jail_sand" },
+    ["ba_jail_sand"] = {["maps"] = { "ba_jail_sand" },
         ["open"] = {
             { ["name"] = "armorydoor1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 },
             { ["name"] = "armorydoor2", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
@@ -952,7 +960,7 @@ local armory_door_configs = {
             { ["name"] = "armorydoor2", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
         }
     },
-    {["maps"] = { "ba_nova_prospect" },
+    ["ba_nova_prospect"] = {["maps"] = { "ba_nova_prospect" },
         ["open"] = {
             { ["name"] = "door1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
         },
@@ -960,7 +968,7 @@ local armory_door_configs = {
             { ["name"] = "door1", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
         }
     },
-    {["maps"] = { "jb_8bit_" },
+    ["jb_8bit"] = {["maps"] = { "jb_8bit_" },
         ["open"] = {
             { ["name"] = "armorydoor", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
         },
@@ -968,7 +976,7 @@ local armory_door_configs = {
             { ["name"] = "armorydoor", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
         }
     },
-    {["maps"] = { "jb_clouds" },
+    ["jb_clouds"] = {["maps"] = { "jb_clouds" },
         ["open"] = {
             { ["name"] = "armory_button", ["input"] = "Press", ["param"] = "nil", ["delay"] = 0 }
         },
@@ -982,7 +990,7 @@ local armory_door_configs = {
             { ["name"] = "door_wk5", ["input"] = "Close", ["param"] = "nil", ["delay"] = 5.0 }
         }
     },
-    {["maps"] = { "jb_minecraft_daylight_", "jb_minecraft_nightfall_" },
+    ["jb_minecraft_nightfall"] = {["maps"] = { "jb_minecraft_daylight_", "jb_minecraft_nightfall_" },
         ["open"] = {
             { ["name"] = "armory_doors", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
         },
@@ -990,7 +998,7 @@ local armory_door_configs = {
             { ["name"] = "armory_doors", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
         }
     },
-    {["maps"] = { "ba_mlcastle", "jb_mlcastle" },
+    ["jb_mlcastle"] = {["maps"] = { "ba_mlcastle", "jb_mlcastle" },
         ["open"] = {
             { ["name"] = "arm_dr", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
         },
@@ -998,7 +1006,7 @@ local armory_door_configs = {
             { ["name"] = "arm_dr", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
         }
     },
-    {["maps"] = { "jb_minecraft_kis_" },
+    ["jb_minecraft_kis"] = {["maps"] = { "jb_minecraft_kis_" },
         ["open"] = {
             { ["name"] = "armoury_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
         },
@@ -1008,7 +1016,7 @@ local armory_door_configs = {
             { ["name"] = "isolation_door2", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
         }
     },
-    {["maps"] = { "ba_jail_summer09" },
+    ["ba_jail_summer09"] = {["maps"] = { "ba_jail_summer09" },
         ["open"] = {
             { ["name"] = "door_weapons", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
         },
@@ -1016,7 +1024,7 @@ local armory_door_configs = {
             { ["name"] = "door_weapons", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
         }
     },
-    {["maps"] = { "jb_prison_architect" },
+    ["jb_prison_architect"] = {["maps"] = { "jb_prison_architect" },
         ["open"] = {
             { ["name"] = "daa1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 },
             { ["name"] = "daa2", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 },
@@ -1028,7 +1036,7 @@ local armory_door_configs = {
             { ["name"] = "da5", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
         }
     },
-    {["maps"] = { "jb_spy_vs_spy" },
+    ["jb_spy_vs_spy"] = {["maps"] = { "jb_spy_vs_spy" },
         ["open"] = {
             { ["name"] = "armoury_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
         },
@@ -1036,7 +1044,7 @@ local armory_door_configs = {
             { ["name"] = "armoury_door", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
         }
     },
-    {["maps"] = { "jb_vipinthemix" },
+    ["jb_vipinthemix"] = {["maps"] = { "jb_vipinthemix" },
         ["open"] = {
             { ["name"] = "Armory_door1", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 },
             { ["name"] = "Armory_door2", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
@@ -1046,7 +1054,7 @@ local armory_door_configs = {
             { ["name"] = "Armory_door2", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
         }
     },
-    {["maps"] = { "ba_jail_minecraft_beach" },
+    ["ba_jail_minecraft_beach"] = {["maps"] = { "ba_jail_minecraft_beach" },
         ["open"] = {
             { ["name"] = "armorydoor_closed", ["input"] = "Disable", ["param"] = "nil", ["delay"] = 0 },
             { ["name"] = "armorydoor_open", ["input"] = "Enable", ["param"] = "nil", ["delay"] = 0 },
@@ -1061,7 +1069,7 @@ local armory_door_configs = {
             { ["name"] = "armorydoor_teleport", ["input"] = "Enable", ["param"] = "nil", ["delay"] = 0 }
         }
     },
-    {["maps"] = { "ba_jail_laser" },
+    ["ba_jail_laser early"] = {["maps"] = { "ba_jail_laser" },
         ["open"] = {
             { ["name"] = "armeria", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
         },
@@ -1069,7 +1077,7 @@ local armory_door_configs = {
             { ["name"] = "armeria", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
         }
     },
-    {["maps"] = { "ba_jail_laser" },
+    ["ba_jail_laser later"] = {["maps"] = { "ba_jail_laser" },
         ["open"] = {
             { ["name"] = "armeria.puerta", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
         },
@@ -1077,7 +1085,7 @@ local armory_door_configs = {
             { ["name"] = "armeria.puerta", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
         }
     },
-    {["maps"] = { "ba_jail_sylvan" },
+    ["ba_jail_sylvan"] = {["maps"] = { "ba_jail_sylvan" },
         ["open"] = {
             { ["name"] = "ArmoryDoor", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
         },
@@ -1085,7 +1093,7 @@ local armory_door_configs = {
             { ["name"] = "ArmoryDoor", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
         }
     },
-    {["maps"] = { "jb_castleguarddev" },
+    ["jb_castleguarddev"] = {["maps"] = { "jb_castleguarddev" },
         ["open"] = {
             { ["name"] = "Armory_Door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
         },
@@ -1093,7 +1101,7 @@ local armory_door_configs = {
             { ["name"] = "Armory_Door", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
         }
     },
-    {["maps"] = { "jb_heat_" },
+    ["jb_heat"] = {["maps"] = { "jb_heat_" },
         ["open"] = {
             { ["name"] = "arm", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
         },
@@ -1101,12 +1109,160 @@ local armory_door_configs = {
             { ["name"] = "arm", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
         }
     },
-    {["maps"] = { "jb_kittens_" },
+    ["jb_kittens"] = {["maps"] = { "jb_kittens_" },
         ["open"] = {
             { ["name"] = "armory_door", ["input"] = "Open", ["param"] = "nil", ["delay"] = 0 }
         },
         ["close"] = {
             { ["name"] = "armory_door", ["input"] = "Close", ["param"] = "nil", ["delay"] = 0 }
+        }
+    }
+}
+
+
+--[[
+    These configs take the format of:
+        ["config_id"] = { ["maps"] = ARRAY_OF_MAP_NAME_MATCHES, ["stop music"] = ARRAY_OF_ENTITY_FIRES, ... }
+    Any item other than "maps" within each config will be added as an option for the command when loaded.
+    "stop music" should be included as the config to stop all disco music, and any others should do things like play specific tracks, control the lights, etc.
+    Each option should have a short, descriptive name, such as "stop music", "play trackname_here", "play track 1", "reset lights", "turn off lights", etc.
+
+    Each ARRAY_OF_ENTITY_FIRES should be the following format, as with the cell/armory door configs above:
+        { ["name"] = "entity_name", ["input"] = "Fire_input", ["param"] = "nil/parameters", ["delay"] = 0/as needed }
+]]
+local controldisco_configs = {
+    ["jb_carceris_021"] = {
+        ["maps"] = { "jb_carceris_021" },
+        ["stop music"] = {
+            { ["name"] = "song01", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song02", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song03", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song04", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song05", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song06", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["play track 1"] = {
+            { ["name"] = "song01", ["input"] = "PlaySound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song02", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song03", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song04", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song05", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song06", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["play track 2"] = {
+            { ["name"] = "song01", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song02", ["input"] = "PlaySound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song03", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song04", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song05", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song06", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["play track 3"] = {
+            { ["name"] = "song01", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song02", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song03", ["input"] = "PlaySound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song04", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song05", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song06", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["play track 4"] = {
+            { ["name"] = "song01", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song02", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song03", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song04", ["input"] = "PlaySound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song05", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song06", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["play track 5"] = {
+            { ["name"] = "song01", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song02", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song03", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song04", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song05", ["input"] = "PlaySound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song06", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["play track 6"] = {
+            { ["name"] = "song01", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song02", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song03", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song04", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song05", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song06", ["input"] = "PlaySound", ["param"] = "nil", ["delay"] = 0 }
+        }
+    },
+    ["jb_carceris"] = {
+        ["maps"] = { "jb_carceris" },
+        ["stop music"] = {
+            { ["name"] = "song01", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song02", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song03", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song04", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song05", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song06", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song07", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["play track 1"] = {
+            { ["name"] = "song01", ["input"] = "PlaySound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song02", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song03", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song04", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song05", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song06", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song07", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["play track 2"] = {
+            { ["name"] = "song01", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song02", ["input"] = "PlaySound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song03", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song04", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song05", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song06", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song07", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["play track 3"] = {
+            { ["name"] = "song01", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song02", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song03", ["input"] = "PlaySound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song04", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song05", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song06", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song07", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["play track 4"] = {
+            { ["name"] = "song01", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song02", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song03", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song04", ["input"] = "PlaySound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song05", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song06", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song07", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["play track 5"] = {
+            { ["name"] = "song01", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song02", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song03", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song04", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song05", ["input"] = "PlaySound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song06", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song07", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["play track 6"] = {
+            { ["name"] = "song01", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song02", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song03", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song04", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song05", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song06", ["input"] = "PlaySound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song07", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 }
+        },
+        ["play track 7"] = {
+            { ["name"] = "song01", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song02", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song03", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song04", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song05", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song06", ["input"] = "StopSound", ["param"] = "nil", ["delay"] = 0 },
+            { ["name"] = "song07", ["input"] = "PlaySound", ["param"] = "nil", ["delay"] = 0 }
         }
     }
 }
@@ -1118,14 +1274,14 @@ local function getPossibleConfigMatches( map, configs )
     local matches = {}
 
     -- Iterate through configs, adding any that have a match to the list
-    for _, config in ipairs( configs ) do
+    for cfg_id, config in pairs( configs ) do
 
         -- Iterate through map name patterns to find if any match
         for _, pattern in ipairs( config["maps"] ) do
             
             -- If match found, add the config to the list and stop looking for patterns to match
             if map:match( pattern ) then
-                table.insert(matches, config)
+                matches[ cfg_id ] = config
                 break
             end
 
@@ -1165,19 +1321,6 @@ local function attemptOpenDoors( config, close, incl_solitary )
     end
 end
 
-local function addCmdMancannon()
-    mancannon = ulx.command( CATEGORY_NAME, "ulx mancannon", ulx.mancannon, { "!mancannon" }, true )
-    mancannon:defaultAccess( ULib.ACCESS_ADMIN )
-    mancannon:help( "Opens the mancannon door on ba_jail_summer-based maps." )
-end
-
-local function addCmdStopHeli()
-    stopheli = ulx.command( CATEGORY_NAME, "ulx stopheli", ulx.stopheli, { "!stopheli", "!stophelicopter" }, true )
-    stopheli:addParam{ type=ULib.cmds.BoolArg, invisible=true }
-    stopheli:defaultAccess( ULib.ACCESS_ADMIN )
-    stopheli:help( "Shuts down the helicopter on new_summer-based maps." )
-    stopheli:setOpposite( "ulx startheli", { _, true }, { "!startheli" }, true )
-end
 
 
 -- ULX Commands
@@ -1193,7 +1336,7 @@ function ulx.opencells( calling_ply, incl_solitary, close, armory )
     end
 
     -- Attempt each matching config until one works, ending inside here if one does
-    for _, config in ipairs( configs ) do
+    for _, config in pairs( configs ) do
         if attemptOpenDoors( config, close, incl_solitary ) then
             ulx.fancyLogAdmin( calling_ply, "#A " .. ( close and "closed" or "opened" ) .. " the " 
                                 .. ( armory and "armory" or "cell" ) .. " doors" )
@@ -1204,23 +1347,15 @@ function ulx.opencells( calling_ply, incl_solitary, close, armory )
     -- If this hasn't ended by now, no attempted config succeeded, so display an error message to the player about it
     ULib.tsayError( calling_ply, ERROR_MAP, true )
 end
-local opencells = ulx.command( CATEGORY_NAME, "ulx opencells", ulx.opencells, "!opencells", true )
-opencells:addParam{ type=ULib.cmds.BoolArg, hint="Include solitary cells?", default=true, ULib.cmds.optional }
-opencells:addParam{ type=ULib.cmds.BoolArg, invisible=true, default=false, ULib.cmds.optional }
-opencells:addParam{ type=ULib.cmds.BoolArg, invisible=true, default=false, ULib.cmds.optional }
-opencells:defaultAccess( ULib.ACCESS_ADMIN )
-opencells:help( "Opens all cell doors." )
-opencells:setOpposite( "ulx closecells", { _, _, true, _ }, "!closecells", true )
+local opencells
+SetGlobalBool( GBOOL_INCL_OPENCELLS, false ) -- Mark to not include this command by default
 
 
 function ulx.openarmory( calling_ply, close )
     ulx.opencells( calling_ply, false, close, true ) -- Open armory code is just open cells but with a different config and log
 end
-local openarmory = ulx.command( CATEGORY_NAME, "ulx openarmory", ulx.openarmory, { "!openarmory", "!openarmoury" }, true )
-openarmory:addParam{ type=ULib.cmds.BoolArg, invisible=true, default=false, ULib.cmds.optional }
-openarmory:defaultAccess( ULib.ACCESS_ADMIN )
-openarmory:help( "Opens all armory doors." )
-openarmory:setOpposite( "ulx closearmory", { _, true }, { "!closearmory", "!closearmoury" }, true )
+local openarmory
+SetGlobalBool( GBOOL_INCL_OPENARMORY, false ) -- Mark to not include this command by default
 
 
 function ulx.cellsstatus( calling_ply )
@@ -1234,7 +1369,7 @@ function ulx.cellsstatus( calling_ply )
     end
     
     -- Try to discover cell door status from each config until one works completely
-    for _, cfg in ipairs( configs ) do
+    for _, cfg in pairs( configs ) do
         local cfg_status = cfg["status"] -- The status section of the config - the only part we care about for the status check
 
         -- Count the open state + total number of entities per grouping, but skip to the next config if an entity isn't found
@@ -1349,9 +1484,8 @@ function ulx.cellsstatus( calling_ply )
     -- If this is reached, then no valid config was found - tell the player this
     ULib.tsayError( calling_ply, ERROR_MAP, true )
 end
-local cellsstatus = ulx.command( CATEGORY_NAME, "ulx cellsstatus", ulx.cellsstatus, { "!cellsstatus", "!cellstatus" }, true )
-cellsstatus:defaultAccess( ULib.ACCESS_ADMIN ) -- There's no real reason for this to be admin-only, but usually only admins would *need* this
-cellsstatus:help( "Tells the player whether the cell doors are currently open or closed." )
+local cellsstatus
+SetGlobalBool( GBOOL_INCL_CELLSSTATUS, false ) -- Mark to not include this command by default
 
 
 function ulx.stopheli( calling_ply, start )
@@ -1375,6 +1509,7 @@ end
 local stopheli
 SetGlobalBool( GBOOL_INCL_STOPHELI, false ) -- Marks whether clients should add this command
 
+
 --[[
     This exists as otherwise players can hide or get stuck in the mancannon, prolonging rounds.
     Once this is used, the door can be opened freely, but the trap only locks the door the first time, anyway, so this is consistent.
@@ -1391,6 +1526,130 @@ function ulx.mancannon( calling_ply )
 end
 local mancannon
 SetGlobalBool( GBOOL_INCL_MANCANNON, false ) -- Marks whether clients should add this command
+
+
+function ulx.controldisco( calling_ply, option )
+    --[[
+        The code to add this command only does so once it has fully checked that all of the named entities exist,
+        so there is no need to check for them here.
+        
+        The command is also marked to only allow autocompletes as arguments, so there is no need to check
+        the option parameter, as it will always be a valid config option.
+    ]]
+
+    -- Iterate through the selected option of the config, firing all configured entity inputs
+    for _, cfg in ipairs( controldisco_configs[ GetGlobalString( GSTR_CONFIG_CONTROLDISCO ) ][ option ] ) do
+        -- Iterate through all entities with the given name, firing the configured input
+        local entities = ents.FindByName( cfg["name"] )
+        for _, ent in ipairs( entities ) do
+            ent:Fire( cfg["input"], cfg["param"], cfg["delay"] )
+        end
+    end
+
+    ulx.fancyLogAdmin( calling_ply, "#A made the disco '#s'", option )
+end
+local controldisco
+SetGlobalBool( GBOOL_INCL_CONTROLDISCO, false )
+SetGlobalString( GSTR_CONFIG_CONTROLDISCO, "" )
+
+
+
+-- Functions for adding conditional commands
+local function addCmdMancannon()
+    mancannon = ulx.command( CATEGORY_NAME, "ulx mancannon", ulx.mancannon, { "!mancannon" }, true )
+    mancannon:defaultAccess( ULib.ACCESS_ADMIN )
+    mancannon:help( "Opens the mancannon door on ba_jail_summer-based maps." )
+end
+
+local function addCmdStopHeli()
+    stopheli = ulx.command( CATEGORY_NAME, "ulx stopheli", ulx.stopheli, { "!stopheli", "!stophelicopter" }, true )
+    stopheli:addParam{ type=ULib.cmds.BoolArg, invisible=true }
+    stopheli:defaultAccess( ULib.ACCESS_ADMIN )
+    stopheli:help( "Shuts down the helicopter on new_summer-based maps." )
+    stopheli:setOpposite( "ulx startheli", { _, true }, { "!startheli" }, true )
+end
+
+local function addCmdOpenCells()
+    opencells = ulx.command( CATEGORY_NAME, "ulx opencells", ulx.opencells, "!opencells", true )
+    opencells:addParam{ type=ULib.cmds.BoolArg, hint="Include solitary cells?", default=true, ULib.cmds.optional }
+    opencells:addParam{ type=ULib.cmds.BoolArg, invisible=true, default=false, ULib.cmds.optional }
+    opencells:addParam{ type=ULib.cmds.BoolArg, invisible=true, default=false, ULib.cmds.optional }
+    opencells:defaultAccess( ULib.ACCESS_ADMIN )
+    opencells:help( "Opens all cell doors." )
+    opencells:setOpposite( "ulx closecells", { _, _, true, _ }, "!closecells", true )
+end
+
+local function addCmdOpenArmory()
+    openarmory = ulx.command( CATEGORY_NAME, "ulx openarmory", ulx.openarmory, { "!openarmory", "!openarmoury" }, true )
+    openarmory:addParam{ type=ULib.cmds.BoolArg, invisible=true, default=false, ULib.cmds.optional }
+    openarmory:defaultAccess( ULib.ACCESS_ADMIN )
+    openarmory:help( "Opens all armory doors." )
+    openarmory:setOpposite( "ulx closearmory", { _, true }, { "!closearmory", "!closearmoury" }, true )
+end
+
+local function addCmdCellsStatus()
+    cellsstatus = ulx.command( CATEGORY_NAME, "ulx cellsstatus", ulx.cellsstatus, { "!cellsstatus", "!cellstatus" }, true )
+    cellsstatus:defaultAccess( ULib.ACCESS_ADMIN )
+    cellsstatus:help( "Tells the player whether the cell doors are currently open or closed." )
+end
+
+local function addCmdControlDisco( configs )
+    -- If being done serverside, figure out which config works and mark that to be used. If none do, return false and don't add the command.
+    local found = false
+    local options = {}
+    if ( SERVER ) then
+        -- Iterate through all possible configs, checking if each one works, and stopping if the right one is found
+        for id, cfg in pairs( configs ) do
+            -- Iterate through all options in the config, checking that all of the entities named are there
+            local failed = false
+            for opt_name, opt_cfg in pairs( cfg ) do
+                -- If this isn't the maps list, check if all named entities in this option's config exist, failing if any don't
+                if ( opt_name ~= "maps" ) then
+                    -- Iterate through all entities in this option, failing this config if any don't exist in the current map
+                    for _, ent_cfg in ipairs( opt_cfg ) do
+                        -- Check if the named entity exists, and fail the config if not
+                        if ( next( ents.FindByName( ent_cfg["name"] ) ) == nil ) then
+                            failed = true
+                            options = {}
+                            break
+                        end
+                    end
+
+                    -- If any entities weren't found, no need to continue looking. Otherwise, add this option to the list of possible ones.
+                    if ( failed ) then break
+                    else
+                        table.insert( options, opt_name )
+                    end
+                end
+            end
+
+            -- If this config works, save its ID as the config to use for this map, and add the command
+            SetGlobalString( GSTR_CONFIG_CONTROLDISCO, id )
+            found = true
+        end
+    end
+
+    -- If there is actually a valid config to use, as discovered above or known if being added on clientside, add the command
+    if ( CLIENT or found ) then
+        -- If on clientside, need to first grab all the config's options
+        if ( CLIENT ) then
+            for opt, _ in pairs( controldisco_configs[ GetGlobalString( GSTR_CONFIG_CONTROLDISCO ) ] ) do
+                if opt ~= "maps" then table.insert( options, opt ) end
+            end
+        end
+
+        controldisco = ulx.command( CATEGORY_NAME, "ulx controldisco", ulx.controldisco, { "!controldisco", "!disco" }, true )
+        controldisco:addParam{ type=ULib.cmds.StringArg, completes=options, ULib.cmds.restrictToCompletes, ULib.cmds.takeRestOfLine } -- Only allow the config's options as possible command options
+        controldisco:defaultAccess( ULib.ACCESS_ADMIN )
+        controldisco:help( "Controls the map's disco or similar music and lights." )
+
+        -- Return that the command has been added successfully
+        return true
+    else
+        -- Return that the command could not be added
+        return false
+    end
+end
 
 
 
@@ -1424,5 +1683,46 @@ hook.Add( "InitPostEntity", "jb7-ulx_maps_initpostentity", function()
     elseif ( CLIENT and GetGlobalBool( GBOOL_INCL_MANCANNON ) ) then
         -- Add command to client if the server declared it valid
         addCmdMancannon()
+    end
+
+    -- If there are any possible config matches for it, add the opencells and cellsstatus commands
+    if ( SERVER and next( getPossibleConfigMatches( map, cell_door_configs ) ) ~= nil ) then
+        -- Add the commands serverside
+        addCmdOpenCells()
+        addCmdCellsStatus()
+
+        -- Mark for clients to add the commands
+        SetGlobalBool( GBOOL_INCL_OPENCELLS, true )
+        SetGlobalBool( GBOOL_INCL_CELLSSTATUS, true )
+    elseif ( CLIENT and GetGlobalBool( GBOOL_INCL_OPENCELLS ) ) then
+        -- Add the command clientside
+        addCmdOpenCells()
+        addCmdCellsStatus()
+    end
+
+    -- If there are any possible config matches for it, add the openarmory command
+    if ( SERVER and next( getPossibleConfigMatches( map, armory_door_configs ) ) ~= nil ) then
+        -- Add the command serverside
+        addCmdOpenArmory()
+
+        -- Mark for clients to add the command
+        SetGlobalBool( GBOOL_INCL_OPENARMORY, true )
+    elseif ( CLIENT and GetGlobalBool( GBOOL_INCL_OPENARMORY ) ) then
+        -- Add the command clientside
+        addCmdOpenArmory()
+    end
+
+    -- If there are any possible config matches for it, attempt to add the controldisco command
+    local configs = getPossibleConfigMatches( map, controldisco_configs )
+    if ( next( configs ) ~= nil ) then
+        if ( SERVER ) then
+            -- Attempt to add the command for this map, and mark for clients to add it as well if successful
+            if ( addCmdControlDisco( configs ) ) then
+                SetGlobalBool( GBOOL_INCL_CONTROLDISCO, true )
+            end
+        elseif ( CLIENT and GetGlobalBool( GBOOL_INCL_CONTROLDISCO ) ) then
+            -- If the server has marked this command to be added, do so on the client
+            addCmdControlDisco( configs )
+        end
     end
 end )
