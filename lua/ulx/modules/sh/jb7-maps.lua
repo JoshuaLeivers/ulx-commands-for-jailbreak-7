@@ -14,14 +14,15 @@ local ERROR_MAP = "That command does not appear to work on this map!"
 
 local HOOK_ADDCMD = "ULX-JB7_AddCmd"
 
-local GBOOL_INCL_OPENCELLS = "ulx-jb7_incl_opencells"
-local GBOOL_INCL_OPENARMORY = "ulx-jb7_incl_openarmory"
-local GBOOL_INCL_CELLSSTATUS = "ulx-jb7_incl_cellsstatus"
+local GBOOL_INCL_ARMORY = "ulx-jb7_incl_armory"
+local GBOOL_INCL_CELLS = "ulx-jb7_incl_cells"
 local GBOOL_INCL_STOPHELI = "ulx-jb7_incl_stopheli"
 local GBOOL_INCL_MANCANNON = "ulx-jb7_incl_mancannon"
 local GBOOL_INCL_CONTROLDISCO = "ulx-jb7_incl_controldisco"
 
 local GSTR_CONFIG_CONTROLDISCO = "ulx-jb7_config_controldisco"
+local GSTR_CONFIG_CELLS = "ulx-jb7_config_cells"
+local GSTR_CONFIG_ARMORY = "ulx-jb7_config_armory"
 
 
 -- Cell door control maps and entities
@@ -32,7 +33,7 @@ local GSTR_CONFIG_CONTROLDISCO = "ulx-jb7_config_controldisco"
     See below for what each of these things should look like.
 
     Example ARRAY_OF_MAP_NAME_MATCHES:
-        {"jb_lego_RAGE", "jb_lego_jail", "jb_lego_.+_a20"}
+        {"jb_lego_rage", "jb_lego_jail", "jb_lego_.+_a20"}
     This should just be a list of any regex patterns for matching map names that a config should be valid for.
     For example, the above would match maps like jb_lego_jail_v4. jb_lego_rage_a20, etc.
     This is useful for capturing different versions of the same map, or maybe different maps by the same creator if they stuck with the same format for different maps of theirs.
@@ -1348,14 +1349,14 @@ function ulx.opencells( calling_ply, incl_solitary, close, armory )
     ULib.tsayError( calling_ply, ERROR_MAP, true )
 end
 local opencells
-SetGlobalBool( GBOOL_INCL_OPENCELLS, false ) -- Mark to not include this command by default
+SetGlobalBool( GBOOL_INCL_CELLS, false ) -- Mark to not include this command by default
 
 
 function ulx.openarmory( calling_ply, close )
     ulx.opencells( calling_ply, false, close, true ) -- Open armory code is just open cells but with a different config and log
 end
 local openarmory
-SetGlobalBool( GBOOL_INCL_OPENARMORY, false ) -- Mark to not include this command by default
+SetGlobalBool( GBOOL_INCL_ARMORY, false ) -- Mark to not include this command by default
 
 
 function ulx.cellsstatus( calling_ply )
@@ -1485,7 +1486,6 @@ function ulx.cellsstatus( calling_ply )
     ULib.tsayError( calling_ply, ERROR_MAP, true )
 end
 local cellsstatus
-SetGlobalBool( GBOOL_INCL_CELLSSTATUS, false ) -- Mark to not include this command by default
 
 
 function ulx.stopheli( calling_ply, start )
@@ -1569,35 +1569,93 @@ local function addCmdStopHeli()
     stopheli:setOpposite( "ulx startheli", { _, true }, { "!startheli" }, true )
 end
 
-local function addCmdOpenCells()
-    opencells = ulx.command( CATEGORY_NAME, "ulx opencells", ulx.opencells, "!opencells", true )
-    opencells:addParam{ type=ULib.cmds.BoolArg, hint="Include solitary cells?", default=true, ULib.cmds.optional }
-    opencells:addParam{ type=ULib.cmds.BoolArg, invisible=true, default=false, ULib.cmds.optional }
-    opencells:addParam{ type=ULib.cmds.BoolArg, invisible=true, default=false, ULib.cmds.optional }
-    opencells:defaultAccess( ULib.ACCESS_ADMIN )
-    opencells:help( "Opens all cell doors." )
-    opencells:setOpposite( "ulx closecells", { _, _, true, _ }, "!closecells", true )
+
+local function checkValidEntities( config, option )
+    -- Check that all of the entities in the option exist, failing if any don't
+    for _, ent_cfg in ipairs( config[ option ] ) do
+        -- If the current entity doesn't exist, fail this config and stop looking
+        if ( next( ents.FindByName( ent_cfg["name"] ) ) == nil ) then
+            return false
+        end
+    end
+
+    -- If here is reached, no entity was missing, so this is valid
+    return true
 end
 
-local function addCmdOpenArmory()
-    openarmory = ulx.command( CATEGORY_NAME, "ulx openarmory", ulx.openarmory, { "!openarmory", "!openarmoury" }, true )
-    openarmory:addParam{ type=ULib.cmds.BoolArg, invisible=true, default=false, ULib.cmds.optional }
-    openarmory:defaultAccess( ULib.ACCESS_ADMIN )
-    openarmory:help( "Opens all armory doors." )
-    openarmory:setOpposite( "ulx closearmory", { _, true }, { "!closearmory", "!closearmoury" }, true )
+local function addCmdsCells( configs )
+    -- If running serverside, find if there is a valid config. If there isn't, mark to not add the command.
+    if ( configs and SERVER ) then
+        -- Iterate through all the configs, checking if any work
+        for id, cfg in pairs( configs ) do
+            -- Check all entities for both open and close options
+            if ( checkValidEntities( cfg, "open" ) and checkValidEntities( cfg, "close" ) ) then
+                -- The open and close configs worked, so check the status config
+                local failed = false
+                for ent_name, _ in pairs( cfg["status"] ) do
+                    -- If there are no entities by this name, fail the config
+                    if ( next( ents.FindByName( ent_name ) ) == nil ) then
+                        failed = true
+                        break
+                    end
+                end
+
+                -- If no entities failed, mark this config as the correct one
+                if not failed then
+                    SetGlobalString( GSTR_CONFIG_CELLS, id )
+                    SetGlobalBool( GBOOL_INCL_CELLS, true )
+                end
+            end
+        end
+    end
+
+    -- If marked to do so, add the commands
+    if ( GetGlobalBool( GBOOL_INCL_CELLS ) ) then
+        -- Add the opencells commands
+        opencells = ulx.command( CATEGORY_NAME, "ulx opencells", ulx.opencells, "!opencells", true )
+        opencells:addParam{ type=ULib.cmds.BoolArg, hint="Include solitary cells?", default=true, ULib.cmds.optional }
+        opencells:addParam{ type=ULib.cmds.BoolArg, invisible=true, default=false, ULib.cmds.optional }
+        opencells:addParam{ type=ULib.cmds.BoolArg, invisible=true, default=false, ULib.cmds.optional }
+        opencells:defaultAccess( ULib.ACCESS_ADMIN )
+        opencells:help( "Opens all cell doors." )
+        opencells:setOpposite( "ulx closecells", { _, _, true, _ }, "!closecells", true )
+
+        -- Add the cellsstatus command
+        cellsstatus = ulx.command( CATEGORY_NAME, "ulx cellsstatus", ulx.cellsstatus, { "!cellsstatus", "!cellstatus" }, true )
+        cellsstatus:defaultAccess( ULib.ACCESS_ADMIN )
+        cellsstatus:help( "Tells the player whether the cell doors are currently open or closed." )
+    end
 end
 
-local function addCmdCellsStatus()
-    cellsstatus = ulx.command( CATEGORY_NAME, "ulx cellsstatus", ulx.cellsstatus, { "!cellsstatus", "!cellstatus" }, true )
-    cellsstatus:defaultAccess( ULib.ACCESS_ADMIN )
-    cellsstatus:help( "Tells the player whether the cell doors are currently open or closed." )
+local function addCmdOpenArmory( configs )
+    -- If being done serverside, figure out which config works and mark it to be used. If none do, don't add the command.
+    if ( configs and SERVER ) then
+        -- Iterate through all the configs, checking if any work
+        for id, cfg in pairs( configs ) do
+            -- Check all entities for both open and close options
+            if ( checkValidEntities( cfg, "open" ) and checkValidEntities( cfg, "close" ) ) then
+                -- All entities exist, so use this config
+                SetGlobalString( GSTR_CONFIG_ARMORY, id )
+                SetGlobalBool( GBOOL_INCL_ARMORY, true )
+            end
+        end
+    end
+
+    -- If marked to include this command, do so
+    if ( GetGlobalBool( GBOOL_INCL_ARMORY ) ) then
+        openarmory = ulx.command( CATEGORY_NAME, "ulx openarmory", ulx.openarmory, { "!openarmory", "!openarmoury" }, true )
+        openarmory:addParam{ type=ULib.cmds.BoolArg, invisible=true, default=false, ULib.cmds.optional }
+        openarmory:defaultAccess( ULib.ACCESS_ADMIN )
+        openarmory:help( "Opens all armory doors." )
+        openarmory:setOpposite( "ulx closearmory", { _, true }, { "!closearmory", "!closearmoury" }, true )
+    end
 end
+
 
 local function addCmdControlDisco( configs )
     -- If being done serverside, figure out which config works and mark that to be used. If none do, return false and don't add the command.
-    local found = false
     local options = {}
-    if ( SERVER ) then
+    if ( configs and SERVER ) then
         -- Iterate through all possible configs, checking if each one works, and stopping if the right one is found
         for id, cfg in pairs( configs ) do
             -- Iterate through all options in the config, checking that all of the entities named are there
@@ -1625,29 +1683,25 @@ local function addCmdControlDisco( configs )
 
             -- If this config works, save its ID as the config to use for this map, and add the command
             SetGlobalString( GSTR_CONFIG_CONTROLDISCO, id )
-            found = true
+            SetGlobalBool( GBOOL_INCL_CONTROLDISCO, true )
         end
     end
 
-    -- If there is actually a valid config to use, as discovered above or known if being added on clientside, add the command
-    if ( CLIENT or found ) then
-        -- If on clientside, need to first grab all the config's options
+    -- If there is actually a valid config to use, add the command
+    if ( GetGlobalBool( GBOOL_INCL_CONTROLDISCO ) ) then
+        -- If on clientside, get all the config options
         if ( CLIENT ) then
+            options = {}
             for opt, _ in pairs( controldisco_configs[ GetGlobalString( GSTR_CONFIG_CONTROLDISCO ) ] ) do
                 if opt ~= "maps" then table.insert( options, opt ) end
             end
         end
 
+        -- Add command
         controldisco = ulx.command( CATEGORY_NAME, "ulx controldisco", ulx.controldisco, { "!controldisco", "!disco" }, true )
-        controldisco:addParam{ type=ULib.cmds.StringArg, completes=options, ULib.cmds.restrictToCompletes, ULib.cmds.takeRestOfLine } -- Only allow the config's options as possible command options
+        controldisco:addParam{ type=ULib.cmds.StringArg, completes=options, default="stop music", ULib.cmds.restrictToCompletes, ULib.cmds.takeRestOfLine } -- Only allow the config's options as possible command options
         controldisco:defaultAccess( ULib.ACCESS_ADMIN )
         controldisco:help( "Controls the map's disco or similar music and lights." )
-
-        -- Return that the command has been added successfully
-        return true
-    else
-        -- Return that the command could not be added
-        return false
     end
 end
 
@@ -1660,69 +1714,68 @@ end
     Client can only see entities within its view, so server must check and notify clients.
 ]]
 hook.Add( "InitPostEntity", "jb7-ulx_maps_initpostentity", function()
-    -- If on jb_new_summer_v2-based maps, add stopheli command
-    local map = game.GetMap()
-    if ( SERVER and next( ents.FindByName( "helibut1" ) ) ~= nil and next( ents.FindByName( "helibut2" ) ) ~= nil and map:find( "_summer" ) ) then
-        -- This is a valid map for stopheli, so add it to the server
-        addCmdStopHeli()
+    if ( SERVER ) then
+        -- Serverside setup and configuration setting
 
-        -- Mark that this command should be added by clients
-        SetGlobalBool( GBOOL_INCL_STOPHELI, true )
-    elseif ( CLIENT and GetGlobalBool( GBOOL_INCL_STOPHELI ) ) then
-        -- Add command to client if the server declared it valid
-        addCmdStopHeli()
-    end
+        local map = game.GetMap()
 
-    -- If the mancannon door exists on a map with "summer" in the name, add mancannon command
-    if ( SERVER and next( ents.FindByName( "suicideD1" ) ) ~= nil and map:find( "_summer" ) ) then
-        -- Add command to server
-        addCmdMancannon()
+        -- If on jb_new_summer_v2-based maps, add stopheli command
+        if ( next( ents.FindByName( "helibut1" ) ) ~= nil and next( ents.FindByName( "helibut2" ) ) ~= nil and map:find( "_summer" ) ) then
+            -- This is a valid map for stopheli, so add it to the server
+            addCmdStopHeli()
 
-        -- Mark that this command should be added by clients
-        SetGlobalBool( GBOOL_INCL_MANCANNON, true )
-    elseif ( CLIENT and GetGlobalBool( GBOOL_INCL_MANCANNON ) ) then
-        -- Add command to client if the server declared it valid
-        addCmdMancannon()
-    end
+            -- Mark for the client to also add the command
+            SetGlobalBool( GBOOL_INCL_STOPHELI, true )
+        end
 
-    -- If there are any possible config matches for it, add the opencells and cellsstatus commands
-    if ( SERVER and next( getPossibleConfigMatches( map, cell_door_configs ) ) ~= nil ) then
-        -- Add the commands serverside
-        addCmdOpenCells()
-        addCmdCellsStatus()
+        -- If the mancannon door exists on a map with "_summer" in the name, add the mancannon command
+        if ( next( ents.FindByName( "suicideD1" ) ) ~= nil and map:find( "_summer" ) ) then
+            -- Add command to server
+            addCmdMancannon()
 
-        -- Mark for clients to add the commands
-        SetGlobalBool( GBOOL_INCL_OPENCELLS, true )
-        SetGlobalBool( GBOOL_INCL_CELLSSTATUS, true )
-    elseif ( CLIENT and GetGlobalBool( GBOOL_INCL_OPENCELLS ) ) then
-        -- Add the command clientside
-        addCmdOpenCells()
-        addCmdCellsStatus()
-    end
+            -- Mark that this command should be added by clients
+            SetGlobalBool( GBOOL_INCL_MANCANNON, true )
+        end
 
-    -- If there are any possible config matches for it, add the openarmory command
-    if ( SERVER and next( getPossibleConfigMatches( map, armory_door_configs ) ) ~= nil ) then
-        -- Add the command serverside
-        addCmdOpenArmory()
+        -- If there are any possible configs, attempt to add the cell door commands (sets globals internally)
+        local configs = getPossibleConfigMatches( map, cell_door_configs )
+        if ( next( configs ) ~= nil ) then
+            addCmdsCells( configs )
+        end
 
-        -- Mark for clients to add the command
-        SetGlobalBool( GBOOL_INCL_OPENARMORY, true )
-    elseif ( CLIENT and GetGlobalBool( GBOOL_INCL_OPENARMORY ) ) then
-        -- Add the command clientside
-        addCmdOpenArmory()
-    end
+        -- If there are any possible configs, attempt to add the openarmory commands (sets globals internally)
+        local configs = getPossibleConfigMatches( map, armory_door_configs )
+        if ( next( configs ) ~= nil ) then
+            addCmdOpenArmory( configs )
+        end
 
-    -- If there are any possible config matches for it, attempt to add the controldisco command
-    local configs = getPossibleConfigMatches( map, controldisco_configs )
-    if ( next( configs ) ~= nil ) then
-        if ( SERVER ) then
-            -- Attempt to add the command for this map, and mark for clients to add it as well if successful
-            if ( addCmdControlDisco( configs ) ) then
-                SetGlobalBool( GBOOL_INCL_CONTROLDISCO, true )
-            end
-        elseif ( CLIENT and GetGlobalBool( GBOOL_INCL_CONTROLDISCO ) ) then
-            -- If the server has marked this command to be added, do so on the client
+        -- If there are any possible configs, attempt to add the controldisco command (sets globals internally)
+        local configs = getPossibleConfigMatches( map, controldisco_configs )
+        if ( next( configs ) ~= nil ) then
             addCmdControlDisco( configs )
+        end
+    elseif ( CLIENT ) then
+        -- Clientside setup, using configuration set by server code above
+
+        -- Add various commands if they have been marked to be so
+        if ( GetGlobalBool( GBOOL_INCL_STOPHELI ) ) then
+            addCmdStopHeli()
+        end
+        
+        if ( GetGlobalBool( GBOOL_INCL_MANCANNON ) ) then
+            addCmdMancannon()
+        end
+
+        if ( GetGlobalBool( GBOOL_INCL_CELLS ) ) then
+            addCmdsCells()
+        end
+        
+        if ( GetGlobalBool( GBOOL_INCL_ARMORY ) ) then
+            addCmdOpenArmory()
+        end
+
+        if ( GetGlobalBool( GBOOL_INCL_CONTROLDISCO ) ) then
+            addCmdControlDisco()
         end
     end
 end )
