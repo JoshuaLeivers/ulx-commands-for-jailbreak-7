@@ -1566,7 +1566,7 @@ local function addCmdStopHeli()
     stopheli:addParam{ type=ULib.cmds.BoolArg, invisible=true }
     stopheli:defaultAccess( ULib.ACCESS_ADMIN )
     stopheli:help( "Shuts down the helicopter on new_summer-based maps." )
-    stopheli:setOpposite( "ulx startheli", { _, true }, { "!startheli" }, true )
+    stopheli:setOpposite( "ulx startheli", { _, true }, { "!startheli", "!starthelicopter" }, true )
 end
 
 
