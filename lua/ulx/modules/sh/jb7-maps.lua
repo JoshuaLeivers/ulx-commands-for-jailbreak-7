@@ -1271,6 +1271,7 @@ local controldisco_configs = {
 
 -- Helper Functions
 
+-- Return all possible matching configs based on the map regexes
 local function getPossibleConfigMatches( map, configs )
     local matches = {}
 
@@ -1293,6 +1294,10 @@ local function getPossibleConfigMatches( map, configs )
     return matches
 end
 
+--[[
+    Attempt to Fire each entity config from a door config until an entity isn't found, then try the next config until none are left.
+    Returns true/false based on whether any configs succeeded.
+]]
 local function attemptOpenDoors( config, close, incl_solitary )
     -- Get the right key for the config section based on whether opening or closing
     local opcl = close and "close" or "open"
@@ -1512,7 +1517,7 @@ SetGlobalBool( GBOOL_INCL_STOPHELI, false ) -- Marks whether clients should add 
 
 --[[
     This exists as otherwise players can hide or get stuck in the mancannon, prolonging rounds.
-    Once this is used, the door can be opened freely, but the trap only locks the door the first time, anyway, so this is consistent.
+    Once this is used, the door can be opened freely, but the trap only locks the door the first time, anyway, so this is consistent with the map's design.
 ]]
 function ulx.mancannon( calling_ply )
     -- No need to check if the entity exists, as otherwise this command wouldn't be added by the hook
@@ -1555,12 +1560,15 @@ SetGlobalString( GSTR_CONFIG_CONTROLDISCO, "" )
 
 
 -- Functions for adding conditional commands
+
+-- Add the mancannon command to the client or server
 local function addCmdMancannon()
     mancannon = ulx.command( CATEGORY_NAME, "ulx mancannon", ulx.mancannon, { "!mancannon" }, true )
     mancannon:defaultAccess( ULib.ACCESS_ADMIN )
     mancannon:help( "Opens the mancannon door on ba_jail_summer-based maps." )
 end
 
+-- Add the stopheli/startheli command to the client or server
 local function addCmdStopHeli()
     stopheli = ulx.command( CATEGORY_NAME, "ulx stopheli", ulx.stopheli, { "!stopheli", "!stophelicopter" }, true )
     stopheli:addParam{ type=ULib.cmds.BoolArg, invisible=true }
@@ -1569,7 +1577,7 @@ local function addCmdStopHeli()
     stopheli:setOpposite( "ulx startheli", { _, true }, { "!startheli", "!starthelicopter" }, true )
 end
 
-
+-- Check that a table of entities given from a config all exist in the current map
 local function checkValidEntities( config, option )
     -- Check that all of the entities in the option exist, failing if any don't
     for _, ent_cfg in ipairs( config[ option ] ) do
@@ -1583,6 +1591,7 @@ local function checkValidEntities( config, option )
     return true
 end
 
+-- Add the opencells and cellsstatus commands to the client or server
 local function addCmdsCells( configs )
     -- If running serverside, find if there is a valid config. If there isn't, mark to not add the command.
     if ( configs and SERVER ) then
@@ -1627,6 +1636,7 @@ local function addCmdsCells( configs )
     end
 end
 
+-- Add the openarmory command to the client or server
 local function addCmdOpenArmory( configs )
     -- If being done serverside, figure out which config works and mark it to be used. If none do, don't add the command.
     if ( configs and SERVER ) then
@@ -1651,7 +1661,7 @@ local function addCmdOpenArmory( configs )
     end
 end
 
-
+-- Add the controldisco command to the client or server
 local function addCmdControlDisco( configs )
     -- If being done serverside, figure out which config works and mark that to be used. If none do, return false and don't add the command.
     local options = {}

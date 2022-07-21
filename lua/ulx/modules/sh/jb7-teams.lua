@@ -16,7 +16,7 @@ local ERROR_GAMEMODE = "That command only works in Jail Break!"
 
 -- Helper Functions
 
--- Team switching code as same as gamemode code
+-- Team switching done the same way the gamemode does it
 local function swapTeam( ply, team_val )
     -- Swap the player's team
     ply:SetTeam( team_val )
