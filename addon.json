@@ -1,0 +1,11 @@
+{
+    "title" : "ULX Commands for Jail Break 7",
+    "type"  : "ServerContent",
+    "tags"  : [ "roleplay" ],
+    "ignore":
+    [
+        ".git*",
+        "README.md",
+        "LICENSE"
+    ]
+}
