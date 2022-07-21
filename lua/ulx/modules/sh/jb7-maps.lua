@@ -11,6 +11,7 @@
 
 local CATEGORY_NAME = "Jail Break"
 local ERROR_MAP = "That command does not appear to work on this map!"
+local ERROR_DOOR_GROUP = "One of the doors aren't behaving as expected, so this command doesn't work right now!"
 
 local HOOK_ADDCMD = "ULX-JB7_AddCmd"
 
@@ -1365,130 +1366,112 @@ SetGlobalBool( GBOOL_INCL_ARMORY, false ) -- Mark to not include this command by
 
 
 function ulx.cellsstatus( calling_ply )
-    local map = game.GetMap()
+    -- Get the status section of the cell doors config - the only section we care about for this command
+    local cfg_status = cell_door_configs[ GetGlobalString( GSTR_CONFIG_CELLS ) ][ "status" ]
 
-    -- Get all matching cell door configs, and return with error message if none match
-    local configs = getPossibleConfigMatches( map, cell_door_configs )
-    if next(configs) == nil then
-        ULib.tsayError( calling_ply, ERROR_MAP, true )
-        return
-    end
-    
-    -- Try to discover cell door status from each config until one works completely
-    for _, cfg in pairs( configs ) do
-        local cfg_status = cfg["status"] -- The status section of the config - the only part we care about for the status check
+    -- Check the status based on the entities in the config
+    local count = {}
+    for ent_name, ent_cfg in pairs( cfg_status ) do
+        -- Get all the entities with the given name
+        local entities = ents.FindByName( ent_name )
 
-        -- Count the open state + total number of entities per grouping, but skip to the next config if an entity isn't found
-        local count = {}
-        local valid = true
-        for ent_name, ent_cfg in pairs( cfg_status ) do
-            -- Get all the entities with the given name
-            local entities = ents.FindByName( ent_name )
+        -- Find out if one of this set of entities is in its open state
+        local is_open = false
 
-            -- Find out if one of this set of entities is in its open state
-            local is_open = false
-
-            -- If no entities of this name exists and that's not itself the indicator, then this config is invalid
-            if next( entities ) == nil then
-                if ent_cfg["check_type"] == "exists" then
-                    is_open = true
-                else -- This config is invalid for this map
-                    valid = false
-                    break
-                end
-            end
-
-            
-            local e = entities[1]
-            if ent_cfg["check_type"] == "exists" and next( entities ) ~= nil then
-                -- If here is reached then the entity *does* exist
-                is_open = false
-            elseif ent_cfg["check_type"] == "func_door" or ent_cfg["check_type"] == "func_door_rotating" then
-                is_open = e:GetInternalVariable( "m_toggle_state" ) == 0
-            elseif ent_cfg["check_type"] == "prop_door_rotating" then
-                is_open = e:GetInternalVariable( "m_eDoorState" ) ~= 0
-            elseif ent_cfg["check_type"] == "func_movelinear" then
-                is_open = e:GetInternalVariable( "m_vecPosition1" ) ~= e:GetPos()
-            elseif ent_cfg["check_type"] == "func_brush" then
-                is_open = e:IsEffectActive( EF_NODRAW )
-            elseif ent_cfg["check_type"] == "func_brush enabled" then
-                is_open = e:IsSolid()
-            end
-
-            -- Update the count depending on whether the entity is "open" or not
-            if is_open then
-                if count[ ent_cfg[ "door_group" ] ] == nil then
-                    count[ ent_cfg[ "door_group" ] ] = { ["total"] = 1, ["open"] = 1, ["solitary"] = ent_cfg["solitary"] }
-                else
-                    count[ ent_cfg[ "door_group" ] ][ "total" ] = count[ ent_cfg[ "door_group" ] ][ "total" ] + 1
-                    count[ ent_cfg[ "door_group" ] ][ "open" ] = count[ ent_cfg[ "door_group" ] ][ "open" ] + 1
-                end
-            else
-                if count[ ent_cfg[ "door_group" ] ] == nil then
-                    count[ ent_cfg[ "door_group" ] ] = { ["total"] = 1, ["open"] = 0, ["solitary"] = ent_cfg["solitary"] }
-                else
-                    count[ ent_cfg[ "door_group" ] ][ "total" ] = count[ ent_cfg[ "door_group" ] ][ "total" ] + 1
-                end
-            end
-
-            -- A door group must *all* be open or *all* be closed - if this isn't the case then this has failed
-            if count[ ent_cfg[ "door_group" ] ]["open"] ~= count[ ent_cfg[ "door_group" ] ]["total"]
-                and count[ ent_cfg[ "door_group" ] ]["open"] ~= 0 then
-                    valid = false
-                    break
-            end
+        --[[
+            If there are no entities with that name and that is the check type, the door is open.
+            The entity should never not exist otherwise, or the command shouldn't have been added - an error would be the intended response.
+        ]]
+        if next( entities ) == nil and ent_cfg["check_type"] == "exists" then
+            is_open = true
         end
 
-        -- If the count didn't fail, report what state the cell doors are in
-        if valid then
-            local state_cells = -1 -- Fully Closed/Partially Open/Fully Open (0/1/2)
-            local state_solitary = -1
+        -- Check whether the door is open based on the check type specified
+        local e = entities[1]
+        if ent_cfg["check_type"] == "exists" and next( entities ) ~= nil then
+            -- If here is reached then the entity *does* exist
+            is_open = false
+        elseif ent_cfg["check_type"] == "func_door" or ent_cfg["check_type"] == "func_door_rotating" then
+            is_open = e:GetInternalVariable( "m_toggle_state" ) == 0
+        elseif ent_cfg["check_type"] == "prop_door_rotating" then
+            is_open = e:GetInternalVariable( "m_eDoorState" ) ~= 0
+        elseif ent_cfg["check_type"] == "func_movelinear" then
+            is_open = e:GetInternalVariable( "m_vecPosition1" ) ~= e:GetPos()
+        elseif ent_cfg["check_type"] == "func_brush" then
+            is_open = e:IsEffectActive( EF_NODRAW )
+        elseif ent_cfg["check_type"] == "func_brush enabled" then
+            is_open = e:IsSolid()
+        end
 
-            -- Go through the count to find the overall state of normal and solitary cells
-            for _, cnt in pairs( count ) do
-                if cnt["solitary"] then -- Solitary cells
-                    if cnt["total"] == cnt["open"] then -- Door group is open
-                        if state_solitary == -1 then state_solitary = 2 -- If none have been checked so far, then all checked so far are open
-                        elseif state_solitary == 0 then state_solitary = 1 end -- If all have been closed so far, then it is now partially open
-                    else
-                        if state_solitary == -1 then state_solitary = 0 -- If none have been checked so far, then all checked so far are closed
-                        elseif state_solitary == 2 then state_solitary = 1 end -- If all have been open so far, then it is now only partially open
-                    end
-                else -- Normal cells
-                    if cnt["total"] == cnt["open"] then -- Door group is open
-                        if state_cells == -1 then state_cells = 2 -- If none have been checked so far, then all checked so far are open
-                        elseif state_cells == 0 then state_cells = 1 end -- If all have been closed so far, then it is now partially open
-                    else
-                        if state_cells == -1 then state_cells = 0 -- If none have been checked so far, then all checked so far are closed
-                        elseif state_cells == 2 then state_cells = 1 end -- If all have been open so far, then it is now only partially open
-                    end
-                end
-            end
-
-            -- Create the message to show to the requesting player
-            local msg = ""
-            if state_solitary == -1 then
-                msg = "The cells are currently "
-                    .. ((state_cells == 0 and "closed.") or (state_cells == 1 and "partially open.") or "open.")
-            elseif state_cells == state_solitary then
-                msg = "Both the main and solitary cells are currently "
-                    .. ((state_cells == 0 and "closed.") or (state_cells == 1 and "partially open.") or "open.")
+        -- Update the door group open counts depending on whether the entity is "open" or not
+        if is_open then
+            if count[ ent_cfg[ "door_group" ] ] == nil then
+                count[ ent_cfg[ "door_group" ] ] = { ["total"] = 1, ["open"] = 1, ["solitary"] = ent_cfg["solitary"] }
             else
-                msg = "The main cells are currently "
-                    .. ((state_cells == 0 and "closed") or (state_cells == 1 and "partially open") or "open")
-                    .. ", while the solitary cells are currently "
-                    .. ((state_solitary == 0 and "closed.") or (state_solitary == 1 and "partially open.") or "open.")
+                count[ ent_cfg[ "door_group" ] ][ "total" ] = count[ ent_cfg[ "door_group" ] ][ "total" ] + 1
+                count[ ent_cfg[ "door_group" ] ][ "open" ] = count[ ent_cfg[ "door_group" ] ][ "open" ] + 1
             end
-
-            -- Send the status message to the player
-            ULib.tsay( calling_ply, msg, true )
-
-            return
+        else
+            if count[ ent_cfg[ "door_group" ] ] == nil then
+                count[ ent_cfg[ "door_group" ] ] = { ["total"] = 1, ["open"] = 0, ["solitary"] = ent_cfg["solitary"] }
+            else
+                count[ ent_cfg[ "door_group" ] ][ "total" ] = count[ ent_cfg[ "door_group" ] ][ "total" ] + 1
+            end
         end
     end
 
-    -- If this is reached, then no valid config was found - tell the player this
-    ULib.tsayError( calling_ply, ERROR_MAP, true )
+    -- Calculate the state that the cell doors are in
+    local state_cells = -1 -- Fully Closed/Partially Open/Fully Open (0/1/2)
+    local state_solitary = -1
+
+    -- Go through the count to find the overall state of normal and solitary cells
+    for _, cnt in pairs( count ) do
+        if cnt["solitary"] then -- Solitary cells
+            if cnt["total"] == cnt["open"] then -- Door group is open
+                if state_solitary == -1 then state_solitary = 2 -- If none have been checked so far, then all checked so far are open
+                elseif state_solitary == 0 then state_solitary = 1 end -- If all have been closed so far, then it is now partially open
+            elseif cnt["open"] == 0 then
+                if state_solitary == -1 then state_solitary = 0 -- If none have been checked so far, then all checked so far are closed
+                elseif state_solitary == 2 then state_solitary = 1 end -- If all have been open so far, then it is now only partially open
+            else
+                -- The door group isn't consistent - there's something wrong with the door, so stop the check.
+                ULib.tsayError( calling_ply, ERROR_DOOR_GROUP, true )
+                return
+            end
+        else -- Normal cells
+            if cnt["total"] == cnt["open"] then -- Door group is open
+                if state_cells == -1 then state_cells = 2 -- If none have been checked so far, then all checked so far are open
+                elseif state_cells == 0 then state_cells = 1 end -- If all have been closed so far, then it is now partially open
+            elseif cnt["open"] == 0 then
+                if state_cells == -1 then state_cells = 0 -- If none have been checked so far, then all checked so far are closed
+                elseif state_cells == 2 then state_cells = 1 end -- If all have been open so far, then it is now only partially open
+            else
+                -- The door group isn't consistent - there's something wrong with the door, so stop the check.
+                ULib.tsayError( calling_ply, ERROR_DOOR_GROUP, true )
+                return
+            end
+        end
+    end
+
+    -- Create the message to show to the requesting player based on the calculated states
+    local msg = ""
+    if state_solitary == -1 then
+        msg = "The cells are currently "
+            .. ((state_cells == 0 and "closed.") or (state_cells == 1 and "partially open.") or "open.")
+    elseif state_cells == state_solitary then
+        msg = "Both the main and solitary cells are currently "
+            .. ((state_cells == 0 and "closed.") or (state_cells == 1 and "partially open.") or "open.")
+    else
+        msg = "The main cells are currently "
+            .. ((state_cells == 0 and "closed") or (state_cells == 1 and "partially open") or "open")
+            .. ", while the solitary cells are currently "
+            .. ((state_solitary == 0 and "closed.") or (state_solitary == 1 and "partially open.") or "open.")
+    end
+
+    -- Send the status message to the player
+    ULib.tsay( calling_ply, msg, true )
+
+    return
 end
 local cellsstatus
 
@@ -1581,8 +1564,8 @@ end
 local function checkValidEntities( config, option )
     -- Check that all of the entities in the option exist, failing if any don't
     for _, ent_cfg in ipairs( config[ option ] ) do
-        -- If the current entity doesn't exist, fail this config and stop looking
-        if ( next( ents.FindByName( ent_cfg["name"] ) ) == nil ) then
+        -- If the current entity doesn't exist (and that isn't expected to be possible), fail this config and stop looking
+        if ( next( ents.FindByName( ent_cfg["name"] ) ) == nil and config[ "status" ] and config[ "status" ][ ent_cfg[ "name" ] ][ "check_type" ] ~= "exists") then
             return false
         end
     end
@@ -1601,9 +1584,9 @@ local function addCmdsCells( configs )
             if ( checkValidEntities( cfg, "open" ) and checkValidEntities( cfg, "close" ) ) then
                 -- The open and close configs worked, so check the status config
                 local failed = false
-                for ent_name, _ in pairs( cfg["status"] ) do
+                for ent_name, ent_cfg in pairs( cfg["status"] ) do
                     -- If there are no entities by this name, fail the config
-                    if ( next( ents.FindByName( ent_name ) ) == nil ) then
+                    if ( next( ents.FindByName( ent_name ) ) == nil ) and ent_cfg["check_type"] ~= "exists" then
                         failed = true
                         break
                     end
