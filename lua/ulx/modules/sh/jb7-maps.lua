@@ -1295,64 +1295,26 @@ local function getPossibleConfigMatches( map, configs )
     return matches
 end
 
---[[
-    Attempt to Fire each entity config from a door config until an entity isn't found, then try the next config until none are left.
-    Returns true/false based on whether any configs succeeded.
-]]
-local function attemptOpenDoors( config, close, incl_solitary )
-    -- Get the right key for the config section based on whether opening or closing
-    local opcl = close and "close" or "open"
-    
-    -- Attempt to fire entities from config
-    local success = false
-    for _, ent_cf in ipairs ( config[opcl] ) do
-        local entities = ents.FindByName( ent_cf["name"] )
-        if next( entities ) ~= nil then
-            success = true -- Mark that at least one entity was found successfully
-            for _, e in ipairs( entities ) do
-                if not ent_cf["solitary"] or incl_solitary then -- Don't open solitary cells if not marked to do so
-                    e:Fire( ent_cf["input"], ent_cf["param"], ent_cf["delay"] )
-                end
-            end
-        elseif ent_cf["input"] ~= "Break" and ent_cf["input"] ~= "Kill" then -- If using Break/Kill, the entity won't exist after the first open
-            -- The intended entity doesn't exist, so return that this config hasn't worked properly
-            return false
-        end
-    end
-
-    -- If at least one entity was triggered and no target was completely missing, then assume this config has succeeded
-    if success then
-        return true
-    else
-        return false
-    end
-end
-
-
 
 -- ULX Commands
 
 function ulx.opencells( calling_ply, incl_solitary, close, armory )
-    local map = game.GetMap()
-
-    -- End command with error message to player if unable to find any possibly matching configs
-    local configs = getPossibleConfigMatches( map, armory and armory_door_configs or cell_door_configs )
-    if configs == {} then
-        ULib.tsayError( calling_ply, ERROR_MAP, true )
-        return
-    end
-
-    -- Attempt each matching config until one works, ending inside here if one does
-    for _, config in pairs( configs ) do
-        if attemptOpenDoors( config, close, incl_solitary ) then
-            ulx.fancyLogAdmin( calling_ply, "#A " .. ( close and "closed" or "opened" ) .. " the " 
-                                .. ( armory and "armory" or "cell" ) .. " doors" )
-            return
+    -- Open/close the cell/armory doors
+    for _, ent_cfg in ipairs( ( armory and armory_door_configs or cell_door_configs )[ armory and GetGlobalString( GSTR_CONFIG_ARMORY ) or GetGlobalString( GSTR_CONFIG_CELLS ) ][ close and "close" or "open" ] ) do
+        -- Find all entities by the specified name in the config, and fire the configured input at them if any exist
+        local entities = ents.FindByName( ent_cfg["name"] )
+        if next( entities ) ~= nil then
+            for _, ent in ipairs( entities ) do
+                if not ent_cfg["solitary"] or incl_solitary then -- Only open solitary cells if marked to do so
+                    ent:Fire( ent_cfg["input"], ent_cfg["param"], ent_cfg["delay"] )
+                end
+            end
         end
     end
-    
-    -- If this hasn't ended by now, no attempted config succeeded, so display an error message to the player about it
-    ULib.tsayError( calling_ply, ERROR_MAP, true )
+
+    -- Log action
+    ulx.fancyLogAdmin( calling_ply, "#A " .. ( close and "closed" or "opened" ) .. " the " 
+                        .. ( armory and "armory" or "cell" ) .. " doors" )
 end
 local opencells
 SetGlobalBool( GBOOL_INCL_CELLS, false ) -- Mark to not include this command by default
